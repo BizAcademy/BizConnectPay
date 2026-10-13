@@ -1,5 +1,5 @@
 export const slots = [
-  { key: 'hero_visual', label: 'Accueil — visuel principal' },
+  { key: 'hero_visual', label: 'Accueil — image à gauche de « Encaissez sans frontières »' },
   { key: 'simple_visual', label: 'Simple. Rapide. Sécurisé.' },
   { key: 'prod_in_visual', label: 'BizConnectPay-IN' },
   { key: 'prod_out_visual', label: 'BizConnectPay-OUT' },

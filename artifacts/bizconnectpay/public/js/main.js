@@ -27,7 +27,7 @@ addEventListener('hashchange',r);r();
   var root=document.documentElement;
   if(!('IntersectionObserver' in window)||!window.matchMedia)return;
   var mq=matchMedia('(prefers-reduced-motion: reduce)');
-  var sel='.hero-txt>*,.hero-vis,.intro h2,.intro .sub,.st,.simple-vis,.prods .c>*,.prod,.why,.cta,.news,main>h2,main>.sub,.sec>*,.grid>*,.chips>*,details,.doc,.stats>*,footer .cols>*,footer>div>img,footer>div>p';
+  var sel='.hero-txt>*,.hero-vis,.intro h2,.intro .sub,.st,.simple-vis,.prods .c>*,.prod-txt,.product-visual,.why,.cta,.news,main>h2,main>.sub,.sec>*,.grid>*,.chips>*,details,.doc,.stats>*,footer .cols>*,footer>div>img,footer>div>p';
   var io=null;
   function all(){return document.querySelectorAll('.rv')}
   function showAll(){all().forEach(function(e){e.classList.add('in')})}
@@ -37,8 +37,20 @@ addEventListener('hashchange',r);r();
     document.querySelectorAll(sel).forEach(function(e){
       if(e.closest('header'))return;
       e.classList.add('rv');
+      if(e.classList.contains('hero-vis')||e.classList.contains('product-visual')){
+        var box=e.getBoundingClientRect(),parent=e.parentNode.getBoundingClientRect();
+        var side;
+        if(matchMedia('(min-width:900px)').matches||(e.classList.contains('product-visual')&&matchMedia('(min-width:760px)').matches)){
+          side=box.left+box.width/2<parent.left+parent.width/2?'left':'right';
+        }else{
+          side=e.classList.contains('hero-vis')||e.closest('.prod.rev')?'left':'right';
+        }
+        e.classList.remove('rv-left','rv-right');
+        e.classList.add('rv-'+side);
+        e.style.setProperty('--d','80ms');
+      }
       var p=e.parentNode,i=groups.get(p)||0;groups.set(p,i+1);
-      e.style.setProperty('--d',Math.min(i,6)*70+'ms');
+      if(!e.classList.contains('hero-vis')&&!e.classList.contains('product-visual'))e.style.setProperty('--d',Math.min(i,6)*70+'ms');
     });
     io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:0});
     all().forEach(function(e){if(!e.classList.contains('in'))io.observe(e)});

@@ -1,6 +1,7 @@
 <%- include('partials/top', { title: 'Médias du site', eyebrow: 'Emplacements visuels' }) %>
 <% var bp = locals.basePath || ''; var tok = locals.csrfToken || ''; var md = locals.media || {}; var sl = locals.slots || []; %>
 <p class="lead">Chaque emplacement accepte une image (JPG, PNG, WebP, GIF · <%= locals.imageMaxMb || 5 %> Mo max) ou une vidéo (MP4, WebM · <%= locals.videoMaxMb || 50 %> Mo max). Sans média, la maquette d'origine reste affichée. Le logo et l'icône ne sont jamais modifiés.</p>
+<p class="lead">Configurez ici le visuel principal et les images des quatre solutions IN, OUT, Link et Virtual. L’animation d’entrée est automatique sur le site : depuis la gauche pour les visuels placés à gauche, depuis la droite pour ceux placés à droite.</p>
 <div class="slots">
 <% sl.forEach(function (slot) { var m = md[slot.key]; %>
   <section class="slot" data-slot="<%= slot.key %>">

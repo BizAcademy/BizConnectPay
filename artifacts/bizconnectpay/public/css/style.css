@@ -188,7 +188,13 @@ details[open] p{animation:m-fade .35s var(--ease)}
 .prod:focus-within .ico{transform:rotate(-4deg)}
 footer a{transition:color .2s}
 /* reveal states only when JS enabled motion */
+#accueil{overflow:clip}
+@media(min-width:900px){.hero-vis{order:-1}.hero-in{grid-template-columns:.9fr 1.1fr}}
+@media(min-width:760px){.prod.rev .product-visual{order:-1}}
+.product-visual{min-width:0}
 .m-on .rv{opacity:0;transform:translateY(18px);transition:opacity .6s var(--ease) var(--d,0ms),transform .7s var(--ease) var(--d,0ms)}
+.m-on .rv.rv-left{transform:translateX(-64px)}
+.m-on .rv.rv-right{transform:translateX(64px)}
 .m-on .rv.in{opacity:1;transform:none}
 .m-on .pg-in{animation:m-fade .45s var(--ease)}
 /* hero accents */
@@ -207,5 +213,7 @@ footer a{transition:color .2s}
 @keyframes m-pulse{0%{box-shadow:0 0 0 0 rgba(0,229,168,.55)}70%,100%{box-shadow:0 0 0 10px rgba(0,229,168,0)}}
 @keyframes m-bob{from{transform:translateY(0)}to{transform:translateY(-6px)}}
 @media(max-width:640px){.m-on .preview .mock,.m-on .hero-vis::before{animation:none}.m-on .rv{transform:translateY(12px)}}
+@media(max-width:640px){.m-on .rv.rv-left{transform:translateX(-28px)}.m-on .rv.rv-right{transform:translateX(28px)}}
+.m-on .rv.in{transform:none}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.rv{opacity:1!important;transform:none!important}}
 @media print{.rv{opacity:1!important;transform:none!important}}
