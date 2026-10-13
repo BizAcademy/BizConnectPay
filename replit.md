@@ -22,6 +22,7 @@ Landing page fournie par le propriétaire, reproduite fidèlement dans une appli
 
 - Présentation inspirée de https://www.ashtechpay.com/, à la demande du propriétaire, mais conserver l’identité BizConnectPay : logo, Poppins, bleu/cyan/vert, textes métier, navigation par hash et responsive. Fonds publics blancs ; pas de navigation ni de bouton « Commencer maintenant » dans l’en-tête. Conserver les boutons du corps de page.
 - Le logo et l’icône base64 doivent être extraits tels quels, sans retouche.
+- Le propriétaire souhaite du motion design sur toute la page publique ; conserver des animations fluides sur mobile et respecter la préférence de réduction des animations.
 - Aucune fonctionnalité Replit DB/Replit Auth dans l’application livrée ; stockage MySQL avec mysql2, rendu EJS, mot de passe admin local explicitement demandé.
 - Sans MySQL, le mode développement indique la configuration manquante et ne simule ni inscription newsletter ni médias enregistrés.
 - `reference/bizconnectpay.html` dans l’application est la référence immutable. Le site public doit rester blanc, indépendamment du thème système, conformément au changement demandé par le propriétaire.

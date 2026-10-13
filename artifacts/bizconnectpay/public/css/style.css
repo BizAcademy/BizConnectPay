@@ -165,3 +165,47 @@ footer>div>img{display:block}
 footer .cols{max-width:none;margin:28px 0;text-align:left}
 footer .cols a{margin:6px 0}footer a:hover{color:var(--blue)}
 footer p a{margin:0 16px 0 0}
+
+/* ===== Motion layer (rev motion-1) ===== */
+:root{--ease:cubic-bezier(.22,.8,.24,1)}
+a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:999px}
+summary:focus-visible{border-radius:8px}
+.btn{position:relative;overflow:hidden;isolation:isolate;transition:transform .25s var(--ease),box-shadow .25s var(--ease),background-color .25s}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn.o:hover{border-color:var(--cyan)}
+.btn:focus-visible{transform:translateY(-2px);box-shadow:0 14px 28px -10px rgba(0,102,255,.7)}
+.lnk span{display:inline-block;transition:transform .25s var(--ease)}
+.lnk:hover span,.lnk:focus-visible span{transform:translateX(4px)}
+.logo img{transition:transform .35s var(--ease)}.logo:hover img,.logo:focus-visible img{transform:rotate(-6deg) scale(1.05)}
+.chip{transition:transform .2s var(--ease),border-color .2s}.chip:hover{transform:translateY(-2px);border-color:var(--cyan)}
+.chip:focus-visible{transform:translateY(-2px);border-color:var(--cyan)}
+details{transition:border-color .2s,box-shadow .25s}details:hover,details[open]{border-color:#cfe0ff}
+details[open] p{animation:m-fade .35s var(--ease)}
+.prod{transition:box-shadow .3s,transform .3s var(--ease)}
+.vis .toast,.ico{transition:transform .3s var(--ease)}
+.prod:hover .vis .toast:first-child{transform:translateX(6px)}
+.prod:hover .ico{transform:rotate(-4deg)}
+.prod:focus-within .ico{transform:rotate(-4deg)}
+footer a{transition:color .2s}
+/* reveal states only when JS enabled motion */
+.m-on .rv{opacity:0;transform:translateY(18px);transition:opacity .6s var(--ease) var(--d,0ms),transform .7s var(--ease) var(--d,0ms)}
+.m-on .rv.in{opacity:1;transform:none}
+.m-on .pg-in{animation:m-fade .45s var(--ease)}
+/* hero accents */
+.m-on .hero-vis::before{animation:m-float 9s ease-in-out infinite alternate}
+.m-on mark::after{transform-origin:left;animation:m-ul .9s var(--ease) .5s both}
+.m-on .preview .tabs .a{position:relative;overflow:hidden}
+.m-on .preview .tabs .a::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%);transform:translateX(-100%);animation:m-sheen 4.5s ease-in-out 1.4s infinite}
+.m-on .preview .toast.g{animation:m-pop .6s var(--ease) 1s both}
+.m-on .preview .toast.g i{animation:m-pulse 3s ease-out 1.6s infinite}
+.m-on .preview .mock{animation:m-bob 6s ease-in-out 1.6s infinite alternate}
+@keyframes m-fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes m-float{from{transform:rotate(-3deg)}to{transform:rotate(-1deg) translateY(-8px)}}
+@keyframes m-ul{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes m-sheen{0%,60%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+@keyframes m-pop{from{opacity:0;transform:translateY(10px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes m-pulse{0%{box-shadow:0 0 0 0 rgba(0,229,168,.55)}70%,100%{box-shadow:0 0 0 10px rgba(0,229,168,0)}}
+@keyframes m-bob{from{transform:translateY(0)}to{transform:translateY(-6px)}}
+@media(max-width:640px){.m-on .preview .mock,.m-on .hero-vis::before{animation:none}.m-on .rv{transform:translateY(12px)}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.rv{opacity:1!important;transform:none!important}}
+@media print{.rv{opacity:1!important;transform:none!important}}

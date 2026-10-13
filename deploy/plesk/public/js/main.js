@@ -21,3 +21,39 @@ addEventListener('hashchange',r);r();
       .then(function(){btn.disabled=false});
   });
 })();
+
+/* motion layer (rev motion-1): progressive enhancement, content visible without JS/observer */
+(function(){
+  var root=document.documentElement;
+  if(!('IntersectionObserver' in window)||!window.matchMedia)return;
+  var mq=matchMedia('(prefers-reduced-motion: reduce)');
+  var sel='.hero-txt>*,.hero-vis,.intro h2,.intro .sub,.st,.simple-vis,.prods .c>*,.prod,.why,.cta,.news,main>h2,main>.sub,.sec>*,.grid>*,.chips>*,details,.doc,.stats>*,footer .cols>*,footer>div>img,footer>div>p';
+  var io=null;
+  function all(){return document.querySelectorAll('.rv')}
+  function showAll(){all().forEach(function(e){e.classList.add('in')})}
+  function enable(){
+    root.classList.add('m-on');
+    var groups=new Map();
+    document.querySelectorAll(sel).forEach(function(e){
+      if(e.closest('header'))return;
+      e.classList.add('rv');
+      var p=e.parentNode,i=groups.get(p)||0;groups.set(p,i+1);
+      e.style.setProperty('--d',Math.min(i,6)*70+'ms');
+    });
+    io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:0});
+    all().forEach(function(e){if(!e.classList.contains('in'))io.observe(e)});
+  }
+  function disable(){root.classList.remove('m-on');if(io){io.disconnect();io=null}showAll()}
+  function apply(){mq.matches?disable():enable()}
+  apply();
+  if(mq.addEventListener)mq.addEventListener('change',apply);else if(mq.addListener)mq.addListener(apply);
+  addEventListener('hashchange',function(){
+    var s=document.querySelector('.pg.on');if(!s||mq.matches)return;
+    s.classList.remove('pg-in');void s.offsetWidth;s.classList.add('pg-in');
+  });
+  addEventListener('beforeprint',showAll);
+  document.addEventListener('focusin',function(e){
+    var el=e.target;
+    while(el&&el!==document){if(el.classList&&el.classList.contains('rv'))el.classList.add('in');el=el.parentNode}
+  });
+})();
