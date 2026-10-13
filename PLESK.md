@@ -20,7 +20,7 @@ Dans la rubrique **Node.js** du domaine :
 
 | Réglage | Valeur pour cet exemple |
 |---|---|
-| Version Node.js | **22 LTS** ou **24 LTS**, selon les versions proposées par l’hébergeur |
+| Version Node.js | **21.7.3**, version utilisée sur les serveurs du propriétaire |
 | Application root | `/bizconnectpay/deploy/plesk` |
 | Document root | `/bizconnectpay/deploy/plesk/public` |
 | Application startup file | `server.js` |
@@ -58,16 +58,18 @@ Créer la base et son utilisateur avant le premier démarrage, avec `CREATE`, `S
 Dans **Git → Repository Settings → Enable additional deploy actions**, ajouter :
 
 ```sh
-sh ./deploy/plesk/scripts/deploy.sh /opt/plesk/node/22/bin
+sh ./deploy/plesk/scripts/deploy.sh /opt/plesk/node/21/bin
 ```
 
 Cette commande suppose que l’action s’exécute dans le dossier cible Git. Si votre installation utilise un autre dossier de travail, utilisez le chemin absolu du script dans le dossier déployé, par exemple :
 
 ```sh
-sh /var/www/vhosts/VOTRE-DOMAINE/bizconnectpay/deploy/plesk/scripts/deploy.sh /opt/plesk/node/22/bin
+sh /var/www/vhosts/VOTRE-DOMAINE/bizconnectpay/deploy/plesk/scripts/deploy.sh /opt/plesk/node/21/bin
 ```
 
-**Adaptez une seule fois le chemin du domaine et `22` à la version Node.js choisie** (`24` si vous avez sélectionné Node.js 24). Le script calcule sa racine applicative à partir de son propre emplacement.
+**Adaptez une seule fois le chemin du domaine et, si nécessaire, le chemin du runtime indiqué par votre hébergeur.** Le chemin standard proposé est `/opt/plesk/node/21/bin`. Le script vérifie que le runtime exécute bien **Node.js 21.7.3** et calcule sa racine applicative à partir de son propre emplacement. Le fichier `.nvmrc` de l’application indique également `21.7.3`. Aucune version supérieure n’est nécessaire.
+
+**Sécurité :** Node.js 21 est hors support officiel et ne reçoit plus de correctifs de sécurité. Cette livraison respecte la limite actuelle des serveurs ; prévoir une version maintenue lorsque l’hébergeur la proposera.
 
 L’action exécute uniquement :
 

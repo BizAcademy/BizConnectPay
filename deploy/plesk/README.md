@@ -24,7 +24,7 @@ Aucune dépendance fonctionnelle à Replit DB, Replit Auth, un connecteur Replit
 
 ## Prérequis et installation locale
 
-- Node.js **18 minimum** ; privilégier une version LTS encore maintenue, par exemple 22 ou 24.
+- Version cible des serveurs : **Node.js 21.7.3**. Le code conserve un minimum compatible de 18, mais les instructions Plesk et le script de déploiement ciblent 21.7.3 ; aucune version supérieure n’est requise. Node.js 21 est hors support officiel : prévoir une version maintenue lorsque l’hébergeur le permettra.
 - MySQL 5.7+/8 ou MariaDB 10.3+, avec base et utilisateur déjà créés.
 - Un mot de passe administrateur entre 12 et 72 octets UTF-8.
 - Une clé `SESSION_SECRET` aléatoire d’au moins 32 caractères.
@@ -98,7 +98,7 @@ Les tables `media`, `settings`, `subscribers` sont créées automatiquement au p
 
 Dans **Sites Web & Domaines → votre domaine → Node.js** :
 
-1. Choisir Node.js 22/24 LTS si proposé, sinon une version compatible 18+.
+1. Choisir **Node.js 21.7.3**, version disponible sur les serveurs du propriétaire.
 2. Définir la **racine de l’application** sur le dossier `bizconnectpay/` contenant `package.json` et `server.js`.
 3. Définir la **racine des documents** sur son sous-dossier `bizconnectpay/public/`.
 4. Définir le **fichier de démarrage** sur `server.js`.

@@ -21,7 +21,7 @@ async function collect(relative) {
 }
 for (const relative of [
   'server.js', 'src-server', 'views', 'public', 'schema.sql',
-  '.env.example', 'README.md', 'reference',
+  '.env.example', '.nvmrc', 'README.md', 'reference',
   'scripts/check.js', 'scripts/package.json',
 ]) await collect(relative);
 files.set('scripts/deploy.sh', await readFile(path.join(source, 'scripts/plesk-deploy.sh')));
