@@ -67,3 +67,21 @@ mark{background:linear-gradient(90deg,var(--blue),var(--cyan));color:#fff;paddin
 .news-msg{margin:0;font-size:.9rem;color:#cfe0ff}
 .news-msg:empty{display:none}
 .contact-extra a{color:#cfe0ff}
+
+/* white public surfaces (overrides; also neutralises dark theme) */
+:root,:root[data-theme="dark"]{--bg:#fff;--text:#111827;--card:#fff;--mut:#5b6475;--bd:#e3e8f0;color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#fff;--text:#111827;--card:#fff;--mut:#5b6475;--bd:#e3e8f0}:root:not([data-theme="light"]) h2,:root:not([data-theme="light"]) .prod h3{color:var(--navy)}:root:not([data-theme="light"]) .vis{background:linear-gradient(145deg,#eaf3ff,#e6fff6)}}
+:root[data-theme="dark"] h2,:root[data-theme="dark"] .prod h3{color:var(--navy)}
+body{background:#fff;color:#111827}
+header{background:#fff;border-bottom:1px solid var(--bd)}
+.hero,.cta,.why,.news,.stats{background:#fff;color:var(--navy)}
+.cta,.why,.news,.stats{border:1px solid var(--bd)}
+.hero p,.badge,.news-msg,.why .st span{color:var(--mut)}
+.badge{border-color:var(--bd)}
+.cta h2,.why h2,.news h2{color:var(--navy)}
+.btn.o{color:var(--blue)}
+.why .st b,.stats b{color:var(--blue)}
+.news input{border:1px solid var(--bd)}
+footer{background:#fff;color:var(--navy);border-top:1px solid var(--bd)}
+footer a,.contact-extra a{color:var(--navy)}
+.cols h4{color:var(--mut)}

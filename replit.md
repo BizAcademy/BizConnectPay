@@ -20,11 +20,11 @@ Landing page fournie par le propriétaire, reproduite fidèlement dans une appli
 
 ## Contraintes du propriétaire
 
-- Reproduire exactement le HTML fourni : design, textes, Poppins, couleurs, navigation par hash, responsive et sombre d’origine. Ne pas refaire le design.
+- Conserver le HTML fourni, ses textes, Poppins, navigation par hash et responsive, sauf les changements visuels demandés par le propriétaire : fonds publics blancs et suppression de la navigation et du bouton « Commencer maintenant » dans l’en-tête. Conserver le logo et les boutons du corps de page.
 - Le logo et l’icône base64 doivent être extraits tels quels, sans retouche.
 - Aucune fonctionnalité Replit DB/Replit Auth dans l’application livrée ; stockage MySQL avec mysql2, rendu EJS, mot de passe admin local explicitement demandé.
 - Sans MySQL, le mode développement indique la configuration manquante et ne simule ni inscription newsletter ni médias enregistrés.
-- `reference/bizconnectpay.html` dans l’application est la référence immutable. Le thème public suit les préférences système, comme le fichier fourni.
+- `reference/bizconnectpay.html` dans l’application est la référence immutable. Le site public doit rester blanc, indépendamment du thème système, conformément au changement demandé par le propriétaire.
 
 ## Stack du squelette (non utilisée par l’application métier)
 
