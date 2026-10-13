@@ -15,6 +15,7 @@ Landing page fournie par le propriétaire, reproduite fidèlement dans une appli
 - L’hébergement cible est Plesk, pas Replit. Lire `PLESK.md` pour GitHub → Pull Updates → Deploy Now → Restart, sans build sur Plesk.
 - Le propriétaire refuse toute commande ou script de déploiement à configurer dans Plesk. Utiliser les boutons natifs uniquement ; NPM Install initialement, et à nouveau seulement si les dépendances changent.
 - Le propriétaire utilise Node.js **21.7.3** sur tous ses serveurs ; c’est la version maximale disponible. Ne pas imposer Node.js 22 ou 24 à la livraison Plesk.
+- Plesk : entrée recommandée `app.js`, relais CommonJS vers `server.js`, pour la détection conventionnelle de Passenger ; `npm start` reste `node server.js`.
 - Après toute modification métier, exécuter `pnpm --filter @workspace/bizconnectpay run prepare:plesk` puis `check:plesk` et inclure `deploy/plesk/` dans le commit. Actualiser le verrouillage npm autonome si les dépendances changent.
 
 ## Contraintes du propriétaire

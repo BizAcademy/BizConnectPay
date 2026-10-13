@@ -6,7 +6,7 @@ import ejs from 'ejs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const files = [
-  'server.js',
+  'app.js', 'server.js',
   ...readdirSync(path.join(root, 'src-server')).filter(file => file.endsWith('.js')).map(file => `src-server/${file}`),
   'public/js/main.js', 'public/js/admin.js',
 ];

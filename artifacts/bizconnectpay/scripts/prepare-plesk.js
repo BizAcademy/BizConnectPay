@@ -21,7 +21,7 @@ async function collect(relative) {
   }
 }
 for (const relative of [
-  'server.js', 'src-server', 'views', 'public', 'schema.sql',
+  'app.js', 'server.js', 'src-server', 'views', 'public', 'schema.sql',
   '.env.example', '.nvmrc', 'README.md', 'reference',
   'scripts/check.js', 'scripts/package.json',
 ]) await collect(relative);

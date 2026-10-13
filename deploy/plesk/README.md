@@ -9,6 +9,7 @@ La page publique provient du fichier `reference/bizconnectpay.html` fourni, sans
 **Déploiement GitHub → Plesk recommandé :** la version autonome est déjà présente et versionnée dans `deploy/plesk/` à la racine du dépôt. Configurer la racine applicative Plesk sur ce dossier, et la racine publique sur son sous-dossier `public/`. Après une installation initiale via le bouton **NPM Install**, les modifications du code se publient avec **Push GitHub → Pull Updates → Deploy Now → Restart**, sans commande, script de déploiement ni build sur Plesk. Ne pas activer les actions supplémentaires Git. Si les dépendances changent, utiliser de nouveau le bouton **NPM Install** avant de redémarrer. Voir `PLESK.md`.
 
 ```text
+app.js                    entrée conventionnelle pour la détection Passenger, relais vers server.js
 server.js                 point d’entrée CommonJS compatible Plesk/Passenger
 src-server/               Express, MySQL, sessions, sécurité, routes
 views/                    vues et fragments EJS publics et administrateur
@@ -38,7 +39,7 @@ cp .env.example .env
 npm start
 ```
 
-`start` vaut exactement `node server.js`. Aucun build frontend ni pnpm n’est nécessaire sur Plesk. `server.js` est un point d’entrée CommonJS qui importe les modules ESM internes dynamiquement, pour éviter l’erreur Passenger `ERR_REQUIRE_ESM`.
+`start` vaut exactement `node server.js`. Aucun build frontend ni pnpm n’est nécessaire sur Plesk. `app.js` est l’entrée conventionnelle recommandée dans le panneau Node.js de Plesk pour la détection Passenger ; il charge `server.js`. Ce dernier est un point d’entrée CommonJS qui importe les modules ESM internes dynamiquement, pour éviter l’erreur Passenger `ERR_REQUIRE_ESM`.
 
 Dans le projet de développement pnpm :
 
@@ -101,7 +102,7 @@ Dans **Sites Web & Domaines → votre domaine → Node.js** :
 1. Choisir **Node.js 21.7.3**, version disponible sur les serveurs du propriétaire.
 2. Définir la **racine de l’application** sur le dossier `bizconnectpay/` contenant `package.json` et `server.js`.
 3. Définir la **racine des documents** sur son sous-dossier `bizconnectpay/public/`.
-4. Définir le **fichier de démarrage** sur `server.js`.
+4. Définir le **fichier de démarrage** sur `app.js` (relais vers `server.js`).
 5. Choisir le mode **production**.
 6. Ajouter les variables d’environnement de la table ci-dessus. `BASE_PATH=/`, `TRUST_PROXY=1`, `SITE_PREVIEW=0`. Définir `PORT` conformément à votre configuration Node.js Plesk (par exemple `3000` si votre hébergeur demande un port numérique).
 7. Cliquer sur **Activer Node.js**, puis **Installer NPM / NPM install**. Il n’y a pas de commande de build à exécuter.

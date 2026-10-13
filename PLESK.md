@@ -23,11 +23,13 @@ Dans la rubrique **Node.js** du domaine :
 | Version Node.js | **21.7.3**, version utilisée sur les serveurs du propriétaire |
 | Application root | `/bizconnectpay/deploy/plesk` |
 | Document root | `/bizconnectpay/deploy/plesk/public` |
-| Application startup file | `server.js` |
+| Application startup file | `app.js` |
 | Application mode | `production` |
 | Gestionnaire de dépendances | npm |
 
 Le chemin exact affiché peut être absolu, mais doit se terminer par ces dossiers. Ne choisissez pas la racine entière du dépôt comme document root : elle contient des fichiers serveur.
+
+`app.js` est le point d’entrée conventionnel utilisé pour la détection Node.js de Passenger. Il charge simplement `server.js`, sans changer le fonctionnement de l’application. Le script npm `start` reste `node server.js`.
 
 Ajouter les variables personnalisées :
 
@@ -83,6 +85,14 @@ Vérification après démarrage :
 - `https://votre-domaine/admin` ouvre la connexion administrateur.
 
 La production refuse explicitement de démarrer si MySQL ou les secrets obligatoires ne sont pas valides. La publication des fichiers ne configure pas les identifiants de votre hébergeur.
+
+### Si Apache renvoie 403 et cherche un index dans public/
+
+Le message `AH01276: Cannot serve directory .../public/: No matching DirectoryIndex` signifie qu’Apache traite la requête comme un accès au dossier statique. Ne pas ajouter un `index.html` qui masquerait le problème et laisserait les routes admin et newsletter inaccessibles.
+
+La livraison inclut désormais l’entrée conventionnelle `app.js` pour la détection Passenger. Après **Pull Updates → Deploy Now**, choisir `app.js` comme **Application startup file**, puis cliquer sur **Restart App**. Aucun nouveau NPM Install n’est nécessaire pour ce changement.
+
+Si Apache continue de servir le dossier statique, désactiver puis réactiver Node.js depuis ses boutons dans Plesk, pour recharger sa configuration. Vérifier à nouveau les dossiers et le fichier de démarrage. Si `/healthz` renvoie toujours une page Plesk 404 après ces réglages, l’hébergeur doit vérifier la configuration Apache/Passenger de ce domaine ; un ajout de fichier HTML ne corrige pas ce routage.
 
 ## Maintenir les sources et la livraison synchronisées
 

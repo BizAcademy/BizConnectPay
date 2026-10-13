@@ -13,7 +13,7 @@ await mkdir(outputs, { recursive: true });
 await rm(destination, { recursive: true, force: true });
 await mkdir(destination, { recursive: true });
 for (const entry of [
-  'server.js', 'src-server', 'public', 'views', 'schema.sql', '.env.example', '.nvmrc',
+  'app.js', 'server.js', 'src-server', 'public', 'views', 'schema.sql', '.env.example', '.nvmrc',
   'README.md', 'reference', 'scripts', 'package.json', 'package-lock.json',
   '.npmrc', '.gitignore',
 ]) {
