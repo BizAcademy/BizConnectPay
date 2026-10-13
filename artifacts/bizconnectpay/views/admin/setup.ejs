@@ -1,0 +1,20 @@
+<% var bp = locals.basePath || ''; %><!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+<title>Configuration requise · Admin BizConnectPay</title><link rel="icon" href="<%= bp %>/assets/icon.webp" type="image/webp">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="<%= bp %>/css/admin.css"></head>
+<body class="auth">
+<main class="auth-card wide">
+  <img src="<%= bp %>/assets/icon.webp" alt="BizConnectPay" width="56" height="56" class="auth-logo">
+  <h1>Configuration requise</h1>
+  <p class="muted">L'espace admin ne peut pas encore fonctionner : vérifiez la configuration et la disponibilité du serveur MySQL.</p>
+  <% if (locals.configMessage) { %><div class="alert warn"><%= configMessage %></div><% } %>
+  <ul class="checks">
+    <li><b>Base MySQL</b> — <%= locals.databaseAvailable ? 'connectée' : 'non connectée' %>. Renseignez DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME.</li>
+    <li><b>Sessions</b> — définissez SESSION_SECRET (longue chaîne aléatoire).</li>
+    <li><b>Mot de passe admin</b> — définissez ADMIN_PASSWORD.</li>
+  </ul>
+  <p class="muted small">Ces variables se règlent dans le fichier .env ou dans les variables d'environnement Plesk, puis redémarrez l'application. Consultez le README pour les étapes détaillées.</p>
+  <a class="back" href="<%= bp %>/">← Retour au site</a>
+</main>
+</body></html>

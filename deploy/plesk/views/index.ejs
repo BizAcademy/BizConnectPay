@@ -1,0 +1,37 @@
+<%
+  var s = locals.settings || {};
+  var basePath = locals.basePath || '';
+  var theme = locals.theme || '';
+  var media = locals.media || {};
+  var pricingHtml = locals.pricingHtml || '';
+  var signupHref = s.signup_url || '#';
+  var waDigits = String(s.whatsapp || '').replace(/[^0-9]/g, '');
+  var waHref = /^https?:\/\//i.test(String(s.whatsapp || '')) ? s.whatsapp : (waDigits ? 'https://wa.me/' + waDigits : '');
+  var _esc = function (v) { return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); };
+  var ph = function (key, label) {
+    var v = s[key];
+    if (key === 'legal_email' && !v) v = s.support_email;
+    return v ? _esc(v) : '<span class="ph">' + label + '</span>';
+  };
+  var L = { basePath: basePath, theme: theme, media: media, pricingHtml: pricingHtml, s: s, signupHref: signupHref, waHref: waHref, ph: ph };
+%><%- include('partials/head', L) %><body data-base-path="<%= basePath %>">
+<%- include('partials/header', L) %>
+
+<%- include('pages/accueil', L) %>
+
+<%- include('pages/services', L) %>
+
+<%- include('pages/tarifs', L) %>
+
+<%- include('pages/apropos', L) %>
+
+<%- include('pages/cgu', L) %>
+
+<%- include('pages/confidentialite', L) %>
+
+<%- include('pages/mentions', L) %>
+
+<%- include('pages/cookies', L) %>
+
+<%- include('partials/footer', L) %>
+<script src="<%= basePath %>/js/main.js"></script></body></html>

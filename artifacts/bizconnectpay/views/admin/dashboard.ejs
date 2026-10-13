@@ -1,0 +1,31 @@
+<%- include('partials/top', { title: 'Médias du site', eyebrow: 'Emplacements visuels' }) %>
+<% var bp = locals.basePath || ''; var tok = locals.csrfToken || ''; var md = locals.media || {}; var sl = locals.slots || []; %>
+<p class="lead">Chaque emplacement accepte une image (JPG, PNG, WebP, GIF · <%= locals.imageMaxMb || 5 %> Mo max) ou une vidéo (MP4, WebM · <%= locals.videoMaxMb || 50 %> Mo max). Sans média, la maquette d'origine reste affichée. Le logo et l'icône ne sont jamais modifiés.</p>
+<div class="slots">
+<% sl.forEach(function (slot) { var m = md[slot.key]; %>
+  <section class="slot" data-slot="<%= slot.key %>">
+    <div class="slot-head"><div><h2><%= slot.label %></h2><code><%= slot.key %></code></div><span class="tag <%= m ? 'live' : '' %>"><%= m ? (m.kind === 'video' ? 'Vidéo' : 'Image') : 'Maquette d\'origine' %></span></div>
+    <div class="preview" data-preview>
+      <% if (m) { %>
+        <% if (m.kind === 'video') { %><video src="<%= bp %>/media/<%= m.id %>" controls muted playsinline preload="metadata"></video><% } else { %><img src="<%= bp %>/media/<%= m.id %>" alt="<%= m.alt || '' %>"><% } %>
+      <% } else { %><div class="empty"><span>Aucun média</span><small>Le rendu d'origine est conservé</small></div><% } %>
+    </div>
+    <% if (m) { %><p class="meta"><%= m.filename || '' %> · <%= m.mime %></p><% } %>
+    <form class="upload" method="post" enctype="multipart/form-data" action="<%= bp %>/admin/media/<%= slot.key %>?_csrf=<%= encodeURIComponent(tok) %>">
+      <input type="hidden" name="_csrf" value="<%= tok %>">
+      <label class="file"><input type="file" name="media" required accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm" data-file data-img-max="<%= locals.imageMaxMb || 5 %>" data-vid-max="<%= locals.videoMaxMb || 50 %>"><span data-file-label>Choisir un fichier…</span></label>
+      <label class="fld"><span>Texte alternatif</span><input type="text" name="alt" maxlength="255" value="<%= m ? (m.alt || '') : '' %>" placeholder="Description du visuel"></label>
+      <p class="hint" data-file-hint aria-live="polite"></p>
+      <div class="row">
+        <button type="submit" class="btn" <%= locals.databaseAvailable === false ? 'disabled' : '' %>><%= m ? 'Remplacer' : 'Téléverser' %></button>
+      </div>
+    </form>
+    <% if (m) { %>
+    <form method="post" action="<%= bp %>/admin/media/<%= slot.key %>/delete" data-confirm="Supprimer ce média ? La maquette d'origine sera rétablie.">
+      <input type="hidden" name="_csrf" value="<%= tok %>"><button type="submit" class="btn danger">Supprimer</button>
+    </form>
+    <% } %>
+  </section>
+<% }); %>
+</div>
+<%- include('partials/bottom') %>

@@ -1,6 +1,6 @@
-# [Project name]
+# BizConnectPay
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Landing page fournie par le propriétaire, reproduite fidèlement dans une application Express/EJS avec administration et stockage MySQL, destinée à Plesk/Cybrancee.
 
 ## Run & Operate
 
@@ -9,9 +9,21 @@ _Replace the heading above with the project's name, and this line with one sente
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- Application métier : `pnpm --filter @workspace/bizconnectpay run dev`.
+- Configuration métier : `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, `SESSION_SECRET`, `ADMIN_PASSWORD`.
+- Lire `artifacts/bizconnectpay/README.md` pour l’export autonome et Plesk. Les paquets Postgres/React du squelette ne sont pas utilisés par BizConnectPay.
+- L’hébergement cible est Plesk, pas Replit. Lire `PLESK.md` pour GitHub → Pull Updates → Deploy Now → Restart, sans build sur Plesk.
+- Après toute modification métier, exécuter `pnpm --filter @workspace/bizconnectpay run prepare:plesk` puis `check:plesk` et inclure `deploy/plesk/` dans le commit. Actualiser le verrouillage npm autonome si les dépendances changent.
 
-## Stack
+## Contraintes du propriétaire
+
+- Reproduire exactement le HTML fourni : design, textes, Poppins, couleurs, navigation par hash, responsive et sombre d’origine. Ne pas refaire le design.
+- Le logo et l’icône base64 doivent être extraits tels quels, sans retouche.
+- Aucune fonctionnalité Replit DB/Replit Auth dans l’application livrée ; stockage MySQL avec mysql2, rendu EJS, mot de passe admin local explicitement demandé.
+- Sans MySQL, le mode développement indique la configuration manquante et ne simule ni inscription newsletter ni médias enregistrés.
+- `reference/bizconnectpay.html` dans l’application est la référence immutable. Le thème public suit les préférences système, comme le fichier fourni.
+
+## Stack du squelette (non utilisée par l’application métier)
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
 - API: Express 5

@@ -1,0 +1,49 @@
+[13/10/2026 14:48] Judeon Fabrice: Tu es un développeur full-stack Node.js senior. Je joins le fichier bizconnectpay.html : c'est la LANDING PAGE FINALE de ma plateforme de paiement BizConnectPay. Elle est la référence absolue.
+
+OBJECTIF
+Reproduis cette page EXACTEMENT (même design, mêmes textes, mêmes sections, même navigation, même mode sombre, même responsive), mais dans une application Node.js où les images et vidéos sont configurables depuis un espace admin et stockées dans MySQL.
+
+RÈGLES STRICTES
+- Ne change ni le design, ni les textes, ni les couleurs, ni la police Poppins.
+- Le logo et l'icône (images en base64 dans le HTML) ne doivent JAMAIS être modifiés : extrais-les tels quels en fichiers dans /public/assets (logo.webp, icon.webp) et utilise l'icône comme favicon.
+- Charte : #0B1F4B, #0066FF, #00D4FF, #00E5A8, #F4F7FB, #111827.
+- Garde la navigation par hash : #accueil, #services, #tarifs, #apropos, #cgu, #confidentialite, #mentions, #cookies.
+- N'utilise AUCUNE fonctionnalité spécifique à Replit (pas de Replit DB, pas de Replit Auth). Le projet doit tourner sur un hébergement Plesk (Cybrancee) avec Node.js.
+
+STACK
+Node.js 18+, Express, mysql2 (promise), multer (memoryStorage), express-session, bcrypt, helmet, compression, express-rate-limit, sanitize-html, dotenv, EJS. Découpe le HTML en vues EJS + /public/css + /public/js.
+
+CONFIGURATION (variables d'environnement, jamais en dur)
+PORT, DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME, SESSION_SECRET, ADMIN_PASSWORD. Fournis un fichier .env.example. Le serveur écoute sur process.env.PORT. Script "start": "node server.js".
+
+BASE MYSQL (création automatique des tables au démarrage + fichier schema.sql)
+- media : id, slot_key, kind ENUM('image','video'), mime, filename, size, data LONGBLOB, alt, created_at
+- settings : setting_key (PK), setting_value TEXT
+- subscribers : id, email UNIQUE, created_at
+
+EMPLACEMENTS MÉDIAS (slot_key), chacun accepte une image OU une vidéo
+hero_visual, simple_visual (section « Simple. Rapide. Sécurisé. »), prod_in_visual, prod_out_visual, prod_link_visual, prod_virtual_visual.
+- Si un média existe : affiche <img> ou <video controls muted playsinline preload="metadata"> à la place du panneau actuel.
+- S'il n'y en a pas : garde exactement le rendu actuel (maquette et notifications).
+
+ROUTES
+- GET /media/:id : sert le fichier depuis la BDD avec le bon Content-Type, ETag, Cache-Control long et support des requêtes Range (obligatoire pour les vidéos).
+- Admin sous /admin : connexion par mot de passe (session, rate limit anti brute-force, protection CSRF).
+  • Pour chaque slot : téléverser, remplacer, supprimer, prévisualiser.
+  • Formulaire « Paramètres » (stockés dans settings) : lien du bouton « Commencer maintenant » / inscription, e-mail support, WhatsApp, liens LinkedIn/Facebook/X, et infos légales (raison sociale, forme juridique, adresse, RCCM/NIF, directeur de publication, hébergeur, pays, ville, e-mail, téléphone) qui remplacent automatiquement les champs jaunes [À COMPLÉTER] des pages légales.
+  • Éditeur de la page Tarifs : zone HTML, nettoyée avec sanitize-html.
+  • Liste des inscrits newsletter avec export CSV.
+- POST /api/subscribe : valide l'e-mail, l'enregistre (sans doublon), rate limit. Branche le formulaire de newsletter dessus.
+
+SÉCURITÉ ET LIMITES
+- Requêtes SQL paramétrées uniquement.
+- Vérifie le type réel des fichiers (signature binaire), pas seulement l'extension.
+- Images : jpg, png, webp, gif, 5 Mo max. Vidéos : mp4, webm, 50 Mo max (limites modifiables via .env).
+- Gère proprement l'erreur MySQL max_allowed_packet avec un message clair dans l'admin.
+- helmet avec CSP autorisant fonts.googleapis.com et fonts.gstatic.com ; compression activée.
+
+LIVRABLES
+Code complet, schema.sql, .env.example et un README en français avec les étapes de déploiement sur Plesk (Cybrancee) : application Node.js, racine, fichier de démarrage, variables d'environnement, création de la base MySQL et de l'utilisateur, SSL.
+
+Avant de coder, vérifie que la page rendue est identique à bizconnectpay.html sur mobile et desktop, en mode clair et sombre.
+[13/10/2026 14:48] Judeon Fabrice: Voilà le logo et la charte graphique

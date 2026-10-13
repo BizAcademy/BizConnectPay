@@ -1,0 +1,20 @@
+<% var bp = locals.basePath || ''; %><!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+<title>Connexion · Admin BizConnectPay</title><link rel="icon" href="<%= bp %>/assets/icon.webp" type="image/webp">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="<%= bp %>/css/admin.css"></head>
+<body class="auth">
+<main class="auth-card">
+  <img src="<%= bp %>/assets/icon.webp" alt="BizConnectPay" width="56" height="56" class="auth-logo">
+  <h1>Console admin</h1><p class="muted">Accès réservé à l'équipe BizConnectPay.</p>
+  <% if (locals.databaseAvailable === false) { %><div class="alert warn"><%= locals.configMessage || 'Base de données indisponible.' %></div><% } %>
+  <% if (locals.error) { %><div class="alert err" role="alert"><%= error %></div><% } %>
+  <% if (locals.flash && flash.message) { %><div class="alert <%= flash.type === 'error' ? 'err' : 'ok' %>"><%= flash.message %></div><% } %>
+  <form method="post" action="<%= bp %>/admin/login" class="stack">
+    <input type="hidden" name="_csrf" value="<%= locals.csrfToken || '' %>">
+    <label class="fld"><span>Mot de passe</span><input type="password" name="password" required autocomplete="current-password" autofocus></label>
+    <button type="submit" class="btn full">Se connecter</button>
+  </form>
+  <a class="back" href="<%= bp %>/">← Retour au site</a>
+</main>
+</body></html>

@@ -1,0 +1,14 @@
+<% var bp = locals.basePath || ''; var st = locals.status || 500; %><!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Erreur <%= st %> · BizConnectPay</title><link rel="icon" href="<%= bp %>/assets/icon.webp" type="image/webp">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="<%= bp %>/css/admin.css"></head>
+<body class="auth">
+<main class="auth-card">
+  <img src="<%= bp %>/assets/icon.webp" alt="BizConnectPay" width="56" height="56" class="auth-logo">
+  <p class="code-big"><%= st %></p>
+  <h1><%= st === 404 ? 'Page introuvable' : 'Une erreur est survenue' %></h1>
+  <p class="muted"><%= locals.message || 'Réessayez dans un instant.' %></p>
+  <a class="btn full" href="<%= locals.backUrl || (bp + '/') %>">Retour</a>
+</main>
+</body></html>

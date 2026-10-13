@@ -1,0 +1,2 @@
+- [Variables de développement](development-env.md) — vérifier l’injection réelle des variables des workflows ; utiliser la portée développement pour les valeurs d’aperçu.
+- [Aperçu et MySQL distant](preview-mysql-policy.md) — permettre la consultation publique pendant la configuration MySQL sans simuler de fonctions actives ni assouplir la production.

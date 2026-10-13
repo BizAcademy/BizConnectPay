@@ -1,0 +1,16 @@
+<%- include('partials/top', { title: 'Paramètres', eyebrow: 'Liens & informations légales' }) %>
+<% var st = locals.settings || {}; var v = function (k) { return st[k] || ''; };
+var groups = [
+ ['Liens', 'Laissez vide pour conserver le lien « # » d\'origine.', [['signup_url','Lien « Commencer maintenant » / inscription','url','https://app.bizconnectpay.com/inscription'],['support_email','E-mail support','email','support@bizconnectpay.com'],['whatsapp','WhatsApp (numéro international ou lien)','text','+225 07 00 00 00 00'],['linkedin_url','LinkedIn','url','https://linkedin.com/company/…'],['facebook_url','Facebook','url','https://facebook.com/…'],['x_url','X','url','https://x.com/…']]],
+ ['Informations légales', 'Remplacent automatiquement les champs jaunes [À COMPLÉTER] des pages légales.', [['legal_company','Raison sociale','text',''],['legal_form','Forme juridique','text','SARL, SAS…'],['legal_address','Adresse du siège','text',''],['legal_registration','N° RCCM / NIF','text',''],['legal_director','Directeur de la publication','text',''],['legal_host','Hébergeur et adresse','text',''],['legal_country','Pays (droit applicable)','text',''],['legal_city','Ville (tribunaux compétents)','text',''],['legal_email','E-mail légal','email',''],['legal_phone','Téléphone','text','']]]
+]; %>
+<form method="post" action="<%= locals.basePath || '' %>/admin/settings" class="stack">
+<input type="hidden" name="_csrf" value="<%= locals.csrfToken || '' %>">
+<% groups.forEach(function (g) { %>
+<section class="panel"><h2><%= g[0] %></h2><p class="muted"><%= g[1] %></p><div class="fgrid">
+<% g[2].forEach(function (f) { %><label class="fld"><span><%= f[1] %></span><input type="<%= f[2] %>" name="<%= f[0] %>" value="<%= v(f[0]) %>" placeholder="<%= f[3] %>" maxlength="500"></label><% }); %>
+</div></section>
+<% }); %>
+<div class="row sticky"><button type="submit" class="btn" <%= locals.databaseAvailable === false ? 'disabled' : '' %>>Enregistrer les paramètres</button></div>
+</form>
+<%- include('partials/bottom') %>

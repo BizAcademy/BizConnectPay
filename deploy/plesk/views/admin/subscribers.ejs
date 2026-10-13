@@ -1,0 +1,16 @@
+<%- include('partials/top', { title: 'Newsletter', eyebrow: 'Inscrits' }) %>
+<% var bp = locals.basePath || ''; var list = locals.subscribers || []; var pg = locals.page || 1; var tp = locals.totalPages || 1; %>
+<div class="row between"><p class="stat"><b><%= locals.total || 0 %></b> inscrit<%= (locals.total || 0) > 1 ? 's' : '' %></p><a class="btn" href="<%= bp %>/admin/subscribers.csv">Exporter en CSV</a></div>
+<% if (!list.length) { %>
+<div class="panel empty-big"><h2>Aucun inscrit pour l'instant</h2><p class="muted">Les adresses saisies dans « Recevez nos actualités » apparaîtront ici.</p></div>
+<% } else { %>
+<div class="panel tbl"><table><thead><tr><th>#</th><th>E-mail</th><th>Inscrit le</th></tr></thead><tbody>
+<% list.forEach(function (r) { var d = r.created_at ? new Date(r.created_at) : null; %><tr><td class="num"><%= r.id %></td><td><a href="mailto:<%= r.email %>"><%= r.email %></a></td><td class="muted"><%= d && !isNaN(d) ? d.toLocaleString('fr-FR', { dateStyle: 'medium', timeStyle: 'short' }) : '' %></td></tr><% }); %>
+</tbody></table></div>
+<% if (tp > 1) { %><nav class="pager" aria-label="Pagination">
+<% if (pg > 1) { %><a href="<%= bp %>/admin/subscribers?page=<%= pg - 1 %>">← Précédent</a><% } %>
+<span>Page <%= pg %> / <%= tp %></span>
+<% if (pg < tp) { %><a href="<%= bp %>/admin/subscribers?page=<%= pg + 1 %>">Suivant →</a><% } %>
+</nav><% } %>
+<% } %>
+<%- include('partials/bottom') %>

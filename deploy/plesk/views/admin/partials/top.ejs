@@ -1,0 +1,24 @@
+<% var bp = locals.basePath || ''; var ap = locals.activePage || ''; %><!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= title %> · Admin BizConnectPay</title><meta name="robots" content="noindex">
+<link rel="icon" href="<%= bp %>/assets/icon.webp" type="image/webp">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="<%= bp %>/css/admin.css"></head>
+<body class="adm" data-base-path="<%= bp %>">
+<aside class="side">
+  <a class="brand" href="<%= bp %>/admin"><img src="<%= bp %>/assets/icon.webp" alt="" width="36" height="36"><span>BizConnect<b>Pay</b><small>Console admin</small></span></a>
+  <nav class="snav">
+    <a href="<%= bp %>/admin" class="<%= ap==='dashboard'?'on':'' %>"><span class="dot"></span>Médias</a>
+    <a href="<%= bp %>/admin/settings" class="<%= ap==='settings'?'on':'' %>"><span class="dot"></span>Paramètres</a>
+    <a href="<%= bp %>/admin/pricing" class="<%= ap==='pricing'?'on':'' %>"><span class="dot"></span>Tarifs</a>
+    <a href="<%= bp %>/admin/subscribers" class="<%= ap==='subscribers'?'on':'' %>"><span class="dot"></span>Newsletter</a>
+  </nav>
+  <div class="sfoot">
+    <a class="ghost" href="<%= bp %>/" target="_blank" rel="noopener">Voir le site ↗</a>
+    <form method="post" action="<%= bp %>/admin/logout"><input type="hidden" name="_csrf" value="<%= locals.csrfToken || '' %>"><button type="submit" class="ghost">Se déconnecter</button></form>
+  </div>
+</aside>
+<main class="content">
+<header class="ptitle"><div><p class="eyebrow"><%= eyebrow %></p><h1><%= title %></h1></div></header>
+<% if (locals.databaseAvailable === false) { %><div class="alert warn" role="alert"><b>Base de données indisponible.</b> <%= locals.configMessage || 'Vérifiez les variables DB_HOST, DB_USER, DB_PASSWORD et DB_NAME.' %></div><% } %>
+<% if (locals.flash && flash.message) { %><div class="alert <%= flash.type === 'error' ? 'err' : 'ok' %>" role="<%= flash.type === 'error' ? 'alert' : 'status' %>"><%= flash.message %></div><% } %>

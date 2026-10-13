@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "BizConnectPay"
+description = "Site BizConnectPay fidèle au HTML fourni, avec administration Express/EJS et médias stockés dans MySQL, compatible Plesk."
+version = "1.0.0"
+id = "artifacts/bizconnectpay"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/", "/api/subscribe" ]
+localPort = 24249
+
+[services.development]
+run = "pnpm --filter @workspace/bizconnectpay run dev"
+
+[services.development.env]
+SITE_PREVIEW = "1"
+
+[services.production.build]
+args = [ "pnpm", "--filter", "@workspace/bizconnectpay", "run", "build" ]
+
+[services.production.run]
+args = [ "node", "artifacts/bizconnectpay/server.js" ]
+
+[services.production.run.env]
+NODE_ENV = "production"
+
+[services.env]
+PORT = "24249"
+BASE_PATH = "/"
