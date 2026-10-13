@@ -6,7 +6,7 @@ La page publique provient du fichier `reference/bizconnectpay.html` fourni, sans
 
 ## Contenu à déployer
 
-**Déploiement GitHub → Plesk recommandé :** la version autonome est déjà présente et versionnée dans `deploy/plesk/` à la racine du dépôt. Configurer la racine applicative Plesk sur ce dossier, et la racine publique sur son sous-dossier `public/`. Le guide `PLESK.md` décrit l’action Git qui installe automatiquement les dépendances lors de **Deploy Now** ; ensuite, **Restart** suffit. Aucun build n’est exécuté sur Plesk. Ne pas lancer npm dans la racine du monorepo.
+**Déploiement GitHub → Plesk recommandé :** la version autonome est déjà présente et versionnée dans `deploy/plesk/` à la racine du dépôt. Configurer la racine applicative Plesk sur ce dossier, et la racine publique sur son sous-dossier `public/`. Après une installation initiale via le bouton **NPM Install**, les modifications du code se publient avec **Push GitHub → Pull Updates → Deploy Now → Restart**, sans commande, script de déploiement ni build sur Plesk. Ne pas activer les actions supplémentaires Git. Si les dépendances changent, utiliser de nouveau le bouton **NPM Install** avant de redémarrer. Voir `PLESK.md`.
 
 ```text
 server.js                 point d’entrée CommonJS compatible Plesk/Passenger
@@ -24,7 +24,7 @@ Aucune dépendance fonctionnelle à Replit DB, Replit Auth, un connecteur Replit
 
 ## Prérequis et installation locale
 
-- Version cible des serveurs : **Node.js 21.7.3**. Le code conserve un minimum compatible de 18, mais les instructions Plesk et le script de déploiement ciblent 21.7.3 ; aucune version supérieure n’est requise. Node.js 21 est hors support officiel : prévoir une version maintenue lorsque l’hébergeur le permettra.
+- Version cible des serveurs : **Node.js 21.7.3**. Le code conserve un minimum compatible de 18, mais la configuration Plesk cible 21.7.3 ; aucune version supérieure n’est requise. Node.js 21 est hors support officiel : prévoir une version maintenue lorsque l’hébergeur le permettra.
 - MySQL 5.7+/8 ou MariaDB 10.3+, avec base et utilisateur déjà créés.
 - Un mot de passe administrateur entre 12 et 72 octets UTF-8.
 - Une clé `SESSION_SECRET` aléatoire d’au moins 32 caractères.

@@ -24,7 +24,6 @@ for (const relative of [
   '.env.example', '.nvmrc', 'README.md', 'reference',
   'scripts/check.js', 'scripts/package.json',
 ]) await collect(relative);
-files.set('scripts/deploy.sh', await readFile(path.join(source, 'scripts/plesk-deploy.sh')));
 
 const original = JSON.parse(await readFile(path.join(source, 'package.json'), 'utf8'));
 const dependencies = {};

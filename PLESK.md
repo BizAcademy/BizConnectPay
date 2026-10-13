@@ -53,47 +53,34 @@ Sur Plesk, `DB_HOST=localhost` peut convenir si MySQL est sur la même machine :
 
 Créer la base et son utilisateur avant le premier démarrage, avec `CREATE`, `SELECT`, `INSERT`, `UPDATE`, `DELETE` sur cette base seulement. Les tables sont créées automatiquement, sans suppression de données existantes. Activer HTTPS, nécessaire aux cookies admin sécurisés. Faire autoriser des uploads HTTP de 60 Mo et un `max_allowed_packet` MySQL d’au moins 64 Mo pour les vidéos jusqu’à 50 Mo.
 
-### 3. Activer l’action automatique de déploiement
+### 3. Installer les dépendances avec le bouton Plesk
 
-Dans **Git → Repository Settings → Enable additional deploy actions**, ajouter :
+Après le premier **Pull Updates → Deploy Now**, dans la rubrique **Node.js**, cliquer sur **NPM Install / Installer NPM**, puis sur **Restart**. Cette installation initiale est nécessaire : les modules du serveur ne sont pas stockés dans Git. Elle ne compile pas l’application.
 
-```sh
-sh ./deploy/plesk/scripts/deploy.sh /opt/plesk/node/21/bin
-```
+**Ne pas activer “Enable additional deploy actions”.** Si la commande proposée auparavant y a déjà été ajoutée, la supprimer et désactiver cette option. Aucun script de déploiement, accès SSH ou commande à copier n’est nécessaire.
 
-Cette commande suppose que l’action s’exécute dans le dossier cible Git. Si votre installation utilise un autre dossier de travail, utilisez le chemin absolu du script dans le dossier déployé, par exemple :
+Choisir **Node.js 21.7.3** dans Plesk. Le fichier `.nvmrc` de l’application indique également `21.7.3` ; aucune version supérieure n’est requise.
 
-```sh
-sh /var/www/vhosts/VOTRE-DOMAINE/bizconnectpay/deploy/plesk/scripts/deploy.sh /opt/plesk/node/21/bin
-```
-
-**Adaptez une seule fois le chemin du domaine et, si nécessaire, le chemin du runtime indiqué par votre hébergeur.** Le chemin standard proposé est `/opt/plesk/node/21/bin`. Le script vérifie que le runtime exécute bien **Node.js 21.7.3** et calcule sa racine applicative à partir de son propre emplacement. Le fichier `.nvmrc` de l’application indique également `21.7.3`. Aucune version supérieure n’est nécessaire.
+Les déploiements suivants doivent conserver le dossier `deploy/plesk/node_modules/` installé sur le serveur. Ne pas vider le dossier applicatif avant de publier les fichiers depuis Git.
 
 **Sécurité :** Node.js 21 est hors support officiel et ne reçoit plus de correctifs de sécurité. Cette livraison respecte la limite actuelle des serveurs ; prévoir une version maintenue lorsque l’hébergeur la proposera.
-
-L’action exécute uniquement :
-
-1. `npm ci --omit=dev` avec le verrouillage versionné, pour installer les dépendances du serveur ;
-2. une vérification de syntaxe sans génération de fichiers.
-
-Elle ne lance **aucun build**, aucun autre serveur, et ne lit ni ne modifie les secrets ou les données MySQL. Les dépendances ne sont pas mises dans Git : leurs fichiers natifs doivent correspondre au système du serveur.
-
-**Important :** le runtime Node.js/npm doit être accessible depuis les actions Git. Plesk peut exécuter ces actions dans une prison chroot si l’accès shell est désactivé. Si le script indique que le runtime est introuvable, l’hébergeur doit rendre Node.js/npm accessibles aux actions Git ou adapter l’accès shell. Sans cela, l’installation automatique des dépendances ne peut pas fonctionner ; ce n’est pas une compilation manquante. Le serveur doit aussi pouvoir télécharger les paquets depuis le registre npm.
 
 ## Ensuite, à chaque mise à jour
 
 1. **Push sur GitHub** du dépôt, y compris `deploy/plesk/`.
-2. Dans Plesk : **Pull Updates → Deploy Now**. Attendre que l’action réussisse.
+2. Dans Plesk : **Pull Updates → Deploy Now**. Attendre la fin de la publication des fichiers.
 3. Dans Node.js : **Restart**.
 
-**Aucun bouton “Build”, aucune commande `npm run build`, aucun pnpm nécessaire sur Plesk.**
+**Pour les modifications du code, des vues, du CSS et du JavaScript avec les mêmes dépendances : ces clics suffisent. Aucun build, aucune commande ni action supplémentaire de déploiement n’est nécessaire.**
+
+**Exception :** si une mise à jour change les dépendances dans `package.json` ou `package-lock.json`, cliquer de nouveau sur **NPM Install** avant **Restart**. **Deploy Now** publie les fichiers ; il n’installe pas les dépendances tout seul lorsque les actions supplémentaires sont désactivées. Cette étape reste un bouton dans Plesk, pas une commande ni un build.
 
 Vérification après démarrage :
 
 - `https://votre-domaine/healthz` doit afficher `status: "ok"`, `databaseAvailable: true`, `adminAvailable: true`.
 - `https://votre-domaine/admin` ouvre la connexion administrateur.
 
-La production refuse explicitement de démarrer si MySQL ou les secrets obligatoires ne sont pas valides. L’action de déploiement ne peut pas créer les identifiants de votre hébergeur ni garantir une connexion à un serveur mal configuré.
+La production refuse explicitement de démarrer si MySQL ou les secrets obligatoires ne sont pas valides. La publication des fichiers ne configure pas les identifiants de votre hébergeur.
 
 ## Maintenir les sources et la livraison synchronisées
 
