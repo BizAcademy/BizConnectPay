@@ -1,6 +1,7 @@
 import { readFile, writeFile, mkdir, readdir, rm } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { portableLock } from './portable-lock.js';
 
 const source = fileURLToPath(new URL('../', import.meta.url));
 const destination = path.resolve(source, '../../deploy/plesk');
@@ -38,8 +39,16 @@ files.set('package.json', Buffer.from(JSON.stringify({
   scripts: { start: 'node server.js', check: 'node scripts/check.js' },
   dependencies,
 }, null, 2) + '\n'));
-files.set('.npmrc', Buffer.from('package-lock=true\naudit=false\nfund=false\n'));
+files.set('.npmrc', Buffer.from('registry=https://registry.npmjs.org/\npackage-lock=true\naudit=false\nfund=false\n'));
 files.set('.gitignore', Buffer.from('node_modules/\n.env\n.env.*\n!.env.example\ntmp/\nnpm-debug.log*\n'));
+const lockText = await readFile(path.join(destination, 'package-lock.json'), 'utf8').catch(error => {
+  if (error.code === 'ENOENT' && !checkOnly) return null;
+  throw error;
+});
+if (lockText) {
+  const lock = portableLock(JSON.parse(lockText));
+  files.set('package-lock.json', Buffer.from(JSON.stringify(lock, null, 2) + '\n'));
+}
 
 if (checkOnly) {
   for (const [relative, expected] of files) {
@@ -55,7 +64,8 @@ if (checkOnly) {
   process.stdout.write('Livraison Git/Plesk synchronisée, manifeste autonome et verrouillage présents.\n');
 } else {
   // Only managed runtime directories are refreshed. Never remove local secrets,
-  // the dependency lock, or node_modules when regenerating the delivery folder.
+  // node_modules when regenerating the delivery folder. The existing lock keeps
+  // the same versions/checksums; only registry URLs are made portable.
   for (const directory of ['src-server', 'views', 'public', 'reference', 'scripts']) {
     await rm(path.join(destination, directory), { recursive: true, force: true });
   }

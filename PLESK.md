@@ -57,6 +57,8 @@ Créer la base et son utilisateur avant le premier démarrage, avec `CREATE`, `S
 
 Après le premier **Pull Updates → Deploy Now**, dans la rubrique **Node.js**, cliquer sur **NPM Install / Installer NPM**, puis sur **Restart**. Cette installation initiale est nécessaire : les modules du serveur ne sont pas stockés dans Git. Elle ne compile pas l’application.
 
+La livraison utilise `https://registry.npmjs.org/` dans `.npmrc` et dans les adresses `resolved` du verrouillage npm, sans dépendance à un registre interne de l’environnement de développement. Si une ancienne livraison a échoué avec `ENOTFOUND package-firewall.replit.internal`, publier cette correction puis recliquer sur **NPM Install** ; ne pas supprimer la base ou les secrets.
+
 **Ne pas activer “Enable additional deploy actions”.** Si la commande proposée auparavant y a déjà été ajoutée, la supprimer et désactiver cette option. Aucun script de déploiement, accès SSH ou commande à copier n’est nécessaire.
 
 Choisir **Node.js 21.7.3** dans Plesk. Le fichier `.nvmrc` de l’application indique également `21.7.3` ; aucune version supérieure n’est requise.
@@ -90,10 +92,12 @@ La source reste `artifacts/bizconnectpay/`. Après une modification de cette sou
 pnpm --filter @workspace/bizconnectpay run prepare:plesk
 # Seulement si les dépendances ont changé :
 npm --prefix deploy/plesk install --package-lock-only --ignore-scripts --omit=dev
+# Après une génération du verrouillage, normaliser les adresses pour Plesk :
+pnpm --filter @workspace/bizconnectpay run prepare:plesk
 pnpm --filter @workspace/bizconnectpay run check:plesk
 ```
 
-Le dossier prêt à démarrer est déjà préparé pour cette livraison. Inclure ses modifications dans le même commit que les sources. `check:plesk` détecte les fichiers livrés désynchronisés et les différences de dépendances du verrouillage. Le script de préparation conserve le verrouillage npm, les éventuels secrets locaux et les dépendances déjà installées.
+Le dossier prêt à démarrer est déjà préparé pour cette livraison. Inclure ses modifications dans le même commit que les sources. `check:plesk` détecte les fichiers livrés désynchronisés, les différences de dépendances du verrouillage et les adresses de paquets internes non portables. Le script de préparation conserve les versions et empreintes npm du verrouillage, les éventuels secrets locaux et les dépendances déjà installées ; il normalise uniquement les adresses du registre dans la livraison externe.
 
 Guide détaillé : `deploy/plesk/README.md`.
 
