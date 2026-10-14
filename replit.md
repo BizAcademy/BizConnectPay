@@ -24,7 +24,7 @@ Landing page fournie par le propriétaire, reproduite fidèlement dans une appli
 - Le logo et l’icône base64 doivent être extraits tels quels, sans retouche.
 - Le propriétaire souhaite du motion design sur toute la page publique ; conserver des animations fluides sur mobile et respecter la préférence de réduction des animations.
 - Les cinq visuels (accueil, IN, OUT, Link, Virtual) sont configurables depuis l’admin et entrent horizontalement depuis leur côté. Sur ordinateur, le visuel d’accueil est à gauche du titre.
-- La section « Simple. Rapide. Sécurisé. » doit occuper la hauteur de l’écran avec un grand visuel configurable ; la section publique « Recevez nos actualités » est supprimée.
+- Réduire les espaces blancs entre les sections : la demande de hauteur plein écran pour « Simple. Rapide. Sécurisé. » est remplacée par une hauteur adaptée au contenu. Conserver son grand visuel configurable. La section publique « Recevez nos actualités » est supprimée.
 - Les quatre solutions sont présentées sur une seule rangée dans un carrousel, une solution à la fois, avec passage automatique à la suivante toutes les 5 secondes.
 - Aucune fonctionnalité Replit DB/Replit Auth dans l’application livrée ; stockage MySQL avec mysql2, rendu EJS, mot de passe admin local explicitement demandé.
 - Sans MySQL, le mode développement indique la configuration manquante et ne simule ni inscription newsletter ni médias enregistrés.

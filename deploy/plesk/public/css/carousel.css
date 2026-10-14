@@ -1,13 +1,13 @@
 /* Nos solutions carousel (rev car-1). Without JS (.car-on absent) slides stay stacked and controls hidden. */
 .car-bar[hidden],.car-status:empty{display:none}
 .car-status{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.car-on{display:flex;flex-direction:column;margin-top:28px;max-width:100%;position:relative}
+.car-on{display:flex;flex-direction:column;margin-top:18px;max-width:100%;position:relative}
 .car-on .car-view{overflow:hidden;border-radius:28px;touch-action:pan-y}
 .car-on .car-track{display:flex;transform:translate3d(calc(var(--i,0) * -100%),0,0);transition:transform .7s var(--ease,ease)}
 .car-on .car-slide{flex:0 0 100%;min-width:0;margin:0;background:#fafcff}
 .car-on .car-slide:hover{box-shadow:none}
 .car-on .car-slide[aria-hidden="true"]{visibility:hidden;transition:visibility 0s .7s}
-.car-on .car-bar{order:2;display:flex;align-items:center;justify-content:center;gap:12px;margin-top:22px;flex-wrap:wrap}
+.car-on .car-bar{order:2;display:flex;align-items:center;justify-content:center;gap:12px;margin-top:14px;flex-wrap:wrap}
 .car-btn,.car-play{font:inherit;cursor:pointer;border:1px solid #dfe6f1;background:#fff;color:var(--navy);border-radius:999px;transition:border-color .2s,color .2s,transform .2s var(--ease,ease)}
 .car-btn{width:44px;height:44px;display:grid;place-items:center;font-size:1.05rem}
 .car-btn:hover,.car-play:hover{border-color:var(--cyan);color:var(--blue)}
