@@ -20,7 +20,7 @@ Landing page fournie par le propriétaire, reproduite fidèlement dans une appli
 
 ## Contraintes du propriétaire
 
-- Présentation inspirée de https://www.ashtechpay.com/, à la demande du propriétaire, mais conserver l’identité BizConnectPay : logo, Poppins, bleu/cyan/vert, textes métier, navigation par hash et responsive. Fonds publics blancs ; pas de navigation ni de bouton « Commencer maintenant » dans l’en-tête. Conserver les boutons du corps de page.
+- Présentation inspirée de https://cartevo.co/fr, à la demande du propriétaire, en remplacement de la référence Ashtechpay, mais conserver l’identité et le contexte BizConnectPay : logo, Poppins, bleu/cyan/vert, textes métier, navigation par hash et responsive. Fonds publics blancs ; pas de navigation ni de bouton « Commencer maintenant » dans l’en-tête. Conserver les boutons du corps de page.
 - Le logo et l’icône base64 doivent être extraits tels quels, sans retouche.
 - Le propriétaire souhaite du motion design sur toute la page publique ; conserver des animations fluides sur mobile et respecter la préférence de réduction des animations.
 - Les cinq visuels (accueil, IN, OUT, Link, Virtual) sont configurables depuis l’admin et entrent horizontalement depuis leur côté. Sur ordinateur, le visuel d’accueil est à gauche du titre.

@@ -27,7 +27,7 @@ addEventListener('hashchange',r);r();
   var root=document.documentElement;
   if(!('IntersectionObserver' in window)||!window.matchMedia)return;
   var mq=matchMedia('(prefers-reduced-motion: reduce)');
-  var sel='.hero-txt>*,.hero-vis,.intro h2,.intro .sub,.st,.simple-vis,.prods .c>*,.prod-txt,.product-visual,.why,.cta,.news,main>h2,main>.sub,.sec>*,.grid>*,.chips>*,details,.doc,.stats>*,footer .cols>*,footer>div>img,footer>div>p';
+  var sel='.hero-txt>*,.hero-vis,.intro h2,.intro .sub,.st,.simple-vis,.prods .c>*,.prod-txt,.product-visual,.why,.cta,.news,.hx-steps>li,.hx-dev-txt>*,.hx-code,.hx-use .c>*,.hx-grid>*,.hx-ben>li,main>h2,main>.sub,.sec>*,.grid>*,.chips>*,details,.doc,.stats>*,footer .cols>*,footer>div>img,footer>div>p';
   var io=null;
   function all(){return document.querySelectorAll('.rv')}
   function showAll(){all().forEach(function(e){e.classList.add('in')})}
