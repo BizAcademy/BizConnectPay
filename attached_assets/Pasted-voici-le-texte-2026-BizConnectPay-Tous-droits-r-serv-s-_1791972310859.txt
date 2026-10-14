@@ -1,0 +1,22 @@
+voici le texte 
+©️ 2026 BizConnectPay. Tous droits réservés.
+
+BizConnectPay est une plateforme technologique fintech innovante dédiée à la simplification et à l'optimisation des services de paiement en Afrique. Notre infrastructure permet aux entreprises, commerçants et développeurs d'accéder à des solutions de collecte de paiements (BizConnectPay-IN), de décaissement et de transferts de fonds (BizConnectPay-Out), de création de liens de paiement (BizConnectPay Link) et d'émission de cartes bancaires virtuelles (BizConnectPay Virtual Card), selon les services disponibles et les conditions applicables.
+
+BizConnectPay a pour vocation de faciliter l'intégration de solutions financières modernes à travers une infrastructure API unifiée, sécurisée et évolutive. Les services financiers nécessitant des autorisations réglementaires sont fournis, selon les cas, en collaboration avec des établissements financiers, opérateurs de paiement, agrégateurs et autres partenaires dûment habilités dans leurs juridictions respectives.
+
+Propriété intellectuelle
+
+L'ensemble des contenus présents sur ce site, notamment les textes, interfaces, visuels, logos, éléments graphiques, marques, documentations et composants logiciels, est protégé par les lois applicables en matière de propriété intellectuelle. Toute reproduction, distribution, modification ou exploitation non autorisée, totale ou partielle, est interdite sans autorisation préalable de BizConnectPay ou des titulaires des droits concernés.
+
+Responsabilité et conformité réglementaire
+
+BizConnectPay intervient en qualité de fournisseur de solutions technologiques et d'infrastructure de paiement, dans les limites de ses autorisations et des accords conclus avec ses partenaires. Sauf autorisation réglementaire expressément détenue, BizConnectPay ne se présente pas comme un établissement bancaire, un établissement de paiement agréé ou un émetteur direct de monnaie électronique ou de cartes bancaires.
+
+Les services réglementés sont soumis aux exigences légales applicables, aux conditions des partenaires habilités ainsi qu'aux procédures de vérification d'identité (KYC/KYB), de prévention du blanchiment de capitaux et du financement du terrorisme (LBC/FT) et de sécurité des transactions.
+
+Chaque entreprise, partenaire ou client utilisant les solutions BizConnectPay demeure responsable du respect des obligations légales et réglementaires qui lui sont applicables, notamment de l'obtention des autorisations requises pour ses propres activités.
+
+Disponibilité des services
+
+La disponibilité des produits, moyens de paiement, devises et fonctionnalités BizConnectPay peut varier selon les pays, les partenaires financiers, les exigences réglementaires et les conditions d'éligibilité. BizConnectPay se réserve le droit de faire évoluer ses services conformément aux dispositions contractuelles et légales applicables.

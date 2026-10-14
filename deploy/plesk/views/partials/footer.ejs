@@ -1,1 +1,44 @@
-<footer><div style="max-width:980px;margin:auto"><img src="<%= basePath %>/assets/icon.webp" alt="BizConnectPay" width="44" height="44" style="border-radius:10px"><p>Payments without borders</p><div class="cols"><div><h4>Produits</h4><a href="#services">BizConnectPay-IN</a><a href="#services">BizConnectPay-OUT</a><a href="#services">BizConnectPay Link</a><a href="#services">BizConnectPay Virtual</a></div><div><h4>Entreprise</h4><a href="#apropos">À propos</a><a href="#tarifs">Tarifs</a></div><div><h4>Légal</h4><a href="#cgu">Conditions d'utilisation</a><a href="#confidentialite">Confidentialité</a><a href="#mentions">Mentions légales</a><a href="#cookies">Cookies</a></div></div><% if (s.support_email || waHref) { %><p class="contact-extra"><% if (s.support_email) { %><a href="mailto:<%= s.support_email %>"><%= s.support_email %></a><% } %><% if (waHref) { %><a href="<%= waHref %>" target="_blank" rel="noopener">WhatsApp</a><% } %></p><% } %><p>© 2026 BizConnectPay. Tous droits réservés.</p><p><a href="<%= s.linkedin_url || '#' %>"<% if (s.linkedin_url) { %> target="_blank" rel="noopener"<% } %>>LinkedIn</a><a href="<%= s.facebook_url || '#' %>"<% if (s.facebook_url) { %> target="_blank" rel="noopener"<% } %>>Facebook</a><a href="<%= s.x_url || '#' %>"<% if (s.x_url) { %> target="_blank" rel="noopener"<% } %>>X</a></p></div></footer>
+<%
+  var ftMail = s.support_email || s.legal_email || '';
+  var ftContact = ftMail ? 'mailto:' + ftMail : (waHref || '');
+  var ftEmails = [s.support_email, s.legal_email].filter(function (e, i, a) { return e && a.indexOf(e) === i; });
+  var ftTel = String(s.legal_phone || '').replace(/[^\d+]/g, '');
+  var ftSocial = [
+    { url: s.linkedin_url, name: 'LinkedIn', d: 'M6.94 8.5H3.56V20h3.38V8.5zM5.25 3A1.97 1.97 0 1 0 5.25 7a1.97 1.97 0 0 0 0-3.94zM20.44 13.4c0-3.1-1.66-4.54-3.87-4.54a3.34 3.34 0 0 0-3.03 1.67V8.5h-3.37V20h3.37v-5.7c0-1.5.29-2.95 2.14-2.95 1.83 0 1.86 1.71 1.86 3.05V20h3.38z' },
+    { url: s.facebook_url, name: 'Facebook', d: 'M13.5 21v-7.5h2.53l.38-2.94H13.5V8.69c0-.85.24-1.43 1.46-1.43h1.56V4.63A20.9 20.9 0 0 0 14.25 4.5c-2.25 0-3.79 1.37-3.79 3.89v2.17H7.92v2.94h2.54V21z' },
+    { url: s.x_url, name: 'X', d: 'M17.75 3.5h3.07l-6.7 7.66L22 20.5h-6.17l-4.83-6.32-5.53 6.32H2.4l7.17-8.2L2 3.5h6.33l4.37 5.77zm-1.08 15.2h1.7L7.4 5.2H5.58z' }
+  ].filter(function (n) { return n.url; });
+%>
+<footer class="ft">
+  <div class="ft-in">
+    <div class="ft-top">
+      <div class="ft-brand">
+        <a class="logo ft-logo" href="#accueil" aria-label="BizConnectPay – accueil"><img src="<%= basePath %>/assets/icon.webp" alt="" width="34" height="34"><span class="wm">BizConnect<b>Pay</b></span></a>
+        <p class="ft-tag">Payments without borders</p>
+      </div>
+      <nav class="ft-nav" aria-label="Liens légaux">
+        <a href="#confidentialite">Politique de confidentialité</a>
+        <a href="#cgu">Termes et conditions</a>
+        <a href="#mentions">Mentions légales</a>
+        <a href="#cookies">Cookies</a>
+        <% if (s.api_docs_url) { %><a href="<%= s.api_docs_url %>" target="_blank" rel="noopener">Documentation API</a><% } %>
+        <% if (ftContact) { %><a href="<%= ftContact %>"<% if (!ftMail) { %> target="_blank" rel="noopener"<% } %>>Contactez-nous</a><% } %>
+      </nav>
+      <% if (ftTel || ftEmails.length || s.legal_address || waHref) { %>
+      <ul class="ft-contact">
+        <% if (ftTel) { %><li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18h2"/></svg><a href="tel:<%= ftTel %>"><%= s.legal_phone %></a></li><% } %>
+        <% if (waHref) { %><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.2-3.6A8 8 0 1 1 8 19z"/></svg><a href="<%= waHref %>" target="_blank" rel="noopener">WhatsApp</a></li><% } %>
+        <% ftEmails.forEach(function (e) { %><li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5L12 13l8.5-6.5"/></svg><a href="mailto:<%= e %>"><%= e %></a></li><% }) %>
+        <% if (s.legal_address) { %><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.2"/></svg><span><%= s.legal_address %></span></li><% } %>
+      </ul>
+      <% } %>
+      <% if (ftSocial.length) { %>
+      <div class="ft-social">
+        <% ftSocial.forEach(function (n) { %><a href="<%= n.url %>" target="_blank" rel="noopener" aria-label="BizConnectPay sur <%= n.name %>"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="<%= n.d %>"/></svg></a><% }) %>
+      </div>
+      <% } %>
+    </div>
+    <%- include('footer-legal') %>
+  </div>
+  <% if (waHref) { %><a class="ft-wa" href="<%= waHref %>" target="_blank" rel="noopener" aria-label="Nous écrire sur WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.98L2 22l5.17-1.5A9.9 9.9 0 1 0 12.04 2zm0 18.1a8.2 8.2 0 0 1-4.2-1.15l-.3-.18-3.07.9.92-3-.2-.31a8.2 8.2 0 1 1 6.85 3.74zm4.5-6.14c-.25-.12-1.46-.72-1.69-.8-.23-.08-.39-.12-.55.12-.16.25-.63.8-.78.97-.14.16-.29.18-.53.06a6.7 6.7 0 0 1-3.32-2.9c-.25-.43.25-.4.72-1.33.08-.16.04-.3-.02-.43l-.75-1.8c-.2-.47-.4-.4-.55-.41h-.47a.9.9 0 0 0-.65.3 2.74 2.74 0 0 0-.86 2.04 4.76 4.76 0 0 0 1 2.53 10.9 10.9 0 0 0 4.18 3.69c1.55.67 2.16.73 2.94.61.47-.07 1.46-.6 1.66-1.17.2-.58.2-1.07.15-1.17-.06-.1-.22-.16-.47-.28z"/></svg></a><% } %>
+</footer>

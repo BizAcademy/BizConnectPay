@@ -4,6 +4,7 @@ var groups = [
  ['Liens', 'Laissez vide pour conserver le lien « # » d\'origine.', [['signup_url','Lien « Commencer maintenant » / inscription','url','https://app.bizconnectpay.com/inscription'],['support_email','E-mail support','email','support@bizconnectpay.com'],['whatsapp','WhatsApp (numéro international ou lien)','text','+225 07 00 00 00 00'],['linkedin_url','LinkedIn','url','https://linkedin.com/company/…'],['facebook_url','Facebook','url','https://facebook.com/…'],['x_url','X','url','https://x.com/…']]],
  ['Informations légales', 'Remplacent automatiquement les champs jaunes [À COMPLÉTER] des pages légales.', [['legal_company','Raison sociale','text',''],['legal_form','Forme juridique','text','SARL, SAS…'],['legal_address','Adresse du siège','text',''],['legal_registration','N° RCCM / NIF','text',''],['legal_director','Directeur de la publication','text',''],['legal_host','Hébergeur et adresse','text',''],['legal_country','Pays (droit applicable)','text',''],['legal_city','Ville (tribunaux compétents)','text',''],['legal_email','E-mail légal','email',''],['legal_phone','Téléphone','text','']]]
 ]; %>
+<% groups.push(['Pied de page', 'Le lien vers la documentation est affiché uniquement lorsqu’il est renseigné.', [['api_docs_url', 'Lien vers la documentation API', 'url', 'https://docs.votre-domaine.com']]]); %>
 <form method="post" action="<%= locals.basePath || '' %>/admin/settings" class="stack">
 <input type="hidden" name="_csrf" value="<%= locals.csrfToken || '' %>">
 <% groups.forEach(function (g) { %>

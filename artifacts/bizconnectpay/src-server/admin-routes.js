@@ -116,7 +116,7 @@ export function createAdminRouter(passwordHash) {
       if (typeof raw !== 'string' || raw.length > 4000) throw httpError(400, 'Chaque paramètre doit être un texte de 4 000 caractères maximum.');
       values[key] = raw.trim();
     }
-    for (const key of ['signup_url', 'linkedin_url', 'facebook_url', 'x_url']) {
+    for (const key of ['signup_url', 'linkedin_url', 'facebook_url', 'x_url', 'api_docs_url']) {
       if (!validWebUrl(values[key])) throw httpError(400, 'Les liens doivent être des URL HTTPS ou des chemins locaux commençant par /.');
     }
     for (const key of ['support_email', 'legal_email']) {

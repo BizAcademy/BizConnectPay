@@ -26,6 +26,7 @@ Landing page fournie par le propriétaire, reproduite fidèlement dans une appli
 - Les cinq visuels (accueil, IN, OUT, Link, Virtual) sont configurables depuis l’admin et entrent horizontalement depuis leur côté. Sur ordinateur, le visuel d’accueil est à gauche du titre.
 - Réduire les espaces blancs entre les sections : la demande de hauteur plein écran pour « Simple. Rapide. Sécurisé. » est remplacée par une hauteur adaptée au contenu. Conserver son grand visuel configurable. La section publique « Recevez nos actualités » est supprimée.
 - Les quatre solutions sont présentées sur une seule rangée dans un carrousel, une solution à la fois, avec passage automatique à la suivante toutes les 5 secondes.
+- Pied de page inspiré du modèle fourni : fond blanc, colonnes compactes, contacts configurés et texte légal intégral fourni par le propriétaire ; ne pas inventer de coordonnées ni de certification.
 - Aucune fonctionnalité Replit DB/Replit Auth dans l’application livrée ; stockage MySQL avec mysql2, rendu EJS, mot de passe admin local explicitement demandé.
 - Sans MySQL, le mode développement indique la configuration manquante et ne simule ni inscription newsletter ni médias enregistrés.
 - `reference/bizconnectpay.html` dans l’application est la référence immutable. Le site public doit rester blanc, indépendamment du thème système, conformément au changement demandé par le propriétaire.
