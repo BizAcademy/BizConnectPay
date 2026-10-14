@@ -35,7 +35,7 @@ addEventListener('hashchange',r);r();
     root.classList.add('m-on');
     var groups=new Map();
     document.querySelectorAll(sel).forEach(function(e){
-      if(e.closest('header'))return;
+      if(e.closest('header')||e.closest('[data-car]'))return;
       e.classList.add('rv');
       if(e.classList.contains('hero-vis')||e.classList.contains('product-visual')){
         var box=e.getBoundingClientRect(),parent=e.parentNode.getBoundingClientRect();

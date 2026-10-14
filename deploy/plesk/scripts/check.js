@@ -8,7 +8,7 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const files = [
   'app.js', 'server.js',
   ...readdirSync(path.join(root, 'src-server')).filter(file => file.endsWith('.js')).map(file => `src-server/${file}`),
-  'public/js/main.js', 'public/js/admin.js',
+  ...readdirSync(path.join(root, 'public/js')).filter(file => file.endsWith('.js')).map(file => `public/js/${file}`),
 ];
 for (const file of files) {
   const result = spawnSync(process.execPath, ['--check', path.join(root, file)], { stdio: 'inherit' });
