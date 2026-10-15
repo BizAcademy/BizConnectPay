@@ -1,0 +1,20 @@
+<%- include('partials/top', { title: 'Notifications contact', eyebrow: 'E-mail & suivi des envois' }) %>
+<p class="muted">Recevez par e-mail toutes les informations du formulaire Contact. Les demandes restent enregistrées dans « Messages contact », même si la messagerie est indisponible.</p>
+<div class="alert info"><%= smtpReady ? 'Les variables SMTP sont renseignées. Utilisez le test ci-dessous pour vérifier la connexion réelle.' : 'SMTP non configuré : aucun e-mail ne peut être envoyé pour le moment.' %></div>
+<form method="post" action="<%= basePath %>/admin/notifications" class="stack panel">
+<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+<label class="fld"><span>Adresse e-mail destinataire</span><input type="email" name="email" maxlength="254" value="<%= settings.contact_notify_email || '' %>" placeholder="contact@votre-domaine.com"></label>
+<label><input type="checkbox" name="enabled" value="1" <%= settings.contact_notify_enabled === '1' ? 'checked' : '' %>> Activer les notifications des nouvelles demandes</label>
+<p class="muted">La première activation concerne les demandes reçues à partir de cette activation, pas les anciennes. Après une interruption, les envois en attente reprennent. Un changement d’adresse s’applique aux notifications qui ne sont pas encore mises en attente.</p>
+<button class="btn">Enregistrer</button>
+</form>
+<section class="panel"><h2>Connexion à votre messagerie Plesk</h2><p>Dans les variables d’environnement de l’application Node.js Plesk, renseignez <code>SMTP_HOST</code>, <code>SMTP_PORT</code> (465 ou 587), <code>SMTP_USER</code>, <code>SMTP_PASSWORD</code> et <code>SMTP_FROM</code> (adresse expéditrice autorisée). Redémarrez l’application après modification. Ne communiquez pas votre mot de passe dans la conversation.</p><p>La connexion est chiffrée : TLS sur 465, STARTTLS obligatoire sur 587. L’adresse saisie par le visiteur est utilisée pour « Répondre », jamais comme expéditeur.</p>
+<form method="post" action="<%= basePath %>/admin/notifications/test"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="btn" <%= !smtpReady || !settings.contact_notify_email ? 'disabled' : '' %>>Envoyer un e-mail de test à l’adresse enregistrée</button></form></section>
+<section class="panel"><h2>50 dernières notifications</h2><p class="muted">Traitement toutes les 30 secondes ; jusqu’à 5 tentatives espacées de 5 minutes. « Accepté SMTP » ne garantit pas le classement en boîte de réception. Une interruption juste après l’envoi peut exceptionnellement produire un doublon.</p>
+<% if (!notifications.length) { %><p>Aucune notification mise en attente.</p><% } %>
+<div class="tbl"><table><thead><tr><th>Demande</th><th>Destinataire</th><th>État</th><th>Tentatives</th></tr></thead><tbody>
+<% notifications.forEach(function(n) { %><tr><td>#<%= n.message_id %> — <%= n.full_name %></td><td><%= n.recipient %></td><td><%= n.sent_at ? 'Accepté SMTP' : n.attempts >= 5 ? 'Échec — relancer' : n.failed ? 'Nouvelle tentative prévue' : 'En attente' %></td><td><%= n.attempts %>/5</td></tr><% }); %>
+</tbody></table></div>
+<form method="post" action="<%= basePath %>/admin/notifications/retry"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="btn">Relancer les envois non confirmés</button></form>
+</section>
+<%- include('partials/bottom') %>

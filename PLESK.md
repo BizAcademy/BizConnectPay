@@ -104,6 +104,17 @@ Si Apache continue de servir le dossier statique, désactiver puis réactiver No
 
 ## Maintenir les sources et la livraison synchronisées
 
+### Administration des tarifs, du pied de page et des e-mails
+
+- **Tarifs** : tous les textes sont modifiables séparément en français et en anglais (titres, cartes/offres, prix par offre, listes, explications, FAQ et boutons), plus les deux grilles HTML. Les textes ordinaires sont affichés comme texte, sans HTML ; les grilles sont nettoyées. Un champ vide reprend son texte d’origine.
+- **Paramètres → Liens / Pied de page** : e-mails, téléphone, adresse, WhatsApp, Facebook, LinkedIn, X, Instagram, YouTube, TikTok et Telegram. Les liens vides sont masqués.
+- **Notifications contact** : enregistrer l’adresse destinataire, cocher l’activation, puis tester l’envoi.
+- Configurer une fois les variables Node.js Plesk `SMTP_HOST`, `SMTP_PORT` (587 par défaut ou 465), `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_FROM` (adresse expéditrice autorisée). Ne pas mettre ces identifiants dans Git ni dans une conversation. Utiliser les paramètres SMTP de votre fournisseur de messagerie. Après modification des variables, cliquer sur **Restart**.
+- Connexion chiffrée obligatoire : TLS sur 465, STARTTLS sur les autres ports. Le visiteur est en « Répondre à », jamais en expéditeur.
+- La première activation n’envoie pas l’historique antérieur. Ensuite les notifications reprennent après une interruption, toutes les 30 secondes ; jusqu’à 5 tentatives espacées de 5 minutes. Le suivi affiche les 50 dernières notifications ; le bouton de relance remet les échecs en attente. Les demandes restent dans **Messages de contact** même si SMTP échoue. Une panne après acceptation SMTP peut exceptionnellement entraîner un doublon ; l’acceptation SMTP ne garantit pas la livraison en boîte de réception.
+- Cette mise à jour ajoute **nodemailer** compatible Node.js 21.7.3 : cliquer sur **NPM Install une fois** après le pull. **Aucun build** n’est requis sur Plesk. Les prochaines modifications sans nouvelle dépendance conservent le parcours **Pull Updates → Deploy Now → Restart**.
+- Les tables de suivi et la colonne du pays ISO sont créées automatiquement au démarrage, sans effacer les demandes existantes. L’utilisateur MySQL doit disposer des droits CREATE/ALTER pour cette mise à jour ; les anciennes demandes restent lisibles sans pays ISO.
+
 La source reste `artifacts/bizconnectpay/`. Après une modification de cette source, préparer les fichiers **avant** le push (dans l’environnement de développement, jamais sur Plesk) :
 
 ```sh

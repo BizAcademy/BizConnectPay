@@ -17,13 +17,11 @@
     return v ? _esc(v) : '<span class="ph">' + _esc(t(label)) + '</span>';
   };
   var contactCountries = Array.isArray(locals.contactCountries) ? locals.contactCountries : [];
-  var L = { contactCountries: contactCountries, basePath: basePath, theme: theme, media: media, pricingHtml: pricingHtml, s: s, signupHref: signupHref, waHref: waHref, ph: ph, t: t, lang: lang, uiTranslations: uiTranslations };
+  var L = { pricingT: locals.pricingT || t, contactCountries: contactCountries, basePath: basePath, theme: theme, media: media, pricingHtml: pricingHtml, s: s, signupHref: signupHref, waHref: waHref, ph: ph, t: t, lang: lang, uiTranslations: uiTranslations };
 %><%- include('partials/head', L) %><body data-base-path="<%= basePath %>">
 <%- include('partials/header', L) %>
 
 <%- include('pages/accueil', L) %>
-
-<%- include('pages/services', L) %>
 
 <%- include('pages/tarifs', L) %>
 

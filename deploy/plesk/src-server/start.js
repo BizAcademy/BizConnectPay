@@ -1,8 +1,11 @@
 import { createApp, logger } from './app.js';
 import { config } from './config.js';
+import { pool } from './database.js';
+import { startContactMailer } from './contact-mail.js';
 
 try {
   const app = await createApp();
+  const stopMailer = pool ? startContactMailer(pool, logger) : () => {};
   const server = app.listen(config.port, '0.0.0.0', () => {
     logger.info({ port: config.port, preview: config.preview }, 'BizConnectPay est démarré.');
   });
@@ -11,6 +14,7 @@ try {
     process.exit(1);
   });
   async function shutdown() {
+    stopMailer();
     server.close(async () => {
       await app.locals.close();
       process.exit(0);

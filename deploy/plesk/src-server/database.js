@@ -16,6 +16,12 @@ export async function initializeDatabase() {
       const schema = await readFile(path.join(rootDir, 'schema.sql'), 'utf8');
       const statements = schema.replace(/--[^\n]*/g, '').split(';').map(x => x.trim()).filter(Boolean);
       for (const statement of statements) await connection.execute(statement);
+      // Non-destructive upgrade for databases created before country selection.
+      const [columns] = await connection.execute("SHOW COLUMNS FROM contact_messages LIKE 'country_iso'");
+      if (!columns.length) {
+        try { await connection.execute("ALTER TABLE contact_messages ADD COLUMN country_iso CHAR(2) NOT NULL DEFAULT ''"); }
+        catch (error) { if (error.code !== 'ER_DUP_FIELDNAME') throw error; }
+      }
       pool = candidate;
       return true;
     } finally {

@@ -9,6 +9,8 @@ import { config } from './config.js';
 import { pool, loadPublicData, replaceMedia, saveSettings } from './database.js';
 import { slots, slotKeys, settingKeys, imageMimes, videoMimes } from './constants.js';
 import { createCountryAdminRouter } from './country-admin-routes.js';
+import { pricingTextFields, pricingCopyTranslator, validatePricingCopy } from './pricing-copy.js';
+import { createMailAdminRouter } from './mail-admin-routes.js';
 import { ensureCsrf, verifyCsrf, requireAdmin, passwordDigest, validEmail, validWebUrl, cleanPricing, httpError } from './security.js';
 
 const upload = multer({
@@ -127,6 +129,7 @@ export function createAdminRouter(passwordHash) {
 
   router.get('/settings', (req, res) => res.render('admin/settings', { activePage: 'settings' }));
   router.use('/countries', createCountryAdminRouter());
+  router.use('/notifications', createMailAdminRouter());
   router.post('/settings', async (req, res) => {
     const values = {};
     for (const key of settingKeys) {
@@ -134,7 +137,7 @@ export function createAdminRouter(passwordHash) {
       if (typeof raw !== 'string' || raw.length > 4000) throw httpError(400, 'Chaque paramètre doit être un texte de 4 000 caractères maximum.');
       values[key] = raw.trim();
     }
-    for (const key of ['signup_url', 'login_url', 'linkedin_url', 'facebook_url', 'x_url', 'api_docs_url']) {
+    for (const key of ['signup_url', 'login_url', 'linkedin_url', 'facebook_url', 'x_url', 'instagram_url', 'youtube_url', 'tiktok_url', 'telegram_url', 'api_docs_url']) {
       if (!validWebUrl(values[key])) throw httpError(400, 'Les liens doivent être des URL HTTPS ou des chemins locaux commençant par /.');
     }
     for (const key of ['support_email', 'legal_email']) {
@@ -151,10 +154,14 @@ export function createAdminRouter(passwordHash) {
     flash(req, 'Paramètres enregistrés. Les liens et les pages légales ont été mis à jour.');
     await saveAndRedirect(req, res, '/admin/settings');
   });
-  router.get('/pricing', (req, res) => res.render('admin/pricing', { activePage: 'pricing' }));
+  router.get('/pricing', (req, res) => res.render('admin/pricing', {
+    activePage: 'pricing', pricingTextFields,
+    pricingFr: pricingCopyTranslator(res.locals.settings, 'fr'),
+    pricingEn: pricingCopyTranslator(res.locals.settings, 'en'),
+  }));
   router.post('/pricing', async (req, res) => {
     if (typeof req.body.html !== 'string' || Buffer.byteLength(req.body.html) > 60000) throw httpError(400, 'Le contenu HTML des tarifs est limité à 60 Ko.');
-    const values = { pricing_html: cleanPricing(req.body.html) };
+    const values = { ...validatePricingCopy(req.body), pricing_html: cleanPricing(req.body.html) };
     if (req.body.html_en !== undefined) {
       if (typeof req.body.html_en !== 'string' || Buffer.byteLength(req.body.html_en) > 60000) throw httpError(400, 'Le contenu HTML des tarifs anglais est limité à 60 Ko.');
       values.pricing_html_en = cleanPricing(req.body.html_en);

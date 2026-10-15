@@ -140,7 +140,7 @@ Le serveur écoute sur la valeur de `PORT`. Ne pas lancer une deuxième instance
 
 ## Routes et sécurité
 
-- `GET /` : site EJS avec hash `#accueil`, `#services`, `#tarifs`, `#apropos`, `#cgu`, `#confidentialite`, `#mentions`, `#cookies`.
+- `GET /` : site EJS avec hash `#accueil`, `#tarifs`, `#contact`, `#apropos`, `#cgu`, `#confidentialite`, `#mentions`, `#cookies`. La page Services est supprimée ; ses anciens boutons conduisent au contact.
 - `GET /media/:id` : type MIME vérifié, ETag, cache immuable un an, `Accept-Ranges`, réponses 206/416 et requêtes HEAD/conditionnelles. MySQL ne lit que les octets demandés par une plage.
 - `POST /api/subscribe` : e-mail validé et normalisé, SQL paramétré, inscription idempotente sans doublons, limitation à 10 demandes par 15 minutes par IP.
 - `/admin` : sessions MySQL, cookies HttpOnly/SameSite/Secure, bcrypt, régénération de session à la connexion, CSRF sur toutes les actions et limitation des tentatives.

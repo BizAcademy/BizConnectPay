@@ -66,6 +66,7 @@ test('Contact inserts validated SQL parameters and safely reuses the retry key',
     assert.equal(parameters[4], '600000000');
     assert.equal(parameters[5], 'test@example.com');
     assert.deepEqual(JSON.parse(parameters[7]), ['IN', 'Link']);
+    assert.equal(parameters[10], 'CM');
     assert.equal((await send(input)).status, 200);
     assert.equal(keys.size, 1);
   });

@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS contact_messages (
   full_name VARCHAR(120) NOT NULL,
   company VARCHAR(160) NOT NULL DEFAULT '',
   country_code VARCHAR(5) NOT NULL,
+  country_iso CHAR(2) NOT NULL DEFAULT '',
   phone VARCHAR(15) NOT NULL,
   email VARCHAR(254) NOT NULL,
   sector VARCHAR(72) NOT NULL,
@@ -42,6 +43,16 @@ CREATE TABLE IF NOT EXISTS contact_messages (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Sessions persistantes pour express-session, jamais le MemoryStore en production.
+CREATE TABLE IF NOT EXISTS contact_notifications (
+  message_id BIGINT UNSIGNED NOT NULL PRIMARY KEY,
+  recipient VARCHAR(254) NOT NULL,
+  attempts INT NOT NULL DEFAULT 0,
+  failed TINYINT NOT NULL DEFAULT 0,
+  sent_at DATETIME NULL,
+  next_attempt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_notification_pending (sent_at, next_attempt)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS admin_sessions (
   session_id VARCHAR(128) NOT NULL PRIMARY KEY,
   expires_at DATETIME NOT NULL,

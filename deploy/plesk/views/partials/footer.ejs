@@ -1,11 +1,18 @@
 <%
   var ftEmails = [s.support_email, s.legal_email].filter(function (e, i, a) { return e && a.indexOf(e) === i; });
-  var ftTel = String(s.legal_phone || '').replace(/[^\d+]/g, '');
+  var ftPhone = s.footer_phone || s.legal_phone || '';
+  var ftAddress = s.footer_address || s.legal_address || '';
+  var ftTel = String(ftPhone).replace(/[^\d+]/g, '');
   var ftSocial = [
     { url: s.linkedin_url, name: 'LinkedIn', d: 'M6.94 8.5H3.56V20h3.38V8.5zM5.25 3A1.97 1.97 0 1 0 5.25 7a1.97 1.97 0 0 0 0-3.94zM20.44 13.4c0-3.1-1.66-4.54-3.87-4.54a3.34 3.34 0 0 0-3.03 1.67V8.5h-3.37V20h3.37v-5.7c0-1.5.29-2.95 2.14-2.95 1.83 0 1.86 1.71 1.86 3.05V20h3.38z' },
     { url: s.facebook_url, name: 'Facebook', d: 'M13.5 21v-7.5h2.53l.38-2.94H13.5V8.69c0-.85.24-1.43 1.46-1.43h1.56V4.63A20.9 20.9 0 0 0 14.25 4.5c-2.25 0-3.79 1.37-3.79 3.89v2.17H7.92v2.94h2.54V21z' },
     { url: s.x_url, name: 'X', d: 'M17.75 3.5h3.07l-6.7 7.66L22 20.5h-6.17l-4.83-6.32-5.53 6.32H2.4l7.17-8.2L2 3.5h6.33l4.37 5.77zm-1.08 15.2h1.7L7.4 5.2H5.58z' }
-  ].filter(function (n) { return n.url; });
+  ].concat([
+    { url: s.instagram_url, name: 'Instagram' },
+    { url: s.youtube_url, name: 'YouTube' },
+    { url: s.tiktok_url, name: 'TikTok' },
+    { url: s.telegram_url, name: 'Telegram' }
+  ]).filter(function (n) { return n.url; });
 %>
 <footer class="ft">
   <div class="ft-in">
@@ -23,17 +30,17 @@
         <% if (s.api_docs_url) { %><a href="<%= s.api_docs_url %>" target="_blank" rel="noopener"><%= t("Documentation API") %></a><% } %>
         <a href="#contact">Contact</a>
       </nav>
-      <% if (ftTel || ftEmails.length || s.legal_address || waHref) { %>
+      <% if (ftTel || ftEmails.length || ftAddress || waHref) { %>
       <ul class="ft-contact">
-        <% if (ftTel) { %><li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18h2"/></svg><a href="tel:<%= ftTel %>"><%= s.legal_phone %></a></li><% } %>
+        <% if (ftTel) { %><li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18h2"/></svg><a href="tel:<%= ftTel %>"><%= ftPhone %></a></li><% } %>
         <% if (waHref) { %><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.2-3.6A8 8 0 1 1 8 19z"/></svg><a href="<%= waHref %>" target="_blank" rel="noopener">WhatsApp</a></li><% } %>
         <% ftEmails.forEach(function (e) { %><li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5L12 13l8.5-6.5"/></svg><a href="mailto:<%= e %>"><%= e %></a></li><% }) %>
-        <% if (s.legal_address) { %><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.2"/></svg><span><%= s.legal_address %></span></li><% } %>
+        <% if (ftAddress) { %><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.2"/></svg><span><%= ftAddress %></span></li><% } %>
       </ul>
       <% } %>
       <% if (ftSocial.length) { %>
       <div class="ft-social">
-        <% ftSocial.forEach(function (n) { %><a href="<%= n.url %>" target="_blank" rel="noopener" aria-label="<%= t('BizConnectPay sur {network}', { network: n.name }) %>"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="<%= n.d %>"/></svg></a><% }) %>
+        <% ftSocial.forEach(function (n) { %><a href="<%= n.url %>" target="_blank" rel="noopener" aria-label="<%= t('BizConnectPay sur {network}', { network: n.name }) %>" title="<%= n.name %>"><% if (n.d) { %><svg viewBox="0 0 24 24" aria-hidden="true"><path d="<%= n.d %>"/></svg><% } else { %><span aria-hidden="true"><%= {Instagram:'IG',YouTube:'YT',TikTok:'TT',Telegram:'TG'}[n.name] %></span><% } %></a><% }) %>
       </div>
       <% } %>
     </div>

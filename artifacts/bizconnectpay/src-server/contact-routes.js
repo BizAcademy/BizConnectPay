@@ -85,11 +85,11 @@ export function createContactRouter(getPool = () => pool) {
     }
     const [result] = await database.execute(
       `INSERT INTO contact_messages
-        (submission_key, full_name, company, country_code, phone, email, sector, services, subject, message)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (submission_key, full_name, company, country_code, phone, email, sector, services, subject, message, country_iso)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON DUPLICATE KEY UPDATE id = LAST_INSERT_ID(id)`,
       [data.submissionId, data.fullName, data.company, data.countryCode, data.phone, data.email,
-        data.sector, JSON.stringify(data.services), data.subject, data.message],
+        data.sector, JSON.stringify(data.services), data.subject, data.message, data.countryIso],
     );
     res.status(result.affectedRows === 1 ? 201 : 200).json({
       message: (req.t || (value => value))('Votre demande a bien été enregistrée. Notre équipe pourra vous recontacter.'),

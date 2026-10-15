@@ -8,6 +8,7 @@ export const slots = [
 ];
 export const settingKeys = [
   'signup_url', 'login_url', 'support_email', 'whatsapp', 'linkedin_url', 'facebook_url', 'x_url', 'api_docs_url',
+  'instagram_url', 'youtube_url', 'tiktok_url', 'telegram_url', 'footer_phone', 'footer_address',
   'legal_company', 'legal_form', 'legal_address', 'legal_registration', 'legal_director',
   'legal_host', 'legal_country', 'legal_city', 'legal_email', 'legal_phone',
   ...slots.map(slot => `${slot.key}_alt_en`),

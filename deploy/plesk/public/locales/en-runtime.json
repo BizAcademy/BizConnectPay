@@ -1,4 +1,9 @@
 {
+  "Contactez-nous": "Contact us",
+  "Tarif IN": "IN rate",
+  "Tarif OUT": "OUT rate",
+  "Tarif Link": "Link rate",
+  "Tarif Virtual": "Virtual rate",
   "Veuillez choisir un pays valide dans la liste.": "Please choose a valid country from the list.",
   "Ce pays n’est plus disponible. Rechargez la page et choisissez un pays proposé.": "This country is no longer available. Reload the page and choose one of the listed countries.",
   "Aucun pays n’est disponible pour le moment. Utilisez les autres coordonnées de contact.": "No countries are currently available. Please use the other contact details provided.",

@@ -8,6 +8,7 @@ import ejs from 'ejs';
 import { localeMiddleware, translator } from '../src-server/i18n.js';
 import { createContactRouter } from '../src-server/contact-routes.js';
 import { slots, settingKeys } from '../src-server/constants.js';
+import { pricingTextFields, pricingCopyTranslator } from '../src-server/pricing-copy.js';
 
 const english = {
   ...JSON.parse(readFileSync(new URL('../public/locales/en.json', import.meta.url))),
@@ -39,7 +40,7 @@ test('All public pages render in both languages with translated labels and stabl
       ...fixture, lang, t: translator(lang), uiTranslations: lang === 'en' ? english : {},
     });
     assert.match(renders[lang], new RegExp(`<html lang="${lang}"`));
-    for (const page of ['accueil','services','tarifs','contact','apropos','cgu','confidentialite','cookies','mentions']) {
+    for (const page of ['accueil','tarifs','contact','apropos','cgu','confidentialite','cookies','mentions']) {
       assert.ok(renders[lang].includes(`id="${page}"`), `${page}/${lang}`);
     }
     assert.ok(renders[lang].includes('href="https://example.com/login"'));
@@ -124,6 +125,7 @@ test('Owner-configured English pricing and image descriptions have separate inpu
   assert.ok(settingKeys.includes('hero_visual_alt_en'));
   const html = await ejs.renderFile(new URL('../views/admin/pricing.ejs', import.meta.url).pathname, {
     ...fixture, csrfToken: 'test', activePage: 'pricing', databaseAvailable: true,
+    pricingTextFields, pricingFr: pricingCopyTranslator({}, 'fr'), pricingEn: pricingCopyTranslator({}, 'en'),
     pricingHtml: '<p>Tarifs français</p>', pricingHtmlEn: '<p>English fees</p>',
   });
   assert.match(html, /name="html_en"/);
