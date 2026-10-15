@@ -1,4 +1,4 @@
-/* Generic carousel controller (rev car-2): every [data-car] gets independent state; slides stacked without JS. */
+/* Generic carousel controller (rev car-3; [data-car-cards] = multi-card step mode): every [data-car] gets independent state; slides stacked without JS. */
 (function(){
 function initCar(car,ci){
   var track=car.querySelector('.car-track'),slides=[].slice.call(car.querySelectorAll('.car-slide'));
@@ -7,6 +7,7 @@ function initCar(car,ci){
   if(!track||slides.length<2||!bar)return;
   if(!track.id)track.id='car-track-'+ci;
   var noun=car.getAttribute('data-car-noun')||'Solution',view=car.querySelector('.car-view');
+  var cards=car.hasAttribute('data-car-cards'),vis=1;
   var DELAY=parseInt(car.getAttribute('data-car-delay'),10)||5000,n=slides.length,i=0,timer=null;
   var mq=window.matchMedia?matchMedia('(prefers-reduced-motion: reduce)'):{matches:false};
   var userPaused=mq.matches,hover=false,focus=false,visible=true;
@@ -43,20 +44,26 @@ function initCar(car,ci){
   }
   function go(k,announce){
     var focusInside=car.contains(document.activeElement)&&slides[i].contains(document.activeElement);
-    i=(k%n+n)%n;
+    if(cards){measure();var m=n-vis+1;i=(k%m+m)%m}else i=(k%n+n)%n;
     track.style.setProperty('--i',i);
-    slides.forEach(function(s,j){setInert(s,j!==i)});
+    if(cards)track.style.setProperty('--x',slides[i].offsetLeft-slides[0].offsetLeft);
+    slides.forEach(function(s,j){setInert(s,cards?(j<i||j>=i+vis):j!==i)});
     dots.forEach(function(d,j){j===i?d.setAttribute('aria-current','true'):d.removeAttribute('aria-current')});
     if(announce&&status){var t=slides[i].getAttribute('data-car-title')||((slides[i].querySelector('h2,h3')||{}).textContent)||'';status.textContent=noun+' '+(i+1)+' sur '+n+(t?' : '+t.trim():'')}
     fit();
     if(focusInside&&dots[i])dots[i].focus();
     reveal(slides[i]);
   }
+  function measure(){
+    var st=slides.length>1?slides[1].offsetLeft-slides[0].offsetLeft:0;
+    vis=st>0?Math.max(1,Math.min(n,1+Math.floor((view.clientWidth-slides[0].offsetWidth+2)/st))):1;
+  }
   function fit(){
+    if(cards)return;
     var h=slides[i].offsetHeight;
     if(h)view.style.height=h+'px';
   }
-  addEventListener('resize',function(){fit()});
+  addEventListener('resize',function(){cards?go(i,false):fit()});
   if(window.ResizeObserver)slides.forEach(function(s){new ResizeObserver(function(){if(s===slides[i])fit()}).observe(s)});
   function running(){return !userPaused&&!hover&&!focus&&visible&&!document.hidden&&(!page||page.classList.contains('on'))}
   function schedule(){

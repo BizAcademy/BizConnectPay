@@ -1,23 +1,25 @@
-/* rev vx-1: "Pourquoi" + "Comment ça marche" horizontal carousel, scoped */
-.car-on .car-track{align-items:flex-start}
-.car-on .car-view{transition:height .5s var(--ease,ease)}
+/* rev vx-2: two independent sections, each with its own horizontal card carousel ([data-car-cards]). Never stacks. */
 #accueil .vx{margin-top:8px}
-#accueil .vx-car.car-on .car-slide{background:transparent;padding:0}
-#accueil .vx-slide .why,#accueil .vx-slide .intro{margin:0;border-radius:28px;text-align:left;padding:clamp(24px,4vw,48px);border:1px solid #e8edf5;background:#fafcff linear-gradient(140deg,rgba(0,102,255,.05),rgba(0,229,168,.06))}
-#accueil .vx-slide .intro{background:#fff linear-gradient(200deg,rgba(0,212,255,.07),rgba(0,102,255,.03))}
-#accueil .vx-slide .c{text-align:left;max-width:none;padding:0}
-#accueil .vx-head h2{font-size:clamp(1.6rem,3.6vw,2.4rem);margin:6px 0 12px;max-width:620px}
+#accueil .vx-head{text-align:left}
+#accueil .vx-head h2{font-size:clamp(1.6rem,3.6vw,2.4rem);margin:6px 0 12px;max-width:680px}
 #accueil .vx-head p{color:var(--mut);margin:0 0 8px;max-width:560px}
-#accueil .vx-slide .st-row{justify-content:flex-start;margin-top:20px}
-#accueil .vx-slide .hx-ben,#accueil .vx-slide .hx-steps{margin:24px 0 0}
-#accueil .vx-slide .hx-steps li{padding:18px}
-#accueil .vx-slide .simple-vis{margin-top:18px}
-#accueil .vx-slide .simple-vis img,#accueil .vx-slide .simple-vis video{max-width:100%;height:auto;border-radius:20px;display:block}
-@media(prefers-reduced-motion:reduce){.car-on .car-view{transition:none}}
-@media print{.car-on .car-view{height:auto!important;overflow:visible}}
-@media(min-width:960px){
-#accueil .vx-why .why{display:grid;grid-template-columns:.95fr 1.05fr;gap:40px;align-items:center}
-#accueil .vx-why .hx-ben{margin:0;grid-template-columns:repeat(2,1fr)}
-#accueil .vx-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:40px;align-items:center}
-#accueil .vx-how .hx-steps{margin:0;grid-template-columns:repeat(3,1fr)}
-}
+#accueil .vx-head .st-row{justify-content:flex-start;margin-top:16px}
+#accueil .vx-car{--vis:1;--gap:14px;margin-top:20px}
+/* Row without JS: native horizontal scroll with snap */
+#accueil .vx-car .car-track{display:flex!important;grid-template-columns:none!important;gap:var(--gap);margin:0;max-width:none;padding:2px 0 8px;list-style:none;overflow-x:auto;scroll-snap-type:x mandatory}
+#accueil .vx-car .car-slide{flex:0 0 calc((100% - (var(--vis) - 1) * var(--gap)) / var(--vis));min-width:0;scroll-snap-align:start;margin:0}
+/* With JS: transform-driven, one card per step */
+#accueil .vx-car.car-on .car-view{border-radius:0;height:auto!important;overflow:hidden}
+#accueil .vx-car.car-on .car-track{overflow:visible;transform:translate3d(calc(var(--x,0) * -1px),0,0);align-items:stretch}
+#accueil .vx-car.car-on .car-slide{padding:20px;background:#fff}
+#accueil .vx-car.car-on .car-slide[aria-hidden="true"]{visibility:visible;opacity:.55;transition:opacity .4s}
+#accueil .vx-why .car-slide{border-left:3px solid var(--green);border-radius:20px;background:#fafcff}
+#accueil .vx-how .car-slide{border:1px solid #e8edf5;border-radius:22px}
+#accueil .vx-car .car-bar{justify-content:flex-start}
+#accueil .vx-how .simple-vis{margin-top:18px}
+#accueil .vx-how .simple-vis img,#accueil .vx-how .simple-vis video{max-width:100%;height:auto;border-radius:20px;display:block}
+@media(max-width:759px){#accueil .vx-car .car-slide{flex-basis:84%}}
+@media(min-width:760px){#accueil .vx-why .vx-car{--vis:2}#accueil .vx-how .vx-car{--vis:2}}
+@media(min-width:960px){#accueil .vx-why .vx-car{--vis:3}#accueil .vx-how .vx-car{--vis:2}}
+@media(prefers-reduced-motion:reduce){#accueil .vx-car.car-on .car-slide{transition:none}}
+@media print{.car-on .car-view{height:auto!important;overflow:visible}#accueil .vx-car .car-track{display:flex!important;transform:none!important;overflow:visible;flex-wrap:wrap}#accueil .vx-car.car-on .car-slide[aria-hidden="true"]{opacity:1}}
