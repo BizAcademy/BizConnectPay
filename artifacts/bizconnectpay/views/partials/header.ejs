@@ -1,1 +1,33 @@
-<header><a class="logo" href="#accueil" aria-label="BizConnectPay – accueil"><img src="<%= basePath %>/assets/icon.webp" alt="" width="38" height="38"><span class="wm">BizConnect<b>Pay</b></span></a></header>
+<%
+  var hLogin = String(s.login_url || '').trim();
+  var hSignup = String(s.signup_url || '').trim();
+  var hLang = lang === 'en' ? 'en' : 'fr';
+  var hLangSel = function (id) { return '<label class="sh-lang" for="' + id + '"><span class="sh-sr">' + _hEsc(t('Langue')) + '</span><img class="sh-flag" src="' + _hEsc(basePath) + '/assets/flag-' + hLang + '.svg" width="24" height="16" decoding="async" alt="' + _hEsc(t(hLang === 'en' ? 'Drapeau anglais' : 'Drapeau français')) + '"><select id="' + id + '" data-language-select><option value="fr" lang="fr"' + (hLang === 'fr' ? ' selected' : '') + '>FR</option><option value="en" lang="en"' + (hLang === 'en' ? ' selected' : '') + '>EN</option></select></label>'; };
+  function _hEsc(v) { return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+%><header class="site-header" data-site-header>
+  <a class="logo" href="#accueil" aria-label="<%= t('BizConnectPay – accueil') %>"><img src="<%= basePath %>/assets/icon.webp" alt="" width="38" height="38"><span class="wm">BizConnect<b>Pay</b></span></a>
+  <nav class="sh-nav" aria-label="<%= t('Navigation principale') %>">
+    <a href="#accueil" data-nav-link aria-current="page"><%= t('Accueil') %></a>
+    <a href="#tarifs" data-nav-link><%= t('Tarifs') %></a>
+    <a href="#contact" data-nav-link><%= t('Contact') %></a>
+  </nav>
+  <div class="sh-right">
+    <%- hLangSel('sh-lang-d') %>
+    <% if (hLogin) { %><a class="sh-login" href="<%= hLogin %>"><%= t('Se connecter') %></a><% } else { %><span class="sh-login is-off" role="link" aria-disabled="true" title="<%= t('Lien de connexion non configuré') %>"><%= t('Se connecter') %></span><% } %>
+    <% if (hSignup) { %><a class="btn sm sh-cta" href="<%= hSignup %>"><%= t('Commencer') %></a><% } else { %><span class="btn sm sh-cta is-off" role="link" aria-disabled="true" title="<%= t('Lien d’inscription non configuré') %>"><%= t('Commencer') %></span><% } %>
+  </div>
+  <button type="button" class="sh-toggle" aria-expanded="false" aria-controls="sh-menu" aria-label="<%= t('Ouvrir le menu') %>" data-label-open="<%= t('Ouvrir le menu') %>" data-label-close="<%= t('Fermer le menu') %>"><span aria-hidden="true"></span></button>
+  <div class="sh-panel" id="sh-menu" hidden>
+    <nav aria-label="<%= t('Menu mobile') %>">
+      <a href="#accueil" data-nav-link aria-current="page"><%= t('Accueil') %></a>
+      <a href="#contact" data-nav-link><%= t('Contact') %></a>
+      <a href="#tarifs" data-nav-link><%= t('Tarifs') %></a>
+      <a href="#services" data-nav-link><%= t('Services') %></a>
+    </nav>
+    <div class="sh-panel-act">
+      <% if (hSignup) { %><a class="btn sh-cta" href="<%= hSignup %>"><%= t('Commencer') %></a><% } else { %><span class="btn sh-cta is-off" role="link" aria-disabled="true" title="<%= t('Lien d’inscription non configuré') %>"><%= t('Commencer') %></span><% } %>
+      <% if (hLogin) { %><a class="btn o sh-login-m" href="<%= hLogin %>"><%= t('Se connecter') %></a><% } else { %><span class="btn o sh-login-m is-off" role="link" aria-disabled="true" title="<%= t('Lien de connexion non configuré') %>"><%= t('Se connecter') %></span><% } %>
+      <%- hLangSel('sh-lang-m') %>
+    </div>
+  </div>
+</header>

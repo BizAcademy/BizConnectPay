@@ -1,0 +1,40 @@
+/* Site header: desktop nav + mobile menu (scoped) */
+.site-header{position:sticky;display:flex;align-items:center;flex-wrap:nowrap;gap:clamp(12px,2.4vw,32px);justify-content:flex-start}
+.site-header .logo{flex:none}
+.site-header nav{overflow:visible;font-size:inherit}
+.site-header .sh-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.site-header .sh-nav{display:none;gap:4px;align-items:center}
+.site-header .sh-nav a,.site-header .sh-panel nav a{color:var(--navy);font-weight:500;font-size:.94rem;padding:8px 14px;border-radius:999px;position:relative;transition:color .2s,background-color .2s}
+.site-header .sh-nav a:hover{color:var(--blue);background:var(--soft)}
+.site-header .sh-nav a[aria-current="page"]{color:var(--blue)}
+.site-header .sh-nav a[aria-current="page"]::after{content:"";position:absolute;left:14px;right:14px;bottom:2px;height:2px;border-radius:2px;background:var(--green)}
+.site-header .sh-right{display:none;margin-left:auto;align-items:center;gap:14px}
+.site-header .sh-login{color:var(--navy);font-weight:600;font-size:.94rem;padding:8px 6px}
+.site-header .sh-login:hover{color:var(--blue)}
+.site-header .is-off{opacity:.5;cursor:not-allowed;box-shadow:none;transform:none!important}
+.site-header .sh-lang{display:inline-flex;align-items:center;gap:6px;border:1px solid #dfe6f1;border-radius:999px;padding:4px 8px 4px 10px;color:var(--navy);background:#fff}
+.site-header .sh-lang .sh-flag{display:block;width:24px;height:16px;object-fit:cover;border-radius:3px;box-shadow:0 0 0 1px rgba(11,31,75,.14);flex:none}
+.site-header .sh-lang select{border:0;background:transparent;font:600 .85rem Poppins,system-ui,sans-serif;color:var(--navy);cursor:pointer;padding:2px}
+.site-header .sh-lang:focus-within{outline:2px solid var(--blue);outline-offset:2px}
+.site-header .sh-lang select:focus-visible{outline:none}
+.site-header .sh-toggle{margin-left:auto;width:44px;height:44px;border-radius:12px;border:1px solid #dfe6f1;background:#fff;display:grid;place-items:center;cursor:pointer;padding:0}
+.site-header .sh-toggle span,.site-header .sh-toggle span::before,.site-header .sh-toggle span::after{display:block;width:20px;height:2px;border-radius:2px;background:var(--navy);transition:transform .25s var(--ease),opacity .2s}
+.site-header .sh-toggle span{position:relative}
+.site-header .sh-toggle span::before,.site-header .sh-toggle span::after{content:"";position:absolute;left:0}
+.site-header .sh-toggle span::before{transform:translateY(-6px)}.site-header .sh-toggle span::after{transform:translateY(6px)}
+.site-header .sh-toggle[aria-expanded="true"] span{background:transparent}
+.site-header .sh-toggle[aria-expanded="true"] span::before{transform:rotate(45deg);background:var(--navy)}
+.site-header .sh-toggle[aria-expanded="true"] span::after{transform:rotate(-45deg);background:var(--navy)}
+.site-header .sh-toggle:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.site-header .sh-panel{position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid #edf1f7;box-shadow:0 24px 40px -24px rgba(11,31,75,.35);padding:12px 20px 20px;max-height:calc(100dvh - 72px);overflow-y:auto}
+.site-header .sh-panel[hidden]{display:none}
+.site-header .sh-panel:not([hidden]){animation:sh-in .25s var(--ease)}
+.site-header .sh-panel nav{display:flex;flex-direction:column;gap:2px}
+.site-header .sh-panel nav a{padding:12px 14px;border-radius:12px;font-size:1rem}
+.site-header .sh-panel nav a[aria-current="page"]{background:var(--soft);color:var(--blue);box-shadow:inset 3px 0 0 var(--green)}
+.site-header .sh-panel-act{display:grid;gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid #edf1f7}
+.site-header .sh-panel-act .btn{text-align:center}
+.site-header .sh-panel-act .sh-lang{justify-self:start}
+@keyframes sh-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media(min-width:960px){.site-header .sh-nav,.site-header .sh-right{display:flex}.site-header .sh-toggle,.site-header .sh-panel{display:none!important}}
+@media(max-width:380px){.site-header .wm{font-size:1.05rem}}

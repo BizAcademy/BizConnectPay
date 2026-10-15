@@ -7,9 +7,10 @@ export const slots = [
   { key: 'prod_virtual_visual', label: 'BizConnectPay Virtual' },
 ];
 export const settingKeys = [
-  'signup_url', 'support_email', 'whatsapp', 'linkedin_url', 'facebook_url', 'x_url', 'api_docs_url',
+  'signup_url', 'login_url', 'support_email', 'whatsapp', 'linkedin_url', 'facebook_url', 'x_url', 'api_docs_url',
   'legal_company', 'legal_form', 'legal_address', 'legal_registration', 'legal_director',
   'legal_host', 'legal_country', 'legal_city', 'legal_email', 'legal_phone',
+  ...slots.map(slot => `${slot.key}_alt_en`),
 ];
 export const slotKeys = new Set(slots.map(slot => slot.key));
 export const imageMimes = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);

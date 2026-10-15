@@ -7,41 +7,57 @@
   if (ctTel.replace(/\D/g, '').length < 6) ctTel = '';
   var ctWa = /^https?:\/\//i.test(String(waHref || '')) ? waHref : '';
   var ctImg = basePath + '/assets/contact-support-';
-  var ctCodes = [
-    ['+237','Cameroun'],['+225','Côte d\u2019Ivoire'],['+221','Sénégal'],['+229','Bénin'],['+228','Togo'],['+226','Burkina Faso'],['+223','Mali'],['+227','Niger'],['+224','Guinée'],['+241','Gabon'],['+242','Congo'],['+243','RD Congo'],['+236','Centrafrique'],['+235','Tchad'],['+240','Guinée équatoriale'],['+250','Rwanda'],['+257','Burundi'],['+261','Madagascar'],['+234','Nigeria'],['+233','Ghana'],['+254','Kenya'],['+255','Tanzanie'],['+256','Ouganda'],['+27','Afrique du Sud'],['+212','Maroc'],['+216','Tunisie'],['+213','Algérie'],['+20','Égypte'],
-    ['+33','France'],['+32','Belgique'],['+41','Suisse'],['+1','États-Unis / Canada'],['+44','Royaume-Uni'],['+49','Allemagne'],['+971','Émirats arabes unis'],['+86','Chine']
-  ];
+  var ctList = (typeof contactCountries !== 'undefined' && Array.isArray(contactCountries)) ? contactCountries : [];
+  var ctLang = lang === 'en' ? 'en' : 'fr';
+  ctList = ctList.filter(function (c) { return c && /^[A-Za-z]{2}$/.test(String(c.iso || '')); }).map(function (c) { return { iso: String(c.iso).toUpperCase(), name: String(c[ctLang] || c.fr || c.en || c.iso), dial: /^\+\d{1,4}$/.test(String(c.dial || '')) ? String(c.dial) : '' }; });
+  var ctDef = null;
+  ctList.forEach(function (c) { if (c.iso === 'CM' && c.dial) ctDef = c; });
+  if (!ctDef) ctList.forEach(function (c) { if (!ctDef && c.dial) ctDef = c; });
+  var ctEmpty = !ctDef;
+  var ctFlag = function (iso) { return basePath + '/assets/flags/' + iso.toLowerCase() + '.png'; };
   var ctSectors = ['E-commerce','Services et conseil','Fintech et finance','Télécommunications','Commerce et distribution','Transport et logistique','Tourisme et voyages','Technologie','Association et ONG','Autre'];
   var ctServices = [['IN','Encaissements'],['OUT','Paiements sortants'],['Link','Liens de paiement'],['Virtual','Cartes virtuelles']];
 %><section id="contact" class="pg"><main class="ct">
 <figure class="ct-photo">
-  <img src="<%= ctImg %>960.webp" srcset="<%= ctImg %>480.webp 480w, <%= ctImg %>960.webp 960w, <%= ctImg %>1440.webp 1440w" sizes="(min-width:900px) 45vw, 100vw" width="960" height="1280" alt="Illustration du service client BizConnectPay" loading="lazy" decoding="async">
+  <img src="<%= ctImg %>960.webp" srcset="<%= ctImg %>480.webp 480w, <%= ctImg %>960.webp 960w, <%= ctImg %>1440.webp 1440w" sizes="(min-width:900px) 45vw, 100vw" width="960" height="1280" alt="<%= t("Illustration du service client BizConnectPay") %>" loading="lazy" decoding="async">
 </figure>
 <div class="ct-side">
-<header class="ct-head"><h1>Contactez le service client</h1><p>Un projet, une question sur IN, OUT, Link ou Virtual ? Décrivez votre besoin : votre demande est enregistrée et transmise à notre équipe, qui pourra vous recontacter.</p></header>
-<form class="ct-form" id="contact-form" method="post" action="<%= basePath %>/contact-request" novalidate>
-  <noscript><p>Activez JavaScript pour envoyer ce formulaire, ou utilisez les coordonnées de contact ci-dessous lorsqu’elles sont disponibles.</p></noscript>
-  <div class="ct-hp" aria-hidden="true"><label for="ct-website">Site web</label><input id="ct-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+<header class="ct-head"><h1><%= t("Contactez le service client") %></h1><p><%= t("Un projet, une question sur IN, OUT, Link ou Virtual ? Décrivez votre besoin : votre demande est enregistrée et transmise à notre équipe, qui pourra vous recontacter.") %></p></header>
+<form class="ct-form" id="contact-form" method="post" action="<%= basePath %>/contact-request" novalidate<% if (ctEmpty) { %> data-countries-empty="true"<% } %>>
+  <noscript><p><%= t("Activez JavaScript pour envoyer ce formulaire, ou utilisez les coordonnées de contact ci-dessous lorsqu’elles sont disponibles.") %></p></noscript>
+  <div class="ct-hp" aria-hidden="true"><label for="ct-website"><%= t("Site web") %></label><input id="ct-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
   <div class="ct-row">
-    <div class="ct-f"><label for="ct-name">Nom complet <i aria-hidden="true">*</i></label><input id="ct-name" name="fullName" type="text" required maxlength="120" autocomplete="name" placeholder="Votre nom"></div>
-    <div class="ct-f"><label for="ct-company">Entreprise <small>(facultatif)</small></label><input id="ct-company" name="company" type="text" maxlength="160" autocomplete="organization" placeholder="Nom de l'entreprise"></div>
+    <div class="ct-f"><label for="ct-name"><%= t("Nom complet") %> <i aria-hidden="true">*</i></label><input id="ct-name" name="fullName" type="text" required maxlength="120" autocomplete="name" placeholder="<%= t("Votre nom") %>"></div>
+    <div class="ct-f"><label for="ct-company"><%= t("Entreprise") %> <small><%= t("(facultatif)") %></small></label><input id="ct-company" name="company" type="text" maxlength="160" autocomplete="organization" placeholder="<%= t("Nom de l'entreprise") %>"></div>
   </div>
   <div class="ct-row">
-    <div class="ct-f"><label for="ct-phone">WhatsApp / Téléphone <i aria-hidden="true">*</i></label>
-      <div class="ct-tel"><label class="ct-sr" for="ct-cc">Indicatif pays</label><select id="ct-cc" name="countryCode" required autocomplete="tel-country-code"><% ctCodes.forEach(function (c) { %><option value="<%= c[0] %>"><%= c[0] %> — <%= c[1] %></option><% }) %></select><input id="ct-phone" name="phone" type="tel" inputmode="tel" required maxlength="24" autocomplete="tel-national" placeholder="Numéro"></div></div>
-    <div class="ct-f"><label for="ct-email">E-mail professionnel <i aria-hidden="true">*</i></label><input id="ct-email" name="email" type="email" required maxlength="254" autocomplete="email" placeholder="vous@entreprise.com"></div>
+    <div class="ct-f"><label for="ct-phone"><%= t("WhatsApp / Téléphone") %> <i aria-hidden="true">*</i></label>
+      <div class="ct-tel">
+        <input type="hidden" id="ct-iso" name="countryIso" value="<%= ctDef ? ctDef.iso : '' %>"><input type="hidden" id="ct-cc" name="countryCode" value="<%= ctDef ? ctDef.dial : '' %>">
+        <% if (ctEmpty) { %><span class="cp-btn is-off" aria-hidden="true"><span class="cp-dial">—</span></span><% } else { %>
+        <div class="cp" data-country-picker data-default="<%= ctDef.iso %>" data-label-tpl="<%= t('Indicatif pays : {country}') %>">
+          <button type="button" class="cp-btn" id="ct-country-trigger" aria-haspopup="listbox" aria-expanded="false" aria-controls="ct-cc-pop"><img class="cp-flag" src="<%= ctFlag(ctDef.iso) %>" width="24" height="16" alt="" decoding="async"><span class="cp-dial"><%= ctDef.dial %></span><span class="ct-sr cp-btn-sr"><%= t('Indicatif pays : {country}', { country: ctDef.name + ' ' + ctDef.dial }) %></span><svg class="cp-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="cp-pop" id="ct-cc-pop" hidden>
+            <div class="cp-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input class="cp-q" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ct-cc-list" aria-label="<%= t('Rechercher un pays') %>" placeholder="<%= t('Rechercher un pays, un code ISO ou un indicatif') %>" autocomplete="off" spellcheck="false"></div>
+            <ul class="cp-list" id="ct-cc-list" role="listbox" aria-label="<%= t('Liste des pays') %>"><% ctList.forEach(function (c) { %><li role="option" id="ct-cc-o-<%= c.iso %>" data-iso="<%= c.iso %>" data-dial="<%= c.dial %>" data-name="<%= c.name %>" aria-selected="<%= c === ctDef ? 'true' : 'false' %>"<% if (!c.dial) { %> aria-disabled="true"<% } %>><img src="<%= ctFlag(c.iso) %>" width="24" height="16" alt="" loading="lazy" decoding="async"><span class="cp-n"><%= c.name %></span><span class="cp-d"><%= c.dial || t('Pas d’indicatif attribué') %></span></li><% }) %></ul>
+            <p class="cp-none" role="status" hidden><%= t('Aucun pays ne correspond à votre recherche.') %></p>
+          </div>
+        </div><% } %>
+        <input id="ct-phone" name="phone" type="tel" inputmode="tel" required maxlength="24" autocomplete="tel-national" placeholder="<%= t("Numéro") %>"></div></div>
+    <div class="ct-f"><label for="ct-email"><%= t("E-mail professionnel") %> <i aria-hidden="true">*</i></label><input id="ct-email" name="email" type="email" required maxlength="254" autocomplete="email" placeholder="<%= t("vous@entreprise.com") %>"></div>
   </div>
-  <div class="ct-f"><label for="ct-sector">Secteur d'activité <i aria-hidden="true">*</i></label><select id="ct-sector" name="sector" required><option value="">Sélectionnez votre secteur</option><% ctSectors.forEach(function (x) { %><option value="<%= x %>"><%= x %></option><% }) %></select></div>
-  <fieldset class="ct-f ct-svc" id="ct-svc"><legend>Services souhaités <i aria-hidden="true">*</i></legend>
-    <div class="ct-pills"><% ctServices.forEach(function (x) { %><label class="ct-pill"><input type="checkbox" name="services" value="<%= x[0] %>"><span><b><%= x[0] %></b><%= x[1] %></span></label><% }) %></div>
+  <div class="ct-f"><label for="ct-sector"><%= t("Secteur d'activité") %> <i aria-hidden="true">*</i></label><select id="ct-sector" name="sector" required><option value=""><%= t("Sélectionnez votre secteur") %></option><% ctSectors.forEach(function (x) { %><option value="<%= x %>"><%= t(x) %></option><% }) %></select></div>
+  <fieldset class="ct-f ct-svc" id="ct-svc"><legend><%= t("Services souhaités") %> <i aria-hidden="true">*</i></legend>
+    <div class="ct-pills"><% ctServices.forEach(function (x) { %><label class="ct-pill"><input type="checkbox" name="services" value="<%= x[0] %>"><span><b><%= x[0] %></b><%= t(x[1]) %></span></label><% }) %></div>
   </fieldset>
-  <div class="ct-f"><label for="ct-subject">Objet <i aria-hidden="true">*</i></label><input id="ct-subject" name="subject" type="text" required maxlength="180" placeholder="Titre de votre demande"></div>
-  <div class="ct-f"><label for="ct-message">Message <i aria-hidden="true">*</i></label><textarea id="ct-message" name="message" required minlength="10" maxlength="5000" rows="5" placeholder="Décrivez votre activité et votre besoin"></textarea><span class="ct-count" id="ct-count" aria-live="off">0 / 5000</span></div>
-  <label class="ct-consent"><input type="checkbox" name="consent" required><span>J'accepte que mes informations soient enregistrées pour traiter ma demande, conformément à la <a href="#confidentialite">politique de confidentialité</a>.</span></label>
+  <div class="ct-f"><label for="ct-subject"><%= t("Objet") %> <i aria-hidden="true">*</i></label><input id="ct-subject" name="subject" type="text" required maxlength="180" placeholder="<%= t("Titre de votre demande") %>"></div>
+  <div class="ct-f"><label for="ct-message">Message <i aria-hidden="true">*</i></label><textarea id="ct-message" name="message" required minlength="10" maxlength="5000" rows="5" placeholder="<%= t("Décrivez votre activité et votre besoin") %>"></textarea><span class="ct-count" id="ct-count" aria-live="off">0 / 5000</span></div>
+  <label class="ct-consent"><input type="checkbox" name="consent" required><span><%= t("J'accepte que mes informations soient enregistrées pour traiter ma demande, conformément à la") %> <a href="#confidentialite"><%= t("politique de confidentialité") %></a>.</span></label>
+  <% if (ctEmpty) { %><p class="ct-unavail" role="alert"><%= t("Aucun pays n’est disponible pour le moment : l’envoi du formulaire est désactivé. Utilisez les autres moyens de contact ci-dessous.") %></p><% } %>
   <div class="ct-status" id="ct-status" role="status" aria-live="polite"></div>
-  <button class="btn ct-submit" type="submit" disabled>Envoyer ma demande</button>
-  <p class="ct-note">Les champs marqués * sont obligatoires. Ce formulaire ne vous inscrit pas à une newsletter.</p>
+  <button class="btn ct-submit" type="submit" disabled><%= t("Envoyer ma demande") %></button>
+  <p class="ct-note"><%= t("Les champs marqués * sont obligatoires. Ce formulaire ne vous inscrit pas à une newsletter.") %></p>
 </form>
-<% if (ctMail || ctTel || ctWa) { %><ul class="ct-alt" aria-label="Autres moyens de contact"><% if (ctWa) { %><li><a href="<%= ctWa %>" target="_blank" rel="noopener noreferrer">WhatsApp<span class="ct-sr"> (nouvel onglet)</span></a></li><% } %><% if (ctMail) { %><li><a href="mailto:<%= ctMail %>"><%= ctMail %></a></li><% } %><% if (ctTel) { %><li><a href="tel:<%= ctTel %>"><%= ctPhone %></a></li><% } %></ul><% } %>
+<% if (ctMail || ctTel || ctWa) { %><ul class="ct-alt" aria-label="<%= t("Autres moyens de contact") %>"><% if (ctWa) { %><li><a href="<%= ctWa %>" target="_blank" rel="noopener noreferrer">WhatsApp<span class="ct-sr"> <%= t("(nouvel onglet)") %></span></a></li><% } %><% if (ctMail) { %><li><a href="mailto:<%= ctMail %>"><%= ctMail %></a></li><% } %><% if (ctTel) { %><li><a href="tel:<%= ctTel %>"><%= ctPhone %></a></li><% } %></ul><% } %>
 </div>
 </main></section>

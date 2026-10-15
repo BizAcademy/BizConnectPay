@@ -1,0 +1,15 @@
+<%- include('partials/top', { title: 'Pays du formulaire', eyebrow: 'Formulaire de contact' }) %>
+<% var bp = locals.basePath || ''; var rows = Array.isArray(locals.countries) ? locals.countries : []; var en = Array.isArray(locals.enabledCountryCodes) ? locals.enabledCountryCodes.map(function (x) { return String(x).toUpperCase(); }) : []; var dbOff = locals.databaseAvailable === false; %>
+<link rel="stylesheet" href="<%= bp %>/css/admincountries.css?v=ac-1">
+<form method="post" action="<%= bp %>/admin/countries" class="stack ac" data-admin-countries>
+<input type="hidden" name="_csrf" value="<%= locals.csrfToken || '' %>">
+<section class="panel"><h2>Pays proposés aux visiteurs</h2><p class="muted">Cochez les pays affichés dans le sélecteur d’indicatif du formulaire de contact. Si aucun pays n’est coché, l’envoi du formulaire est désactivé sur le site. Les territoires sans indicatif attribué restent visibles mais non sélectionnables.</p>
+<div class="ac-bar"><input type="search" placeholder="Rechercher par nom, code ISO ou indicatif" aria-label="Rechercher un pays" data-ac-q>
+<button type="button" data-ac-all>Sélectionner tous les pays (<%= rows.length %>)</button><button type="button" data-ac-none>Tout décocher (<%= rows.length %>)</button>
+<span class="ac-count" aria-live="polite" data-ac-count><%= rows.filter(function (c) { return en.indexOf(String(c.iso).toUpperCase()) >= 0; }).length %> / <%= rows.length %> pays cochés</span></div></section>
+<ul class="ac-list"><% rows.forEach(function (c) { var iso = String(c.iso).toUpperCase(); %><li data-k="<%= (c.fr + ' ' + iso + ' ' + (c.dial || '')) %>"><label><input type="checkbox" name="countryCodes" value="<%= iso %>"<%= en.indexOf(iso) >= 0 ? ' checked' : '' %>><img src="<%= bp %>/assets/flags/<%= iso.toLowerCase() %>.png" width="24" height="16" alt="" loading="lazy" decoding="async"><span class="ac-n"><%= c.fr %> <small>(<%= iso %>)</small></span><span class="ac-d"><%- c.dial ? '' : '<i>Pas d’indicatif — affiché non sélectionnable</i>' %><%= c.dial || '' %></span></label></li><% }); %></ul>
+<p class="ac-none" hidden data-ac-empty>Aucun pays ne correspond à la recherche.</p>
+<div class="row sticky"><button type="submit" class="btn"<%= dbOff ? ' disabled' : '' %>>Enregistrer les pays</button></div>
+</form>
+<script src="<%= bp %>/js/admin-countries.js?v=ac-1"></script>
+<%- include('partials/bottom') %>

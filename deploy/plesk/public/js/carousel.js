@@ -1,6 +1,7 @@
 /* Generic carousel controller (rev car-3; [data-car-cards] = multi-card step mode): every [data-car] gets independent state; slides stacked without JS. */
 (function(){
 function initCar(car,ci){
+  var t=window.bcpT||function(value){return value};
   var track=car.querySelector('.car-track'),slides=[].slice.call(car.querySelectorAll('.car-slide'));
   var bar=car.querySelector('.car-bar'),prev=car.querySelector('.car-prev'),next=car.querySelector('.car-next');
   var dots=[].slice.call(car.querySelectorAll('.car-dot')),play=car.querySelector('.car-play'),status=car.querySelector('.car-status');
@@ -49,7 +50,7 @@ function initCar(car,ci){
     if(cards)track.style.setProperty('--x',slides[i].offsetLeft-slides[0].offsetLeft);
     slides.forEach(function(s,j){setInert(s,cards?(j<i||j>=i+vis):j!==i)});
     dots.forEach(function(d,j){j===i?d.setAttribute('aria-current','true'):d.removeAttribute('aria-current')});
-    if(announce&&status){var t=slides[i].getAttribute('data-car-title')||((slides[i].querySelector('h2,h3')||{}).textContent)||'';status.textContent=noun+' '+(i+1)+' sur '+n+(t?' : '+t.trim():'')}
+    if(announce&&status){var title=slides[i].getAttribute('data-car-title')||((slides[i].querySelector('h2,h3')||{}).textContent)||'';status.textContent=t('{noun} {index} sur {total} : {title}',{noun:t(noun),index:i+1,total:n,title:title.trim()})}
     fit();
     if(focusInside&&dots[i])dots[i].focus();
     reveal(slides[i]);
@@ -70,7 +71,7 @@ function initCar(car,ci){
     clearTimeout(timer);timer=null;
     if(running())timer=setTimeout(function(){go(i+1,false);schedule()},DELAY);
   }
-  function syncPlay(){if(!play)return;play.textContent=userPaused?'Lecture':'Pause';play.setAttribute('aria-pressed',userPaused?'true':'false');play.setAttribute('aria-label',userPaused?'Reprendre le défilement automatique':'Mettre en pause le défilement automatique')}
+  function syncPlay(){if(!play)return;play.textContent=t(userPaused?'Lecture':'Pause');play.setAttribute('aria-pressed',userPaused?'true':'false');play.setAttribute('aria-label',t(userPaused?'Reprendre le défilement automatique':'Mettre en pause le défilement automatique'))}
   function manual(k){go(k,true);schedule()}
 
   if(prev)prev.addEventListener('click',function(){manual(i-1)});

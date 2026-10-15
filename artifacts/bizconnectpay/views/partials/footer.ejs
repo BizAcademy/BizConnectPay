@@ -11,16 +11,16 @@
   <div class="ft-in">
     <div class="ft-top">
       <div class="ft-brand">
-        <a class="logo ft-logo" href="#accueil" aria-label="BizConnectPay – accueil"><img src="<%= basePath %>/assets/icon.webp" alt="" width="34" height="34"><span class="wm">BizConnect<b>Pay</b></span></a>
-        <p class="ft-tag">Payments without borders</p>
+        <a class="logo ft-logo" href="#accueil" aria-label="<%= t("BizConnectPay – accueil") %>"><img src="<%= basePath %>/assets/icon.webp" alt="" width="34" height="34"><span class="wm">BizConnect<b>Pay</b></span></a>
+        <p class="ft-tag"><%= t("Paiements sans frontières") %></p>
       </div>
-      <nav class="ft-nav" aria-label="Tarifs et informations légales">
-        <a href="#tarifs">Tarifs</a>
-        <a href="#confidentialite">Politique de confidentialité</a>
-        <a href="#cgu">Termes et conditions</a>
-        <a href="#mentions">Mentions légales</a>
-        <a href="#cookies">Cookies</a>
-        <% if (s.api_docs_url) { %><a href="<%= s.api_docs_url %>" target="_blank" rel="noopener">Documentation API</a><% } %>
+      <nav class="ft-nav" aria-label="<%= t("Tarifs et informations légales") %>">
+        <a href="#tarifs"><%= t("Tarifs") %></a>
+        <a href="#confidentialite"><%= t("Politique de confidentialité") %></a>
+        <a href="#cgu"><%= t("Termes et conditions") %></a>
+        <a href="#mentions"><%= t("Mentions légales") %></a>
+        <a href="#cookies"><%= t("Cookies") %></a>
+        <% if (s.api_docs_url) { %><a href="<%= s.api_docs_url %>" target="_blank" rel="noopener"><%= t("Documentation API") %></a><% } %>
         <a href="#contact">Contact</a>
       </nav>
       <% if (ftTel || ftEmails.length || s.legal_address || waHref) { %>
@@ -33,11 +33,11 @@
       <% } %>
       <% if (ftSocial.length) { %>
       <div class="ft-social">
-        <% ftSocial.forEach(function (n) { %><a href="<%= n.url %>" target="_blank" rel="noopener" aria-label="BizConnectPay sur <%= n.name %>"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="<%= n.d %>"/></svg></a><% }) %>
+        <% ftSocial.forEach(function (n) { %><a href="<%= n.url %>" target="_blank" rel="noopener" aria-label="<%= t('BizConnectPay sur {network}', { network: n.name }) %>"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="<%= n.d %>"/></svg></a><% }) %>
       </div>
       <% } %>
     </div>
     <%- include('footer-legal') %>
   </div>
-  <% if (waHref) { %><a class="ft-wa" href="<%= waHref %>" target="_blank" rel="noopener" aria-label="Nous écrire sur WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.98L2 22l5.17-1.5A9.9 9.9 0 1 0 12.04 2zm0 18.1a8.2 8.2 0 0 1-4.2-1.15l-.3-.18-3.07.9.92-3-.2-.31a8.2 8.2 0 1 1 6.85 3.74zm4.5-6.14c-.25-.12-1.46-.72-1.69-.8-.23-.08-.39-.12-.55.12-.16.25-.63.8-.78.97-.14.16-.29.18-.53.06a6.7 6.7 0 0 1-3.32-2.9c-.25-.43.25-.4.72-1.33.08-.16.04-.3-.02-.43l-.75-1.8c-.2-.47-.4-.4-.55-.41h-.47a.9.9 0 0 0-.65.3 2.74 2.74 0 0 0-.86 2.04 4.76 4.76 0 0 0 1 2.53 10.9 10.9 0 0 0 4.18 3.69c1.55.67 2.16.73 2.94.61.47-.07 1.46-.6 1.66-1.17.2-.58.2-1.07.15-1.17-.06-.1-.22-.16-.47-.28z"/></svg></a><% } %>
+  <% if (waHref) { %><a class="ft-wa" href="<%= waHref %>" target="_blank" rel="noopener" aria-label="<%= t("Nous écrire sur WhatsApp") %>"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.98L2 22l5.17-1.5A9.9 9.9 0 1 0 12.04 2zm0 18.1a8.2 8.2 0 0 1-4.2-1.15l-.3-.18-3.07.9.92-3-.2-.31a8.2 8.2 0 1 1 6.85 3.74zm4.5-6.14c-.25-.12-1.46-.72-1.69-.8-.23-.08-.39-.12-.55.12-.16.25-.63.8-.78.97-.14.16-.29.18-.53.06a6.7 6.7 0 0 1-3.32-2.9c-.25-.43.25-.4.72-1.33.08-.16.04-.3-.02-.43l-.75-1.8c-.2-.47-.4-.4-.55-.41h-.47a.9.9 0 0 0-.65.3 2.74 2.74 0 0 0-.86 2.04 4.76 4.76 0 0 0 1 2.53 10.9 10.9 0 0 0 4.18 3.69c1.55.67 2.16.73 2.94.61.47-.07 1.46-.6 1.66-1.17.2-.58.2-1.07.15-1.17-.06-.1-.22-.16-.47-.28z"/></svg></a><% } %>
 </footer>

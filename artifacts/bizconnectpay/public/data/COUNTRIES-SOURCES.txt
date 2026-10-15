@@ -1,0 +1,18 @@
+Country and territory names:
+https://github.com/mledoze/countries (CC0-1.0)
+https://github.com/mledoze/countries/blob/master/LICENSE
+
+International calling codes:
+https://github.com/google/libphonenumber/blob/master/resources/PhoneNumberMetadata.xml
+(Apache-2.0; factual international numbering metadata)
+https://github.com/google/libphonenumber/blob/master/LICENSE
+
+Small country flag PNG images: https://flagcdn.com/
+https://flagpedia.net/download/api
+Images are stored locally; visitor browsers do not contact the flag service.
+
+The catalog contains 250 countries and territories, including Kosovo.
+Antarctica (AQ) and Heard Island and McDonald Islands (HM) have no assigned
+country calling code in this catalog. They are labeled accordingly rather than
+being assigned an invented telephone prefix.
+Countries sharing an international calling code remain separate ISO choices.

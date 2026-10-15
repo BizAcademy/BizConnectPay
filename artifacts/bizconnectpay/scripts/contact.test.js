@@ -7,7 +7,7 @@ import { validateContact, createContactRouter } from '../src-server/contact-rout
 
 function fixture() {
   return {
-    fullName: 'Utilisateur de test', company: 'Entreprise de test', countryCode: '+237',
+    fullName: 'Utilisateur de test', company: 'Entreprise de test', countryCode: '+237', countryIso: 'CM',
     phone: '600 000 000', email: 'TEST@example.com', sector: 'E-commerce',
     services: ['IN', 'Link'], subject: 'Demande de test', message: 'Message de vérification du formulaire.',
     consent: true, website: '', submissionId: randomUUID(),
@@ -21,7 +21,7 @@ test('Contact validation, bounded fields, consent and service allowlist', () => 
   assert.equal(validateContact({ ...fixture(), company: '' }).company, '');
   for (const bad of [
     { fullName: '' }, { fullName: 'x'.repeat(121) }, { email: 'bad' }, { company: 'x'.repeat(161) },
-    { countryCode: '237' }, { phone: 'abc123456' }, { phone: '1' }, { sector: 'Invalid' },
+    { countryCode: '237' }, { countryIso: 'XX' }, { countryIso: 'FR' }, { phone: 'abc123456' }, { phone: '1' }, { sector: 'Invalid' },
     { services: [] }, { services: ['Unknown'] }, { services: 'IN' }, { subject: '' },
     { message: 'court' }, { message: 'x'.repeat(5001) }, { consent: false },
     { consent: 'true' }, { website: 'spam' }, { submissionId: 'not-a-uuid' },
@@ -49,6 +49,7 @@ test('Contact inserts validated SQL parameters and safely reuses the retry key',
   const keys = new Set();
   let parameters;
   const database = { async execute(sql, values) {
+    if (sql.startsWith('SELECT setting_value')) return [[]];
     assert.match(sql, /INSERT INTO contact_messages/);
     assert.match(sql, /ON DUPLICATE KEY UPDATE/);
     parameters = values;

@@ -1,0 +1,13 @@
+{
+  "Drapeau français": "French flag",
+  "Drapeau anglais": "English flag",
+  "Pays": "Country",
+  "Rechercher un pays, un code ISO ou un indicatif": "Search a country, ISO code or calling code",
+  "Rechercher un pays": "Search a country",
+  "Aucun pays ne correspond à votre recherche.": "No country matches your search.",
+  "Pas d’indicatif attribué": "No calling code assigned",
+  "Indicatif pays : {country}": "Country calling code: {country}",
+  "Liste des pays": "Country list",
+  "Aucun pays n’est disponible pour le moment : l’envoi du formulaire est désactivé. Utilisez les autres moyens de contact ci-dessous.": "No country is available at the moment: form submission is disabled. Please use the other contact options below.",
+  "Aucun pays": "No country"
+}

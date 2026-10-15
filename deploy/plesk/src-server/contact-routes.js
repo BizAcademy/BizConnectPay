@@ -2,6 +2,7 @@ import express from 'express';
 import { rateLimit } from 'express-rate-limit';
 import { pool } from './database.js';
 import { httpError, validEmail } from './security.js';
+import { countryByIso, readEnabledCountryCodes } from './countries.js';
 
 export const contactSectors = [
   'E-commerce', 'Services et conseil', 'Fintech et finance', 'Télécommunications',
@@ -27,6 +28,11 @@ export function validateContact(body) {
   const company = text('company', 160, 0);
   const countryCode = text('countryCode', 5);
   if (!/^\+\d{1,4}$/.test(countryCode)) throw httpError(400, 'Choisissez un indicatif téléphonique valide.');
+  const countryIso = typeof body.countryIso === 'string' ? body.countryIso : '';
+  const country = countryByIso(countryIso);
+  if (!country || !country.dial || country.dial !== countryCode) {
+    throw httpError(400, 'Veuillez choisir un pays valide dans la liste.');
+  }
   const rawPhone = text('phone', 32);
   const phone = rawPhone.replace(/\D/g, '');
   if (!/^[+\d\s().-]+$/.test(rawPhone) || phone.length < 6 || phone.length > 15 ||
@@ -49,7 +55,7 @@ export function validateContact(body) {
   if (typeof submissionId !== 'string' || !/^[a-f\d]{8}-[a-f\d]{4}-4[a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i.test(submissionId)) {
     throw httpError(400, 'Identifiant de demande invalide. Rechargez la page.');
   }
-  return { fullName, company, countryCode, phone, email, sector, services, subject, message, submissionId };
+  return { fullName, company, countryCode, countryIso, phone, email, sector, services, subject, message, submissionId };
 }
 
 export function createContactRouter(getPool = () => pool) {
@@ -57,7 +63,9 @@ export function createContactRouter(getPool = () => pool) {
   router.use((req, res, next) => { res.set('Cache-Control', 'no-store'); next(); });
   router.post('/', rateLimit({
     windowMs: 15 * 60 * 1000, limit: 5, standardHeaders: 'draft-7', legacyHeaders: false,
-    message: { error: 'Trop de demandes. Réessayez dans 15 minutes.' },
+    handler: (req, res) => res.status(429).json({
+      error: (req.t || (value => value))('Trop de demandes. Réessayez dans 15 minutes.'),
+    }),
   }), async (req, res) => {
     if (!req.is('application/json')) throw httpError(415, 'Envoyez le formulaire au format JSON.');
     const origin = req.get('Origin');
@@ -69,8 +77,12 @@ export function createContactRouter(getPool = () => pool) {
     const data = validateContact(req.body);
     const database = getPool();
     if (!database) return res.status(503).json({
-      error: 'Le formulaire est temporairement indisponible. Votre message n’a pas été enregistré. Réessayez plus tard ou utilisez les coordonnées affichées.',
+      error: (req.t || (value => value))('Le formulaire est temporairement indisponible. Votre message n’a pas été enregistré. Réessayez plus tard ou utilisez les coordonnées affichées.'),
     });
+    const enabled = await readEnabledCountryCodes(database);
+    if (!enabled.includes(data.countryIso)) {
+      throw httpError(400, 'Ce pays n’est plus disponible. Rechargez la page et choisissez un pays proposé.');
+    }
     const [result] = await database.execute(
       `INSERT INTO contact_messages
         (submission_key, full_name, company, country_code, phone, email, sector, services, subject, message)
@@ -80,7 +92,7 @@ export function createContactRouter(getPool = () => pool) {
         data.sector, JSON.stringify(data.services), data.subject, data.message],
     );
     res.status(result.affectedRows === 1 ? 201 : 200).json({
-      message: 'Votre demande a bien été enregistrée. Notre équipe pourra vous recontacter.',
+      message: (req.t || (value => value))('Votre demande a bien été enregistrée. Notre équipe pourra vous recontacter.'),
     });
   });
   return router;

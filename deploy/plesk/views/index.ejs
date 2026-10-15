@@ -1,5 +1,8 @@
 <%
   var s = locals.settings || {};
+  var lang = locals.lang === 'en' ? 'en' : 'fr';
+  var uiTranslations = locals.uiTranslations || {};
+  var t = locals.t || function (v, p) { var out = String(v == null ? '' : v); if (p) out = out.replace(/\{(\w+)\}/g, function (m, k) { return Object.prototype.hasOwnProperty.call(p, k) ? String(p[k]) : m; }); return out; };
   var basePath = locals.basePath || '';
   var theme = locals.theme || '';
   var media = locals.media || {};
@@ -11,9 +14,10 @@
   var ph = function (key, label) {
     var v = s[key];
     if (key === 'legal_email' && !v) v = s.support_email;
-    return v ? _esc(v) : '<span class="ph">' + label + '</span>';
+    return v ? _esc(v) : '<span class="ph">' + _esc(t(label)) + '</span>';
   };
-  var L = { basePath: basePath, theme: theme, media: media, pricingHtml: pricingHtml, s: s, signupHref: signupHref, waHref: waHref, ph: ph };
+  var contactCountries = Array.isArray(locals.contactCountries) ? locals.contactCountries : [];
+  var L = { contactCountries: contactCountries, basePath: basePath, theme: theme, media: media, pricingHtml: pricingHtml, s: s, signupHref: signupHref, waHref: waHref, ph: ph, t: t, lang: lang, uiTranslations: uiTranslations };
 %><%- include('partials/head', L) %><body data-base-path="<%= basePath %>">
 <%- include('partials/header', L) %>
 
@@ -36,4 +40,4 @@
 <%- include('pages/cookies', L) %>
 
 <%- include('partials/footer', L) %>
-<script src="<%= basePath %>/js/main.js?v=motion-5"></script><script src="<%= basePath %>/js/carousel.js?v=car-3"></script><script src="<%= basePath %>/js/contact.js?v=ct-3"></script></body></html>
+<script type="application/json" id="bcp-i18n"><%- JSON.stringify(uiTranslations).replace(/</g, '\\u003c') %></script><script src="<%= basePath %>/js/i18n.js?v=lang-1"></script><script src="<%= basePath %>/js/main.js?v=motion-6"></script><script src="<%= basePath %>/js/carousel.js?v=car-4"></script><script src="<%= basePath %>/js/country-picker.js?v=cp-2"></script><script src="<%= basePath %>/js/contact.js?v=ct-6"></script><script src="<%= basePath %>/js/header-menu.js?v=hm-2"></script></body></html>

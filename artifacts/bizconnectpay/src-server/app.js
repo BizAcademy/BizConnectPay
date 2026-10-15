@@ -11,6 +11,8 @@ import { pool, initializeDatabase, loadPublicData } from './database.js';
 import { MySQLSessionStore } from './mysql-session-store.js';
 import { mediaRouter } from './media-routes.js';
 import { createContactRouter } from './contact-routes.js';
+import { localeMiddleware } from './i18n.js';
+import { contactCountries } from './countries.js';
 import { createAdminRouter } from './admin-routes.js';
 import { slots } from './constants.js';
 import { cleanPricing, validEmail, friendlyError, passwordDigest, httpError } from './security.js';
@@ -56,6 +58,7 @@ export async function createApp() {
   app.set('view engine', 'ejs');
   app.set('views', path.join(rootDir, 'views'));
   const router = express.Router();
+  app.use(localeMiddleware(config));
   app.use(helmet({
     contentSecurityPolicy: {
       directives: {
@@ -78,6 +81,9 @@ export async function createApp() {
     strictTransportSecurity: config.production ? { maxAge: 31536000, includeSubDomains: true } : false,
   }));
   app.use(compression({ filter: (req, res) => req.path.includes('/media/') ? false : compression.filter(req, res) }));
+  // Two independently bounded 60-KiB pricing editors can expand up to 3× in form encoding.
+  app.use(`${config.basePath}/admin/pricing`, express.urlencoded({ extended: false, limit: '384kb', parameterLimit: 40 }));
+  app.use(`${config.basePath}/admin/countries`, express.urlencoded({ extended: false, limit: '16kb', parameterLimit: 300 }));
   app.use(express.urlencoded({ extended: false, limit: '128kb', parameterLimit: 40 }));
   app.use(express.json({ limit: '16kb' }));
   app.use((req, res, next) => {
@@ -137,7 +143,10 @@ export async function createApp() {
     // Only comparison previews can explicitly force a theme; normal traffic follows the original OS rules.
     const theme = config.preview && ['light', 'dark'].includes(req.query.theme) ? req.query.theme : '';
     res.set('Cache-Control', 'no-store');
-    res.render('index', { ...data, pricingHtml: cleanPricing(data.pricingHtml), theme });
+    res.render('index', {
+      ...data, contactCountries: contactCountries(data.settings, req.lang),
+      pricingHtml: cleanPricing(req.lang === 'en' ? data.pricingHtmlEn : data.pricingHtml), theme,
+    });
   });
   app.use(config.basePath || '/', router);
   app.use((req, res, next) => next(httpError(404, 'Cette page n’existe pas.')));
@@ -154,7 +163,7 @@ export async function createApp() {
     }
     if (req.path.endsWith('/api/subscribe') || req.path.endsWith('/contact-request')) {
       res.set('Cache-Control', 'no-store');
-      return res.status(error.status || 503).json({ error: friendlyError(error) });
+      return res.status(error.status || 503).json({ error: req.t(friendlyError(error)) });
     }
     if (req.session?.admin && req.method === 'POST' && error.status !== 403) {
       req.session.flash = { type: 'error', message: friendlyError(error) };
@@ -165,7 +174,7 @@ export async function createApp() {
       });
     }
     const status = error.status || (error.type === 'entity.too.large' ? 413 : 500);
-    res.status(status).render('error', { status, message: friendlyError({ ...error, status, message: error.message }), backUrl: `${config.basePath}/` });
+    res.status(status).render('error', { status, message: req.t(friendlyError({ ...error, status, message: error.message })), backUrl: `${config.basePath}/` });
   });
   app.locals.close = async () => {
     store?.close();

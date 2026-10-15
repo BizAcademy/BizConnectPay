@@ -1,35 +1,35 @@
 <%
   var hasRates = !!(pricingHtml && String(pricingHtml).replace(/<[^>]*>/g,'').trim());
-  var priceLabel = hasRates ? 'Voir la grille' : 'Sur devis';
+  var priceLabel = hasRates ? t('Voir la grille') : t('Sur devis');
   var startHref = s.signup_url ? signupHref : '#services';
 %><section id="tarifs" class="pg"><main class="px">
-<header class="px-hero"><span class="px-over">Tarifs · IN · OUT · Link · Virtual</span><h1>Une tarification <span>pensée pour vous.</span></h1><p>Quatre solutions pour encaisser, payer et vous développer en Afrique. Les frais applicables dépendent de la solution, du pays et du moyen de paiement.</p>
-<ul class="px-strip"><li><b>IN</b><span>Encaisser</span></li><li><b>OUT</b><span>Envoyer</span></li><li><b>Link</b><span>Collecter</span></li><li><b>Virtual</b><span>Régler en ligne</span></li></ul></header>
+<header class="px-hero"><span class="px-over"><%= t("Tarifs · IN · OUT · Link · Virtual") %></span><h1><%= t("Une tarification") %> <span><%= t("pensée pour vous.") %></span></h1><p><%= t("Quatre solutions pour encaisser, payer et vous développer en Afrique. Les frais applicables dépendent de la solution, du pays et du moyen de paiement.") %></p>
+<ul class="px-strip"><li><b>IN</b><span><%= t("Encaisser") %></span></li><li><b>OUT</b><span><%= t("Envoyer") %></span></li><li><b>Link</b><span><%= t("Collecter") %></span></li><li><b>Virtual</b><span><%= t("Régler en ligne") %></span></li></ul></header>
 
-<div class="px-k">Tarification</div><h2>Des frais simples et clairs</h2><p class="px-lead">Chaque solution a sa propre grille. Consultez les frais en vigueur ci-dessous ou demandez un devis adapté à votre activité.</p>
+<div class="px-k"><%= t("Tarification") %></div><h2><%= t("Des frais simples et clairs") %></h2><p class="px-lead"><%= t("Chaque solution a sa propre grille. Consultez les frais en vigueur ci-dessous ou demandez un devis adapté à votre activité.") %></p>
 <div class="px-cards">
-<article class="px-card"><small>Encaissement</small><h3>BizConnectPay-IN</h3><div class="px-price"><%= priceLabel %></div><p>Recevez les paiements de vos clients en ligne.</p><ul><li>Mobile Money</li><li>Cartes bancaires</li><li>Portefeuilles électroniques</li></ul></article>
-<article class="px-card"><small>Envois</small><h3>BizConnectPay-OUT</h3><div class="px-price"><%= priceLabel %></div><p>Réglez bénéficiaires, fournisseurs et équipes.</p><ul><li>Bénéficiaires multiples</li><li>Envois simples et sécurisés</li></ul></article>
-<article class="px-card hi"><small>Sans intégration</small><h3>BizConnectPay Link</h3><div class="px-price"><%= priceLabel %></div><p>Créez un lien, partagez-le, soyez payé.</p><ul><li>E-mail, SMS, WhatsApp</li><li>Réseaux sociaux</li><li>Aucune ligne de code</li></ul></article>
-<article class="px-card"><small>Cartes virtuelles</small><h3>BizConnectPay Virtual</h3><div class="px-price"><%= priceLabel %></div><p>Réglez vos achats et abonnements en ligne.</p><ul><li>Achats en ligne</li><li>Abonnements</li></ul></article>
+<article class="px-card"><small><%= t("Encaissement") %></small><h3>BizConnectPay-IN</h3><div class="px-price"><%= priceLabel %></div><p><%= t("Recevez les paiements de vos clients en ligne.") %></p><ul><li>Mobile Money</li><li><%= t("Cartes bancaires") %></li><li><%= t("Portefeuilles électroniques") %></li></ul></article>
+<article class="px-card"><small><%= t("Envois") %></small><h3>BizConnectPay-OUT</h3><div class="px-price"><%= priceLabel %></div><p><%= t("Réglez bénéficiaires, fournisseurs et équipes.") %></p><ul><li><%= t("Bénéficiaires multiples") %></li><li><%= t("Envois simples et sécurisés") %></li></ul></article>
+<article class="px-card hi"><small><%= t("Sans intégration") %></small><h3>BizConnectPay Link</h3><div class="px-price"><%= priceLabel %></div><p><%= t("Créez un lien, partagez-le, soyez payé.") %></p><ul><li><%= t("E-mail, SMS, WhatsApp") %></li><li><%= t("Réseaux sociaux") %></li><li><%= t("Aucune ligne de code") %></li></ul></article>
+<article class="px-card"><small><%= t("Cartes virtuelles") %></small><h3>BizConnectPay Virtual</h3><div class="px-price"><%= priceLabel %></div><p><%= t("Réglez vos achats et abonnements en ligne.") %></p><ul><li><%= t("Achats en ligne") %></li><li><%= t("Abonnements") %></li></ul></article>
 </div>
 
-<div class="px-k" id="tarifs-grille">Grille en vigueur</div><h2>Nos frais par service et par pays</h2>
-<div class="px-rates doc"><% if (hasRates) { %><%- pricingHtml %><% } else { %><div class="px-empty"><span class="px-tag">Tarifs à confirmer</span><p class="mut" style="margin:0">La grille détaillée sera publiée prochainement. En attendant, nos tarifs sont communiqués sur devis.</p></div><% } %></div>
+<div class="px-k" id="tarifs-grille"><%= t("Grille en vigueur") %></div><h2><%= t("Nos frais par service et par pays") %></h2>
+<div class="px-rates doc"><% if (hasRates) { %><%- pricingHtml %><% } else { %><div class="px-empty"><span class="px-tag"><%= t("Tarifs à confirmer") %></span><p class="mut" style="margin:0"><%= t("La grille détaillée sera publiée prochainement. En attendant, nos tarifs sont communiqués sur devis.") %></p></div><% } %></div>
 
 <div class="px-grid" style="margin-top:16px">
-<div class="px-info"><h3>Selon la solution</h3><p>IN, OUT, Link et Virtual disposent chacune de leurs propres conditions.</p></div>
-<div class="px-info"><h3>Selon le pays</h3><p>Les frais peuvent varier d'un pays à l'autre parmi plus de 20 pays d'Afrique.</p></div>
-<div class="px-info"><h3>Selon le moyen de paiement</h3><p>Mobile Money, carte bancaire ou portefeuille électronique.</p></div>
+<div class="px-info"><h3><%= t("Selon la solution") %></h3><p><%= t("IN, OUT, Link et Virtual disposent chacune de leurs propres conditions.") %></p></div>
+<div class="px-info"><h3><%= t("Selon le pays") %></h3><p><%= t("Les frais peuvent varier d'un pays à l'autre parmi plus de 20 pays d'Afrique.") %></p></div>
+<div class="px-info"><h3><%= t("Selon le moyen de paiement") %></h3><p><%= t("Mobile Money, carte bancaire ou portefeuille électronique.") %></p></div>
 </div>
 
-<div class="px-k">Questions fréquentes</div><h2>Vos questions sur nos tarifs</h2>
+<div class="px-k"><%= t("Questions fréquentes") %></div><h2><%= t("Vos questions sur nos tarifs") %></h2>
 <div class="px-faq">
-<details><summary>Comment sont calculés les frais ?</summary><p>Ils dépendent de la solution utilisée, du pays et du moyen de paiement choisi par votre client. La grille en vigueur figure sur cette page.</p></details>
-<details><summary>Les frais sont-ils les mêmes pour les quatre solutions ?</summary><p>Non. BizConnectPay-IN, BizConnectPay-OUT, BizConnectPay Link et BizConnectPay Virtual ont chacune leur propre tarification.</p></details>
-<details><summary>Puis-je obtenir un tarif adapté à mon activité ?</summary><p>Oui. Contactez notre équipe pour une proposition sur devis.</p></details>
-<details><summary>Ai-je besoin d'une intégration technique ?</summary><p>Non pour BizConnectPay Link : un lien de paiement suffit. Une intégration à votre site reste possible avec notre équipe.</p></details>
+<details><summary><%= t("Comment sont calculés les frais ?") %></summary><p><%= t("Ils dépendent de la solution utilisée, du pays et du moyen de paiement choisi par votre client. La grille en vigueur figure sur cette page.") %></p></details>
+<details><summary><%= t("Les frais sont-ils les mêmes pour les quatre solutions ?") %></summary><p><%= t("Non. BizConnectPay-IN, BizConnectPay-OUT, BizConnectPay Link et BizConnectPay Virtual ont chacune leur propre tarification.") %></p></details>
+<details><summary><%= t("Puis-je obtenir un tarif adapté à mon activité ?") %></summary><p><%= t("Oui. Contactez notre équipe pour une proposition sur devis.") %></p></details>
+<details><summary><%= t("Ai-je besoin d'une intégration technique ?") %></summary><p><%= t("Non pour BizConnectPay Link : un lien de paiement suffit. Une intégration à votre site reste possible avec notre équipe.") %></p></details>
 </div>
 
-<div class="px-cta"><h2>Prêt à vous lancer ?</h2><p>Choisissez votre solution ou échangez avec notre équipe pour connaître les frais applicables à votre activité.</p><div class="hero-act"><a class="btn" href="<%= startHref %>"><%= s.signup_url ? 'Commencer maintenant' : 'Découvrir nos services' %></a><% if (waHref) { %><a class="btn o" href="<%= waHref %>" target="_blank" rel="noopener">Demander un devis</a><% } else if (s.support_email) { %><a class="btn o" href="mailto:<%= s.support_email %>">Demander un devis</a><% } %></div></div>
+<div class="px-cta"><h2><%= t("Prêt à vous lancer ?") %></h2><p><%= t("Choisissez votre solution ou échangez avec notre équipe pour connaître les frais applicables à votre activité.") %></p><div class="hero-act"><a class="btn" href="<%= startHref %>"><%= s.signup_url ? t('Commencer maintenant') : t('Découvrir nos services') %></a><% if (waHref) { %><a class="btn o" href="<%= waHref %>" target="_blank" rel="noopener"><%= t("Demander un devis") %></a><% } else if (s.support_email) { %><a class="btn o" href="mailto:<%= s.support_email %>"><%= t("Demander un devis") %></a><% } %></div></div>
 </main></section>

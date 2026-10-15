@@ -35,8 +35,11 @@ export async function loadPublicData() {
   const settings = Object.fromEntries(settingRows.map(row => [row.setting_key, row.setting_value]));
   return {
     settings,
-    media: Object.fromEntries(mediaRows.map(row => [row.slot_key, row])),
+    media: Object.fromEntries(mediaRows.map(row => [row.slot_key, {
+      ...row, alt_en: settings[`${row.slot_key}_alt_en`] || 'BizConnectPay illustration',
+    }])),
     pricingHtml: settings.pricing_html || '',
+    pricingHtmlEn: settings.pricing_html_en || '',
   };
 }
 

@@ -1,0 +1,15 @@
+.adm .ac{display:grid;gap:16px}
+.adm .ac-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.adm .ac-bar input[type=search]{flex:1 1 240px;font:inherit;padding:10px 14px;border:1px solid #dfe5ee;border-radius:10px;min-height:44px}
+.adm .ac-bar button{font:inherit;font-size:.85rem;padding:9px 14px;border-radius:10px;border:1px solid #cfd9e8;background:#f4f7fb;color:#0b1f4b;cursor:pointer}
+.adm .ac-count{font-weight:600;color:#0b1f4b;font-size:.9rem}
+.adm .ac-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px}
+.adm .ac-list li[hidden]{display:none}
+.adm .ac-list label{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;border:1px solid #edf1f6;cursor:pointer;font-size:.88rem}
+.adm .ac-list label:has(input:checked){background:#eaf3ff;border-color:#b8d3ff}
+.adm .ac-list input{width:18px;height:18px;accent-color:#0066ff;flex:none}
+.adm .ac-list img{width:24px;height:16px;object-fit:cover;border-radius:3px;box-shadow:0 0 0 1px rgba(11,31,75,.12);flex:none;background:#eef2f8}
+.adm .ac-n{flex:1;min-width:0}
+.adm .ac-d{color:#5b6b84;font-size:.8rem;white-space:nowrap}
+.adm .ac-d i{font-size:.72rem}
+.adm .ac-none{color:#5b6b84;font-size:.88rem}
