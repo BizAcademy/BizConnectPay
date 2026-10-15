@@ -1,35 +1,47 @@
 <%
-  var ctEsc = function (v) { return String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); };
   var ctTrim = function (v) { return String(v == null ? '' : v).trim(); };
-  var ctMailOk = function (e) { return /^[^\s@<>"']+@[^\s@<>"']+\.[^\s@<>"']+$/.test(e); };
-  var ctSupport = ctTrim(s.support_email), ctLegal = ctTrim(s.legal_email);
-  var ctEmails = [];
-  if (ctSupport && ctMailOk(ctSupport)) ctEmails.push({ v: ctSupport, k: ctLegal && ctLegal.toLowerCase() !== ctSupport.toLowerCase() ? 'Support' : 'E-mail' });
-  if (ctLegal && ctMailOk(ctLegal) && (!ctSupport || ctLegal.toLowerCase() !== ctSupport.toLowerCase())) ctEmails.push({ v: ctLegal, k: ctSupport ? 'Questions légales' : 'E-mail' });
+  var ctMail = ctTrim(s.support_email) || ctTrim(s.legal_email);
+  if (!/^[^\s@<>"']+@[^\s@<>"']+\.[^\s@<>"']+$/.test(ctMail)) ctMail = '';
   var ctPhone = ctTrim(s.legal_phone);
   var ctTel = ctPhone.replace(/[^\d+]/g, '').replace(/(?!^)\+/g, '');
   if (ctTel.replace(/\D/g, '').length < 6) ctTel = '';
   var ctWa = /^https?:\/\//i.test(String(waHref || '')) ? waHref : '';
-  var ctAddr = ctTrim(s.legal_address);
-  var ctCompany = ctTrim(s.legal_company);
-  var ctAny = !!(ctEmails.length || ctTel || ctWa || ctAddr);
-  var ctIco = {
-    mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5L12 13l8.5-6.5"/>',
-    tel: '<rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18h2"/>',
-    wa: '<path d="M4 20l1.2-3.6A8 8 0 1 1 8 19z"/><path d="M9.5 9.5c0 2.5 2.5 5 5 5"/>',
-    pin: '<path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.2"/>'
-  };
+  var ctImg = basePath + '/assets/contact-support-';
+  var ctCodes = [
+    ['+237','Cameroun'],['+225','Côte d\u2019Ivoire'],['+221','Sénégal'],['+229','Bénin'],['+228','Togo'],['+226','Burkina Faso'],['+223','Mali'],['+227','Niger'],['+224','Guinée'],['+241','Gabon'],['+242','Congo'],['+243','RD Congo'],['+236','Centrafrique'],['+235','Tchad'],['+240','Guinée équatoriale'],['+250','Rwanda'],['+257','Burundi'],['+261','Madagascar'],['+234','Nigeria'],['+233','Ghana'],['+254','Kenya'],['+255','Tanzanie'],['+256','Ouganda'],['+27','Afrique du Sud'],['+212','Maroc'],['+216','Tunisie'],['+213','Algérie'],['+20','Égypte'],
+    ['+33','France'],['+32','Belgique'],['+41','Suisse'],['+1','États-Unis / Canada'],['+44','Royaume-Uni'],['+49','Allemagne'],['+971','Émirats arabes unis'],['+86','Chine']
+  ];
+  var ctSectors = ['E-commerce','Services et conseil','Fintech et finance','Télécommunications','Commerce et distribution','Transport et logistique','Tourisme et voyages','Technologie','Association et ONG','Autre'];
+  var ctServices = [['IN','Encaissements'],['OUT','Paiements sortants'],['Link','Liens de paiement'],['Virtual','Cartes virtuelles']];
 %><section id="contact" class="pg"><main class="ct">
-<header class="ct-hero ct-rv"><span class="ct-over">Contact</span><h1>Parlons de votre <span>activité.</span></h1><p>Une question sur l'encaissement, les envois, les liens de paiement ou les cartes virtuelles ? Écrivez à l'équipe <%= ctCompany || 'BizConnectPay' %> par le canal qui vous convient.</p></header>
-<% if (ctAny) { %>
-<ul class="ct-grid">
-<% if (ctWa) { %><li class="ct-card ct-hi ct-rv"><span class="ct-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><%- ctIco.wa %></svg></span><small>WhatsApp</small><h2>Échanger par message</h2><a class="btn sm" href="<%= ctWa %>" target="_blank" rel="noopener noreferrer">Ouvrir WhatsApp <span class="ct-sr">(nouvel onglet)</span></a></li><% } %>
-<% ctEmails.forEach(function (e) { %><li class="ct-card ct-rv"><span class="ct-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><%- ctIco.mail %></svg></span><small><%= e.k %></small><h2>Écrire un e-mail</h2><a class="ct-val" href="mailto:<%= e.v %>"><%= e.v %></a></li><% }) %>
-<% if (ctTel) { %><li class="ct-card ct-rv"><span class="ct-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><%- ctIco.tel %></svg></span><small>Téléphone</small><h2>Nous appeler</h2><a class="ct-val" href="tel:<%= ctTel %>"><%= ctPhone %></a></li><% } %>
-<% if (ctAddr) { %><li class="ct-card ct-rv"><span class="ct-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><%- ctIco.pin %></svg></span><small>Adresse</small><h2><%= ctCompany ? 'Siège' : 'Notre adresse' %></h2><address class="ct-val"><% if (ctCompany) { %><b><%= ctCompany %></b><br><% } %><%= ctAddr %></address></li><% } %>
-</ul>
-<% } else { %>
-<div class="ct-empty ct-rv" role="status"><span class="ct-tag">Coordonnées à venir</span><h2>Nos canaux de contact seront publiés prochainement</h2><p>Aucune coordonnée publique n'est disponible pour le moment. En attendant, découvrez nos solutions et nos tarifs.</p><div class="hero-act"><a class="btn" href="#services">Découvrir nos services</a><a class="btn o" href="#tarifs">Voir les tarifs</a></div></div>
-<% } %>
-<div class="ct-topics ct-rv"><h2><%= ctAny ? "Vous pouvez nous écrire pour" : "Nos quatre solutions" %></h2><ul><li><b>IN</b>Encaisser par Mobile Money, carte ou portefeuille</li><li><b>OUT</b>Payer bénéficiaires, fournisseurs et équipes</li><li><b>Link</b>Créer et partager des liens de paiement</li><li><b>Virtual</b>Utiliser des cartes virtuelles</li></ul><p class="ct-more"><a href="#tarifs">Voir les tarifs <span aria-hidden="true">&rarr;</span></a><a href="#services">Nos services <span aria-hidden="true">&rarr;</span></a></p></div>
+<figure class="ct-photo">
+  <img src="<%= ctImg %>960.webp" srcset="<%= ctImg %>480.webp 480w, <%= ctImg %>960.webp 960w, <%= ctImg %>1440.webp 1440w" sizes="(min-width:900px) 45vw, 100vw" width="960" height="1280" alt="Illustration du service client BizConnectPay" loading="lazy" decoding="async">
+</figure>
+<div class="ct-side">
+<header class="ct-head"><h1>Contactez le service client</h1><p>Un projet, une question sur IN, OUT, Link ou Virtual ? Décrivez votre besoin : votre demande est enregistrée et transmise à notre équipe, qui pourra vous recontacter.</p></header>
+<form class="ct-form" id="contact-form" method="post" action="<%= basePath %>/contact-request" novalidate>
+  <noscript><p>Activez JavaScript pour envoyer ce formulaire, ou utilisez les coordonnées de contact ci-dessous lorsqu’elles sont disponibles.</p></noscript>
+  <div class="ct-hp" aria-hidden="true"><label for="ct-website">Site web</label><input id="ct-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+  <div class="ct-row">
+    <div class="ct-f"><label for="ct-name">Nom complet <i aria-hidden="true">*</i></label><input id="ct-name" name="fullName" type="text" required maxlength="120" autocomplete="name" placeholder="Votre nom"></div>
+    <div class="ct-f"><label for="ct-company">Entreprise <small>(facultatif)</small></label><input id="ct-company" name="company" type="text" maxlength="160" autocomplete="organization" placeholder="Nom de l'entreprise"></div>
+  </div>
+  <div class="ct-row">
+    <div class="ct-f"><label for="ct-phone">WhatsApp / Téléphone <i aria-hidden="true">*</i></label>
+      <div class="ct-tel"><label class="ct-sr" for="ct-cc">Indicatif pays</label><select id="ct-cc" name="countryCode" required autocomplete="tel-country-code"><% ctCodes.forEach(function (c) { %><option value="<%= c[0] %>"><%= c[0] %> — <%= c[1] %></option><% }) %></select><input id="ct-phone" name="phone" type="tel" inputmode="tel" required maxlength="24" autocomplete="tel-national" placeholder="Numéro"></div></div>
+    <div class="ct-f"><label for="ct-email">E-mail professionnel <i aria-hidden="true">*</i></label><input id="ct-email" name="email" type="email" required maxlength="254" autocomplete="email" placeholder="vous@entreprise.com"></div>
+  </div>
+  <div class="ct-f"><label for="ct-sector">Secteur d'activité <i aria-hidden="true">*</i></label><select id="ct-sector" name="sector" required><option value="">Sélectionnez votre secteur</option><% ctSectors.forEach(function (x) { %><option value="<%= x %>"><%= x %></option><% }) %></select></div>
+  <fieldset class="ct-f ct-svc" id="ct-svc"><legend>Services souhaités <i aria-hidden="true">*</i></legend>
+    <div class="ct-pills"><% ctServices.forEach(function (x) { %><label class="ct-pill"><input type="checkbox" name="services" value="<%= x[0] %>"><span><b><%= x[0] %></b><%= x[1] %></span></label><% }) %></div>
+  </fieldset>
+  <div class="ct-f"><label for="ct-subject">Objet <i aria-hidden="true">*</i></label><input id="ct-subject" name="subject" type="text" required maxlength="180" placeholder="Titre de votre demande"></div>
+  <div class="ct-f"><label for="ct-message">Message <i aria-hidden="true">*</i></label><textarea id="ct-message" name="message" required minlength="10" maxlength="5000" rows="5" placeholder="Décrivez votre activité et votre besoin"></textarea><span class="ct-count" id="ct-count" aria-live="off">0 / 5000</span></div>
+  <label class="ct-consent"><input type="checkbox" name="consent" required><span>J'accepte que mes informations soient enregistrées pour traiter ma demande, conformément à la <a href="#confidentialite">politique de confidentialité</a>.</span></label>
+  <div class="ct-status" id="ct-status" role="status" aria-live="polite"></div>
+  <button class="btn ct-submit" type="submit" disabled>Envoyer ma demande</button>
+  <p class="ct-note">Les champs marqués * sont obligatoires. Ce formulaire ne vous inscrit pas à une newsletter.</p>
+</form>
+<% if (ctMail || ctTel || ctWa) { %><ul class="ct-alt" aria-label="Autres moyens de contact"><% if (ctWa) { %><li><a href="<%= ctWa %>" target="_blank" rel="noopener noreferrer">WhatsApp<span class="ct-sr"> (nouvel onglet)</span></a></li><% } %><% if (ctMail) { %><li><a href="mailto:<%= ctMail %>"><%= ctMail %></a></li><% } %><% if (ctTel) { %><li><a href="tel:<%= ctTel %>"><%= ctPhone %></a></li><% } %></ul><% } %>
+</div>
 </main></section>

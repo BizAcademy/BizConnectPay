@@ -1,0 +1,30 @@
+<%- include('partials/top', { title: 'Messages de contact', eyebrow: 'Demandes reçues' }) %>
+<% var bp = locals.basePath || ''; var list = locals.messages || []; %>
+<p class="stat"><b><%= locals.total || 0 %></b> demande<%= locals.total > 1 ? 's' : '' %> reçue<%= locals.total > 1 ? 's' : '' %></p>
+<p class="muted">Les demandes envoyées depuis la page Contact sont conservées ici. Aucun e-mail automatique n’est envoyé.</p>
+<% if (!list.length) { %>
+<section class="panel empty-big"><h2>Aucune demande pour le moment</h2><p class="muted">Les prochains messages du formulaire apparaîtront ici.</p><a class="btn" href="<%= bp %>/#contact" target="_blank" rel="noopener">Voir la page Contact</a></section>
+<% } %>
+<div class="stack">
+<% list.forEach(function (m) { var selected = []; try { selected = JSON.parse(m.services); } catch {} %>
+<details class="panel"><summary><strong><%= m.subject %></strong> — <%= m.full_name %> · <%= new Date(m.created_at).toLocaleString('fr-FR') %></summary>
+<dl>
+<dt>Nom</dt><dd><%= m.full_name %></dd>
+<% if (m.company) { %><dt>Entreprise</dt><dd><%= m.company %></dd><% } %>
+<dt>E-mail</dt><dd><a href="mailto:<%= m.email %>?subject=<%= encodeURIComponent('Re: ' + m.subject) %>"><%= m.email %></a></dd>
+<dt>Téléphone / WhatsApp</dt><dd><a href="tel:<%= m.country_code + m.phone %>"><%= m.country_code %> <%= m.phone %></a></dd>
+<dt>Secteur</dt><dd><%= m.sector %></dd>
+<dt>Services</dt><dd><%= Array.isArray(selected) ? selected.map(function(service) { return 'BizConnectPay ' + service; }).join(', ') : '' %></dd>
+<dt>Message</dt><dd style="white-space:pre-wrap;overflow-wrap:anywhere"><%= m.message %></dd>
+<dt>Accord pour être recontacté</dt><dd><%= new Date(m.consent_at).toLocaleString('fr-FR') %></dd>
+</dl>
+<a class="btn" href="mailto:<%= m.email %>?subject=<%= encodeURIComponent('Re: ' + m.subject) %>">Répondre par e-mail</a>
+</details>
+<% }); %>
+</div>
+<% if (locals.totalPages > 1) { %><nav class="row" aria-label="Pagination des messages">
+<% if (locals.page > 1) { %><a class="btn ghost-btn" href="<%= bp %>/admin/messages?page=<%= locals.page - 1 %>">Précédent</a><% } %>
+<span>Page <%= locals.page %> / <%= locals.totalPages %></span>
+<% if (locals.page < locals.totalPages) { %><a class="btn ghost-btn" href="<%= bp %>/admin/messages?page=<%= locals.page + 1 %>">Suivant</a><% } %>
+</nav><% } %>
+<%- include('partials/bottom') %>

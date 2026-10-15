@@ -10,6 +10,7 @@ import { config, rootDir, missingDbKeys, missingAdminKeys, assertAdminConfig } f
 import { pool, initializeDatabase, loadPublicData } from './database.js';
 import { MySQLSessionStore } from './mysql-session-store.js';
 import { mediaRouter } from './media-routes.js';
+import { createContactRouter } from './contact-routes.js';
 import { createAdminRouter } from './admin-routes.js';
 import { slots } from './constants.js';
 import { cleanPricing, validEmail, friendlyError, passwordDigest, httpError } from './security.js';
@@ -97,6 +98,7 @@ export async function createApp() {
     databaseAvailable, adminAvailable: adminReady,
   }));
   router.use('/media', mediaRouter);
+  router.use('/contact-request', createContactRouter());
 
   const subscribeLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, limit: 10,
@@ -150,7 +152,8 @@ export async function createApp() {
       res.removeHeader('Content-Range');
       if (error.status === 503) res.set('Retry-After', '5');
     }
-    if (req.path.endsWith('/api/subscribe')) {
+    if (req.path.endsWith('/api/subscribe') || req.path.endsWith('/contact-request')) {
+      res.set('Cache-Control', 'no-store');
       return res.status(error.status || 503).json({ error: friendlyError(error) });
     }
     if (req.session?.admin && req.method === 'POST' && error.status !== 403) {

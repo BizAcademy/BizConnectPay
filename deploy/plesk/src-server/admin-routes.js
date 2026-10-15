@@ -79,6 +79,19 @@ export function createAdminRouter(passwordHash) {
     res.redirect(303, `${config.basePath}/admin/login`);
   });
   router.get('/', (req, res) => res.render('admin/dashboard', { activePage: 'dashboard' }));
+  router.get('/messages', async (req, res) => {
+    const requested = Number(req.query.page);
+    const page = Number.isSafeInteger(requested) && requested > 0 ? Math.min(requested, 1000000) : 1;
+    const [[count]] = await pool.execute('SELECT COUNT(*) AS total FROM contact_messages');
+    const total = Number(count.total);
+    const totalPages = Math.max(1, Math.ceil(total / 20));
+    const currentPage = Math.min(page, totalPages);
+    const [messages] = await pool.query(
+      'SELECT * FROM contact_messages ORDER BY created_at DESC, id DESC LIMIT 20 OFFSET ?',
+      [(currentPage - 1) * 20],
+    );
+    res.render('admin/messages', { activePage: 'messages', messages, total, page: currentPage, totalPages });
+  });
 
   router.post('/media/:slot', (req, res, next) => {
     if (!slotKeys.has(req.params.slot)) return next(httpError(404, 'Emplacement média inconnu.'));
