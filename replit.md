@@ -63,3 +63,8 @@ _Populate as you build — sharp edges, "always run X before Y" rules._
 ## Pointers
 
 - See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+
+## Exigences de mise en page (permanentes)
+
+- « Réinventer le paiement, propulser votre croissance » et « Simple. Rapide. Sécurisé. » sont deux panneaux d’un seul carrousel horizontal juste après le hero (défilement toutes les 5 s, contenu en rangée sur ordinateur). Pas de doublon plus bas. `public/js/carousel.js` gère tous les `[data-car]` indépendamment.
+- La page `#tarifs` suit la référence visuelle https://cartevo.co/fr/pricing (`generated-artifacts/cartevo-pricing-reference.png`) adaptée aux quatre solutions, sans inventer de tarifs : le HTML configuré dans l’admin /pricing reste la source des frais, sinon « Sur devis » / « Tarifs à confirmer ».

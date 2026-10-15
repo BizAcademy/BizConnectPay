@@ -2,7 +2,7 @@
 <div class="alert info">Le HTML est nettoyé à l'enregistrement (sanitize-html) : scripts, styles inline, iframes et attributs d'événement sont retirés. Balises conservées : titres, paragraphes, listes, tableaux, liens, gras, italique. Laissez vide pour afficher le texte d'origine.</div>
 <form method="post" action="<%= locals.basePath || '' %>/admin/pricing" class="stack">
 <input type="hidden" name="_csrf" value="<%= locals.csrfToken || '' %>">
-<section class="panel"><label class="fld"><span>Contenu sous le titre « Tarifs »</span><textarea name="html" rows="18" spellcheck="false" class="code" placeholder="<p>Nos tarifs sont transparents.</p>&#10;<table>…</table>"><%= locals.pricingHtml || '' %></textarea></label></section>
+<section class="panel"><label class="fld"><span>Grille des frais (HTML : texte ou tableau), affichée dans la section « Grille en vigueur » de la page Tarifs</span><textarea name="html" rows="18" spellcheck="false" class="code" placeholder="<p>Nos tarifs sont transparents.</p>&#10;<table>…</table>"><%= locals.pricingHtml || '' %></textarea></label></section>
 <div class="row"><button type="submit" class="btn" <%= locals.databaseAvailable === false ? 'disabled' : '' %>>Enregistrer et nettoyer</button><a class="btn ghost-btn" href="<%= locals.basePath || '' %>/#tarifs" target="_blank" rel="noopener">Voir la page ↗</a></div>
 </form>
 <%- include('partials/bottom') %>
