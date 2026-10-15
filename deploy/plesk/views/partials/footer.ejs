@@ -1,6 +1,4 @@
 <%
-  var ftMail = s.support_email || s.legal_email || '';
-  var ftContact = ftMail ? 'mailto:' + ftMail : (waHref || '');
   var ftEmails = [s.support_email, s.legal_email].filter(function (e, i, a) { return e && a.indexOf(e) === i; });
   var ftTel = String(s.legal_phone || '').replace(/[^\d+]/g, '');
   var ftSocial = [
@@ -23,7 +21,7 @@
         <a href="#mentions">Mentions légales</a>
         <a href="#cookies">Cookies</a>
         <% if (s.api_docs_url) { %><a href="<%= s.api_docs_url %>" target="_blank" rel="noopener">Documentation API</a><% } %>
-        <% if (ftContact) { %><a href="<%= ftContact %>"<% if (!ftMail) { %> target="_blank" rel="noopener"<% } %>>Contactez-nous</a><% } %>
+        <a href="#contact">Contact</a>
       </nav>
       <% if (ftTel || ftEmails.length || s.legal_address || waHref) { %>
       <ul class="ft-contact">
