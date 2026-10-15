@@ -17,6 +17,7 @@ Landing page fournie par le propriétaire, reproduite fidèlement dans une appli
 - Le propriétaire utilise Node.js **21.7.3** sur tous ses serveurs ; c’est la version maximale disponible. Ne pas imposer Node.js 22 ou 24 à la livraison Plesk.
 - Plesk : entrée recommandée `app.js`, relais CommonJS vers `server.js`, pour la détection conventionnelle de Passenger ; `npm start` reste `node server.js`.
 - Après toute modification métier, exécuter `pnpm --filter @workspace/bizconnectpay run prepare:plesk` puis `check:plesk` et inclure `deploy/plesk/` dans le commit. Actualiser le verrouillage npm autonome si les dépendances changent.
+- Les médias MySQL gardent leur original. Fournir des variantes responsive allégées aux visiteurs, conserver les GIF animés et prioriser le visuel d’accueil. Sharp est compatible Node.js 21.7.3 ; son ajout nécessite NPM Install une fois dans Plesk, sans build applicatif.
 
 ## Contraintes du propriétaire
 

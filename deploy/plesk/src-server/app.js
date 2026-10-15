@@ -142,6 +142,14 @@ export async function createApp() {
   app.use((error, req, res, next) => {
     logger.error({ code: error.code, status: error.status || 500, route: req.path }, 'Échec de la requête');
     if (res.headersSent) return next(error);
+    if (req.path.includes('/media/')) {
+      res.set('Cache-Control', 'no-store');
+      res.removeHeader('ETag');
+      res.removeHeader('Last-Modified');
+      res.removeHeader('Content-Length');
+      res.removeHeader('Content-Range');
+      if (error.status === 503) res.set('Retry-After', '5');
+    }
     if (req.path.endsWith('/api/subscribe')) {
       return res.status(error.status || 503).json({ error: friendlyError(error) });
     }

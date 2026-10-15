@@ -1,6 +1,7 @@
 import express from 'express';
 import { pool } from './database.js';
 import { httpError } from './security.js';
+import { imageVariant, variantWidth } from './image-variants.js';
 
 export function parseRange(header, size) {
   if (!/^bytes=\d*-\d*$/.test(header)) return null;
@@ -23,15 +24,18 @@ export function parseRange(header, size) {
   return { start, end };
 }
 
-export const mediaRouter = express.Router();
-mediaRouter.get('/:id', async (req, res) => {
+export function createMediaRouter(getPool = () => pool) {
+const router = express.Router();
+router.get('/:id', async (req, res) => {
+  const pool = getPool();
   if (!pool) throw httpError(503, 'Les médias nécessitent une connexion MySQL.');
   if (!/^[1-9]\d{0,19}$/.test(req.params.id)) throw httpError(404, 'Média introuvable.');
   const [rows] = await pool.execute('SELECT id, mime, size, created_at FROM media WHERE id = ?', [req.params.id]);
   if (!rows.length) throw httpError(404, 'Média introuvable.');
   const media = rows[0];
-  const size = Number(media.size);
-  const etag = `"bcp-media-${media.id}"`;
+  let size = Number(media.size);
+  const width = variantWidth(req.query.w, media.mime);
+  const etag = width ? `"bcp-media-${media.id}-w${width}-webp-v1"` : `"bcp-media-${media.id}"`;
   const modified = new Date(media.created_at).toUTCString();
   res.set({
     'Content-Type': media.mime,
@@ -49,6 +53,16 @@ mediaRouter.get('/:id', async (req, res) => {
   }
   const ims = req.get('If-Modified-Since');
   if (!inm && ims && Date.parse(ims) >= Date.parse(modified)) return res.status(304).end();
+  let variant;
+  if (width) {
+    variant = await imageVariant(media, width, async () => {
+      const [originals] = await pool.execute('SELECT data FROM media WHERE id = ?', [req.params.id]);
+      if (!originals.length) throw httpError(404, 'Média supprimé.');
+      return originals[0].data;
+    });
+    size = variant.data.length;
+    res.type(variant.mime);
+  }
   let range = req.get('Range');
   const ifRange = req.get('If-Range');
   if (range && ifRange && ifRange !== etag && ifRange !== modified) range = undefined;
@@ -63,6 +77,7 @@ mediaRouter.get('/:id', async (req, res) => {
   const length = end - start + 1;
   res.set('Content-Length', String(length));
   if (req.method === 'HEAD') return res.end();
+  if (variant) return res.end(variant.data.subarray(start, end + 1));
   // Read only requested bytes from MySQL, not the entire video into memory.
   const [dataRows] = await pool.execute('SELECT SUBSTRING(data, ?, ?) AS bytes FROM media WHERE id = ?', [start + 1, length, req.params.id]);
   if (!dataRows.length) {
@@ -73,3 +88,6 @@ mediaRouter.get('/:id', async (req, res) => {
   }
   return res.end(dataRows[0].bytes);
 });
+return router;
+}
+export const mediaRouter = createMediaRouter();

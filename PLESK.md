@@ -1,5 +1,7 @@
 # BizConnectPay : GitHub → Plesk, sans build sur le serveur
 
+**Mise à jour optimisation des images :** cette version ajoute `sharp` (compatible Node.js 21.7.3). Après **Pull Updates → Deploy Now**, cliquer une fois sur **NPM Install**, puis **Restart App**. Aucun build applicatif n’est nécessaire. Les images MySQL déjà enregistrées sont optimisées automatiquement à la demande ; leurs originaux sont conservés.
+
 La version autonome **`deploy/plesk/` est incluse dans ce dépôt**. Elle contient déjà tout le code JavaScript exécutable, les vues EJS, le CSS, le JavaScript navigateur et les logos. Il n’y a ni TypeScript à compiler, ni Vite, ni commande de build à lancer sur Plesk.
 
 Le dépôt contient aussi l’environnement de développement. **Plesk doit utiliser `deploy/plesk/package.json`, jamais le `package.json` à la racine du dépôt.** Le manifeste autonome ne contient ni workspace pnpm ni dépendance fonctionnelle à Replit.

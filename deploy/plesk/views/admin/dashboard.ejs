@@ -8,7 +8,7 @@
     <div class="slot-head"><div><h2><%= slot.label %></h2><code><%= slot.key %></code></div><span class="tag <%= m ? 'live' : '' %>"><%= m ? (m.kind === 'video' ? 'Vidéo' : 'Image') : 'Maquette d\'origine' %></span></div>
     <div class="preview" data-preview>
       <% if (m) { %>
-        <% if (m.kind === 'video') { %><video src="<%= bp %>/media/<%= m.id %>" controls muted playsinline preload="metadata"></video><% } else { %><img src="<%= bp %>/media/<%= m.id %>" alt="<%= m.alt || '' %>"><% } %>
+        <% if (m.kind === 'video') { %><video src="<%= bp %>/media/<%= m.id %>" controls muted playsinline preload="metadata"></video><% } else { %><img src="<%= bp %>/media/<%= m.id %>?w=480" alt="<%= m.alt || '' %>" loading="lazy" decoding="async"><% } %>
       <% } else { %><div class="empty"><span>Aucun média</span><small>Le rendu d'origine est conservé</small></div><% } %>
     </div>
     <% if (m) { %><p class="meta"><%= m.filename || '' %> · <%= m.mime %></p><% } %>
