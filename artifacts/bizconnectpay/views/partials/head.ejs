@@ -1,7 +1,26 @@
 <!DOCTYPE html>
 <html lang="<%= lang %>"<% if (theme === 'light' || theme === 'dark') { %> data-theme="<%= theme %>"<% } %>><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="icon" href="<%= basePath %>/assets/icon.webp" type="image/webp"><title><%= t('BizConnectPay – Payments without borders') %></title>
+<link rel="icon" href="<%= basePath %>/assets/icon.webp" type="image/webp"><title><%= locals.seo ? seo.title : t('BizConnectPay – Payments without borders') %></title>
+<% if (locals.seo) { %>
+<meta name="description" content="<%= seo.description %>">
+<meta name="robots" content="<%= seo.indexable ? 'index, follow, max-image-preview:large' : 'noindex, nofollow' %>">
+<link rel="canonical" href="<%= seo.canonical %>">
+<link rel="alternate" hreflang="fr" href="<%= seo.fr %>">
+<link rel="alternate" hreflang="en" href="<%= seo.en %>">
+<link rel="alternate" hreflang="x-default" href="<%= seo.fr %>">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BizConnectPay">
+<meta property="og:title" content="<%= seo.title %>">
+<meta property="og:description" content="<%= seo.description %>">
+<meta property="og:url" content="<%= seo.canonical %>">
+<meta property="og:image" content="<%= seo.image %>">
+<meta property="og:locale" content="<%= lang === 'en' ? 'en_US' : 'fr_FR' %>">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="<%= seo.title %>">
+<meta name="twitter:description" content="<%= seo.description %>">
+<meta name="twitter:image" content="<%= seo.image %>">
+<% } %>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<%= basePath %>/css/style.css?v=compact-1"><link rel="stylesheet" href="<%= basePath %>/css/carousel.css?v=car-2"><link rel="stylesheet" href="<%= basePath %>/css/home.css?v=home-2"><link rel="stylesheet" href="<%= basePath %>/css/vx.css?v=vx-2"><link rel="stylesheet" href="<%= basePath %>/css/pricing.css?v=px-1"><link rel="stylesheet" href="<%= basePath %>/css/footer.css?v=ft-2"><link rel="stylesheet" href="<%= basePath %>/css/contact.css?v=ct-3"><link rel="stylesheet" href="<%= basePath %>/css/header.css?v=hd-2">
 </head>

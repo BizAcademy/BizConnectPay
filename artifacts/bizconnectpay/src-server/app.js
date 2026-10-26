@@ -16,6 +16,7 @@ import { contactCountries } from './countries.js';
 import { createAdminRouter } from './admin-routes.js';
 import { slots } from './constants.js';
 import { pricingCopyTranslator } from './pricing-copy.js';
+import { publicPages, publicPath, resolvePublicPage, pageMetadata, sitemapXml, robotsText } from './seo.js';
 import { cleanPricing, validEmail, friendlyError, passwordDigest, httpError } from './security.js';
 
 export const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
@@ -82,6 +83,12 @@ export async function createApp() {
     strictTransportSecurity: config.production ? { maxAge: 31536000, includeSubDomains: true } : false,
   }));
   app.use(compression({ filter: (req, res) => req.path.includes('/media/') ? false : compression.filter(req, res) }));
+  app.use((req, res, next) => {
+    if (config.preview || /^\/(?:admin|api|healthz|contact-request)(?:\/|$)/.test(req.path.slice(config.basePath.length))) {
+      res.set('X-Robots-Tag', 'noindex, nofollow');
+    }
+    next();
+  });
   // Two independently bounded 60-KiB pricing editors can expand up to 3× in form encoding.
   app.use(`${config.basePath}/admin/pricing`, express.urlencoded({ extended: false, limit: '768kb', parameterLimit: 300 }));
   app.use(`${config.basePath}/admin/countries`, express.urlencoded({ extended: false, limit: '16kb', parameterLimit: 300 }));
@@ -97,6 +104,12 @@ export async function createApp() {
     next();
   });
 
+  router.get('/robots.txt', (req, res) => {
+    res.type('text/plain').set('Cache-Control', 'no-cache').send(robotsText(config.basePath, config.preview));
+  });
+  router.get('/sitemap.xml', (req, res) => {
+    res.type('application/xml').set('Cache-Control', 'public, max-age=3600').send(sitemapXml(config.basePath));
+  });
   router.use(express.static(path.join(rootDir, 'public'), {
     dotfiles: 'deny', index: false, maxAge: config.production ? '7d' : 0,
   }));
@@ -139,12 +152,24 @@ export async function createApp() {
       res.status(503).render('admin/setup');
     });
   }
-  router.get('/', async (req, res) => {
+  const pageRoutes = Object.keys(publicPages).flatMap(id => ['fr', 'en'].map(language => publicPath(id, language)));
+  router.get(pageRoutes, async (req, res) => {
+    const requestPath = req.baseUrl + req.path;
+    const page = resolvePublicPage(requestPath, config.basePath);
+    if (!page) throw httpError(404, 'Cette page n’existe pas.');
+    const canonicalPath = publicPath(page.id, req.lang, config.basePath);
+    // Legacy language query links and trailing slashes resolve to one clean URL.
+    if (requestPath !== canonicalPath || req.query.lang) {
+      return res.redirect(301, canonicalPath);
+    }
     const data = await loadPublicData();
     // Only comparison previews can explicitly force a theme; normal traffic follows the original OS rules.
     const theme = config.preview && ['light', 'dark'].includes(req.query.theme) ? req.query.theme : '';
     res.set('Cache-Control', 'no-store');
     res.render('index', {
+      currentPage: page.id, seo: { ...pageMetadata(page.id, page.language, config.basePath), indexable: !config.preview },
+      pagePaths: Object.fromEntries(Object.keys(publicPages).map(id => [id, publicPath(id, page.language, config.basePath)])),
+      languagePaths: { fr: publicPath(page.id, 'fr', config.basePath), en: publicPath(page.id, 'en', config.basePath) },
       ...data, pricingT: pricingCopyTranslator(data.settings, req.lang), contactCountries: contactCountries(data.settings, req.lang),
       pricingHtml: cleanPricing(req.lang === 'en' ? data.pricingHtmlEn : data.pricingHtml), theme,
     });
@@ -152,6 +177,7 @@ export async function createApp() {
   app.use(config.basePath || '/', router);
   app.use((req, res, next) => next(httpError(404, 'Cette page n’existe pas.')));
   app.use((error, req, res, next) => {
+    res.set('X-Robots-Tag', 'noindex, nofollow');
     logger.error({ code: error.code, status: error.status || 500, route: req.path }, 'Échec de la requête');
     if (res.headersSent) return next(error);
     if (req.path.includes('/media/')) {

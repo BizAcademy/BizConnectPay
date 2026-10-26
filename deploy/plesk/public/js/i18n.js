@@ -22,6 +22,8 @@
         if(dirty&&!confirm(t('Changer de langue effacera le formulaire non envoyé. Continuer ?'))){select.value=current;return}
       }
       document.cookie='bcp.lang='+next+'; Path='+(base||'/')+'; Max-Age=31536000; SameSite=Lax'+(location.protocol==='https:'?'; Secure':'');
+      var paths={};try{paths=JSON.parse(document.body.getAttribute('data-language-paths')||'{}')}catch(e){}
+      if(paths[next]){location.assign(paths[next]);return}
       var url=new URL(location.href);url.searchParams.set('lang',next);location.assign(url.href);
     });
   });

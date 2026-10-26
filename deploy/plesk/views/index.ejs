@@ -17,25 +17,21 @@
     return v ? _esc(v) : '<span class="ph">' + _esc(t(label)) + '</span>';
   };
   var contactCountries = Array.isArray(locals.contactCountries) ? locals.contactCountries : [];
-  var L = { pricingT: locals.pricingT || t, contactCountries: contactCountries, basePath: basePath, theme: theme, media: media, pricingHtml: pricingHtml, s: s, signupHref: signupHref, waHref: waHref, ph: ph, t: t, lang: lang, uiTranslations: uiTranslations };
-%><%- include('partials/head', L) %><body data-base-path="<%= basePath %>">
-<%- include('partials/header', L) %>
+  var seo = locals.seo;
+  var currentPage = locals.currentPage || 'accueil';
+  var pagePaths = locals.pagePaths || {};
+  var languagePaths = locals.languagePaths || {};
+  // Keep the existing components, but emit real crawlable links on the server.
+  var crawlableLinks = function (html) {
+    return html.replace(/href="#([a-z]+)"/g, function (match, id) {
+      return Object.prototype.hasOwnProperty.call(pagePaths, id) ? 'href="' + _esc(pagePaths[id]) + '"' : match;
+    });
+  };
+  var L = { seo: seo, pricingT: locals.pricingT || t, contactCountries: contactCountries, basePath: basePath, theme: theme, media: media, pricingHtml: pricingHtml, s: s, signupHref: signupHref, waHref: waHref, ph: ph, t: t, lang: lang, uiTranslations: uiTranslations };
+%><%- include('partials/head', L) %><body data-base-path="<%= basePath %>" data-page="<%= currentPage %>" data-page-paths="<%= JSON.stringify(pagePaths) %>" data-language-paths="<%= JSON.stringify(languagePaths) %>">
+<%- crawlableLinks(include('partials/header', L)) %>
 
-<%- include('pages/accueil', L) %>
+<%- crawlableLinks(include('pages/' + currentPage, L)).replace('class="pg"', 'class="pg on"') %>
 
-<%- include('pages/tarifs', L) %>
-
-<%- include('pages/contact', L) %>
-
-<%- include('pages/apropos', L) %>
-
-<%- include('pages/cgu', L) %>
-
-<%- include('pages/confidentialite', L) %>
-
-<%- include('pages/mentions', L) %>
-
-<%- include('pages/cookies', L) %>
-
-<%- include('partials/footer', L) %>
-<script type="application/json" id="bcp-i18n"><%- JSON.stringify(uiTranslations).replace(/</g, '\\u003c') %></script><script src="<%= basePath %>/js/i18n.js?v=lang-1"></script><script src="<%= basePath %>/js/main.js?v=motion-6"></script><script src="<%= basePath %>/js/carousel.js?v=car-4"></script><script src="<%= basePath %>/js/country-picker.js?v=cp-2"></script><script src="<%= basePath %>/js/contact.js?v=ct-6"></script><script src="<%= basePath %>/js/header-menu.js?v=hm-2"></script></body></html>
+<%- crawlableLinks(include('partials/footer', L)) %>
+<script type="application/json" id="bcp-i18n"><%- JSON.stringify(uiTranslations).replace(/</g, '\\u003c') %></script><script src="<%= basePath %>/js/i18n.js?v=lang-2"></script><script src="<%= basePath %>/js/main.js?v=routes-1"></script><script src="<%= basePath %>/js/carousel.js?v=car-4"></script><script src="<%= basePath %>/js/country-picker.js?v=cp-2"></script><script src="<%= basePath %>/js/contact.js?v=ct-6"></script><script src="<%= basePath %>/js/header-menu.js?v=hm-3"></script></body></html>

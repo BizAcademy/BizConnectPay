@@ -17,9 +17,8 @@
   var mq=matchMedia('(min-width:960px)');var onMq=function(){if(mq.matches&&isOpen())setOpen(false,false)};
   if(mq.addEventListener)mq.addEventListener('change',onMq);else if(mq.addListener)mq.addListener(onMq);
   function mark(target){
-    var id=typeof target==='string'?target:(location.hash||'#accueil').slice(1);if(!document.getElementById(id))id='accueil';
     h.querySelectorAll('[data-nav-link]').forEach(function(a){
-      if(a.getAttribute('href')==='#'+id)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
+      if(new URL(a.href,location.href).pathname===location.pathname)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
     });
   }
   h.addEventListener('click',function(e){

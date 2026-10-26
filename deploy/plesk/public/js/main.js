@@ -1,4 +1,14 @@
-function r(){var h=(location.hash||'#accueil').slice(1);var s=document.getElementById(h)||document.getElementById('accueil');document.querySelectorAll('.pg').forEach(function(e){e.classList.toggle('on',e===s)});window.scrollTo(0,0)}
+function r(){
+  var paths={};try{paths=JSON.parse(document.body.getAttribute('data-page-paths')||'{}')}catch(e){}
+  var legacy=location.hash.slice(1);
+  if(Object.prototype.hasOwnProperty.call(paths,legacy)){
+    if(location.pathname!==paths[legacy]){location.replace(paths[legacy]+location.search);return}
+    history.replaceState(null,'',location.pathname+location.search);
+  }
+  var id=document.body.getAttribute('data-page')||'accueil';
+  var s=document.getElementById(id);
+  document.querySelectorAll('.pg').forEach(function(e){e.classList.toggle('on',e===s)});
+}
 addEventListener('hashchange',r);r();
 
 (function(){

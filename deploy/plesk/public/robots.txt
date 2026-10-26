@@ -1,2 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /contact-request
+Disallow: /healthz
+Sitemap: https://bizconnectpay.com/sitemap.xml
