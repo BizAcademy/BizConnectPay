@@ -2,7 +2,7 @@
 #contact .ct{display:flex;flex-direction:column;max-width:none;width:100%;margin:0;padding:0;background:#fff;color:var(--navy);font-family:Poppins,sans-serif}
 #contact .ct-head{position:static;display:block;z-index:auto;padding:0;background:transparent;border:0;backdrop-filter:none}
 #contact .ct-photo{margin:0;order:2;padding:0 20px 40px}
-#contact .ct-photo img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:50% 25%;border-radius:20px;background:linear-gradient(160deg,#eaf3ff,#e6fbf4)}
+#contact .ct-photo img{display:block;width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;object-position:50% 25%;border-radius:20px;background:linear-gradient(160deg,#eaf3ff,#e6fbf4)}
 #contact .ct-side{order:1;padding:32px 20px 28px;max-width:640px;width:100%;margin:0 auto}
 #contact .ct-head h1{font-size:clamp(1.7rem,6vw,2.5rem);line-height:1.1;letter-spacing:-.025em;margin:0 0 10px;font-weight:700}
 #contact .ct-head p{color:var(--mut);font-size:.9rem;margin:0 0 24px;line-height:1.6}
@@ -46,6 +46,15 @@
 #contact .ct-hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
 #contact .ct-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 #contact a:focus-visible,#contact button:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+#contact .ct-photo-mobile{display:none}
+@media(max-width:619px){
+  #contact .ct-photo{display:none}
+  #contact .ct-photo-mobile{display:block;width:96%;margin:0 auto}
+  #contact .ct-photo-mobile img{display:block;width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;border-radius:20px;background:linear-gradient(160deg,#eaf3ff,#e6fbf4)}
+}
+@media(max-width:899px){
+  #contact .ct-photo{width:100%;max-width:520px;margin-inline:auto}
+}
 @media(min-width:620px){#contact .ct-row{grid-template-columns:1fr 1fr}#contact .ct-pills{display:flex;flex-wrap:wrap}}
 @media(min-width:900px){
   #contact .ct{flex-direction:row;align-items:stretch;min-height:calc(100dvh - 70px)}

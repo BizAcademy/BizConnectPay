@@ -50,6 +50,9 @@
   <fieldset class="ct-f ct-svc" id="ct-svc"><legend><%= t("Services souhaités") %> <i aria-hidden="true">*</i></legend>
     <div class="ct-pills"><% ctServices.forEach(function (x) { %><label class="ct-pill"><input type="checkbox" name="services" value="<%= x[0] %>"><span><b><%= x[0] %></b><%= t(x[1]) %></span></label><% }) %></div>
   </fieldset>
+  <figure class="ct-photo-mobile">
+    <img src="<%= ctImg %>960.webp" srcset="<%= ctImg %>480.webp 480w, <%= ctImg %>960.webp 960w, <%= ctImg %>1440.webp 1440w" sizes="calc(96vw - 38.4px)" width="960" height="1280" alt="<%= t("Illustration du service client BizConnectPay") %>" loading="lazy" decoding="async">
+  </figure>
   <div class="ct-f"><label for="ct-subject"><%= t("Objet") %> <i aria-hidden="true">*</i></label><input id="ct-subject" name="subject" type="text" required maxlength="180" placeholder="<%= t("Titre de votre demande") %>"></div>
   <div class="ct-f"><label for="ct-message">Message <i aria-hidden="true">*</i></label><textarea id="ct-message" name="message" required minlength="10" maxlength="5000" rows="5" placeholder="<%= t("Décrivez votre activité et votre besoin") %>"></textarea><span class="ct-count" id="ct-count" aria-live="off">0 / 5000</span></div>
   <label class="ct-consent"><input type="checkbox" name="consent" required><span><%= t("J'accepte que mes informations soient enregistrées pour traiter ma demande, conformément à la") %> <a href="#confidentialite"><%= t("politique de confidentialité") %></a>.</span></label>
