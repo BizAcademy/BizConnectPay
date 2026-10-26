@@ -48,5 +48,28 @@
 #tarifs .px-cta{margin-top:64px;text-align:center;border-radius:28px;padding:48px 20px;background:#fff linear-gradient(140deg,rgba(0,102,255,.07),rgba(0,229,168,.09));border:1px solid #e8edf5}
 #tarifs .px-cta p{color:var(--mut);max-width:520px;margin:0 auto 22px}
 #tarifs .px-cta .hero-act{justify-content:center}
-@media(min-width:700px){#tarifs .px-strip{grid-template-columns:repeat(4,1fr)}#tarifs .px-strip li{border-bottom:0}#tarifs .px-cards{grid-template-columns:repeat(2,1fr)}#tarifs .px-grid{grid-template-columns:repeat(3,1fr)}}
-@media(min-width:1000px){#tarifs .px-cards{grid-template-columns:repeat(4,1fr)}}
+/* Pricing-only layout: one card per requested service. */
+#tarifs .px-strip{grid-template-columns:repeat(3,minmax(0,1fr))}
+#tarifs .px-strip li{border-bottom:0}
+#tarifs .px-strip li:last-child{border-right:0}
+#tarifs .px-cards{align-items:stretch}
+#tarifs .px-card{min-width:0;padding:28px 24px}
+#tarifs .px-card h3{font-size:1.15rem}
+#tarifs .px-price{font-size:clamp(2.1rem,4vw,2.8rem);line-height:1.2;margin:16px 0 6px;color:var(--blue);font-variant-numeric:tabular-nums}
+#tarifs .px-card .px-description{margin:4px 0 24px;line-height:1.7}
+#tarifs .px-example{margin-top:auto;padding:18px 16px;background:#f5f8fd;border:1px solid #e8edf5;border-radius:14px}
+#tarifs .px-example-label{display:block;font-size:.7rem;font-weight:600;color:var(--blue);margin-bottom:10px}
+#tarifs .px-example p{font-size:.8rem;margin:0 0 14px;line-height:1.7}
+#tarifs .px-example p strong{color:var(--navy);white-space:nowrap}
+#tarifs .px-example-total{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 12px;border-top:1px solid #e3e8f0;padding-top:12px;font-size:.78rem}
+#tarifs .px-example-total strong{font-size:1.1rem;color:var(--blue);white-space:nowrap}
+#tarifs .px-visa-first{margin-top:22px}
+#tarifs .px-visa-label{display:block;font-size:.85rem;font-weight:500;line-height:1.6}
+#tarifs .px-visa-first .px-price,#tarifs .px-visa-next .px-price{margin-top:8px;white-space:nowrap}
+#tarifs .px-currency{font-size:.95rem;letter-spacing:0}
+#tarifs .px-card.hi .px-visa-first p{font-size:.78rem;margin-bottom:24px}
+#tarifs .px-visa-next{margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.2)}
+#tarifs .px-visa-next .px-price{font-size:2rem}
+@media(min-width:700px){#tarifs .px-cards{grid-template-columns:repeat(2,minmax(0,1fr))}#tarifs .px-card.hi{grid-column:1/-1}}
+@media(min-width:1000px){#tarifs .px-cards{grid-template-columns:repeat(3,minmax(0,1fr))}#tarifs .px-card.hi{grid-column:auto}}
+@media(max-width:360px){#tarifs .px{padding-left:14px;padding-right:14px}#tarifs .px-strip li{padding:16px 6px}#tarifs .px-strip b{font-size:1.05rem}#tarifs .px-strip span{letter-spacing:.05em}#tarifs .px-card{padding:24px 20px}}

@@ -1,36 +1,66 @@
 <%
   var t = locals.pricingT || locals.t;
-  var hasRates = !!(pricingHtml && String(pricingHtml).replace(/<[^>]*>/g,'').trim());
-  var priceLabel = hasRates ? t('Voir la grille') : t('Sur devis');
-  var startHref = s.signup_url ? signupHref : '#contact';
 %><section id="tarifs" class="pg"><main class="px">
-<header class="px-hero"><span class="px-over"><%= t("Tarifs · IN · OUT · Link · Virtual") %></span><h1><%= t("Une tarification") %> <span><%= t("pensée pour vous.") %></span></h1><p><%= t("Quatre solutions pour encaisser, payer et vous développer en Afrique. Les frais applicables dépendent de la solution, du pays et du moyen de paiement.") %></p>
-<ul class="px-strip"><li><b><%= t("IN") %></b><span><%= t("Encaisser") %></span></li><li><b><%= t("OUT") %></b><span><%= t("Envoyer") %></span></li><li><b><%= t("Link") %></b><span><%= t("Collecter") %></span></li><li><b><%= t("Virtual") %></b><span><%= t("Régler en ligne") %></span></li></ul></header>
+<header class="px-hero">
+  <span class="px-over"><%= t("Dépôts · Retraits · Cartes Visa") %></span>
+  <h1><%= t("Vos tarifs,") %> <span><%= t("en toute clarté.") %></span></h1>
+  <p><%= t("Retrouvez les frais de dépôt, les frais de retrait et les prix de vos cartes Visa, réunis au même endroit.") %></p>
+  <ul class="px-strip">
+    <li><b>PAYIN</b><span><%= t("Dépôts") %></span></li>
+    <li><b>PAYOUT</b><span><%= t("Retraits") %></span></li>
+    <li><b>Visa</b><span><%= t("Cartes") %></span></li>
+  </ul>
+</header>
 
-<div class="px-k"><%= t("Tarification") %></div><h2><%= t("Des frais simples et clairs") %></h2><p class="px-lead"><%= t("Chaque solution a sa propre grille. Consultez les frais en vigueur ci-dessous ou demandez un devis adapté à votre activité.") %></p>
+<div class="px-k" id="tarifs-grille"><%= t("Nos tarifs") %></div>
+<h2><%= t("Trois tarifs simples à comprendre") %></h2>
+<p class="px-lead"><%= t("Des pourcentages pour vos opérations et des prix distincts pour votre première carte et les suivantes.") %></p>
+
 <div class="px-cards">
-<article class="px-card"><small><%= t("Encaissement") %></small><h3><%= t("BizConnectPay-IN") %></h3><div class="px-price"><%= t("Tarif IN") === 'Tarif IN' || t("Tarif IN") === 'IN rate' ? priceLabel : t("Tarif IN") %></div><p><%= t("Recevez les paiements de vos clients en ligne.") %></p><ul><li><%= t("Mobile Money") %></li><li><%= t("Cartes bancaires") %></li><li><%= t("Portefeuilles électroniques") %></li></ul></article>
-<article class="px-card"><small><%= t("Envois") %></small><h3><%= t("BizConnectPay-OUT") %></h3><div class="px-price"><%= t("Tarif OUT") === 'Tarif OUT' || t("Tarif OUT") === 'OUT rate' ? priceLabel : t("Tarif OUT") %></div><p><%= t("Réglez bénéficiaires, fournisseurs et équipes.") %></p><ul><li><%= t("Bénéficiaires multiples") %></li><li><%= t("Envois simples et sécurisés") %></li></ul></article>
-<article class="px-card hi"><small><%= t("Sans intégration") %></small><h3><%= t("BizConnectPay Link") %></h3><div class="px-price"><%= t("Tarif Link") === 'Tarif Link' || t("Tarif Link") === 'Link rate' ? priceLabel : t("Tarif Link") %></div><p><%= t("Créez un lien, partagez-le, soyez payé.") %></p><ul><li><%= t("E-mail, SMS, WhatsApp") %></li><li><%= t("Réseaux sociaux") %></li><li><%= t("Aucune ligne de code") %></li></ul></article>
-<article class="px-card"><small><%= t("Cartes virtuelles") %></small><h3><%= t("BizConnectPay Virtual") %></h3><div class="px-price"><%= t("Tarif Virtual") === 'Tarif Virtual' || t("Tarif Virtual") === 'Virtual rate' ? priceLabel : t("Tarif Virtual") %></div><p><%= t("Réglez vos achats et abonnements en ligne.") %></p><ul><li><%= t("Achats en ligne") %></li><li><%= t("Abonnements") %></li></ul></article>
+  <article class="px-card" aria-labelledby="payin-title">
+    <small>PAYIN</small>
+    <h3 id="payin-title"><%= t("Dépôts (PAYIN)") %></h3>
+    <div class="px-price">5 %</div>
+    <p><%= t("de frais par dépôt") %></p>
+    <p class="px-description"><%= t("Ces frais s’appliquent à chaque opération de dépôt effectuée par un utilisateur.") %></p>
+    <div class="px-example">
+      <span class="px-example-label"><%= t("Exemple indicatif") %></span>
+      <p><%= t("Pour un dépôt de") %> <strong>10 000 FCFA</strong></p>
+      <div class="px-example-total"><span><%= t("Frais de dépôt") %></span><strong>500 FCFA</strong></div>
+    </div>
+  </article>
+
+  <article class="px-card" aria-labelledby="payout-title">
+    <small>PAYOUT</small>
+    <h3 id="payout-title"><%= t("Retraits (PAYOUT)") %></h3>
+    <div class="px-price"><%= lang === 'en' ? '3.5 %' : '3,5 %' %></div>
+    <p><%= t("de frais par retrait") %></p>
+    <p class="px-description"><%= t("Ces frais s’appliquent à chaque opération de retrait effectuée par un utilisateur.") %></p>
+    <div class="px-example">
+      <span class="px-example-label"><%= t("Exemple indicatif") %></span>
+      <p><%= t("Pour un retrait de") %> <strong>10 000 FCFA</strong></p>
+      <div class="px-example-total"><span><%= t("Frais de retrait") %></span><strong>350 FCFA</strong></div>
+    </div>
+  </article>
+
+  <article class="px-card hi" aria-labelledby="visa-title">
+    <small>VISA</small>
+    <h3 id="visa-title"><%= t("Cartes Visa") %></h3>
+    <div class="px-visa-first">
+      <span class="px-visa-label"><%= t("Première carte Visa") %></span>
+      <div class="px-price">2 000 <span class="px-currency">FCFA</span></div>
+      <p><%= t("Équivalent indicatif : 3 USD") %></p>
+    </div>
+    <div class="px-visa-next">
+      <span class="px-visa-label"><%= t("Chaque carte Visa supplémentaire") %></span>
+      <div class="px-price">1 800 <span class="px-currency">FCFA</span></div>
+    </div>
+  </article>
 </div>
 
-<div class="px-k" id="tarifs-grille"><%= t("Grille en vigueur") %></div><h2><%= t("Nos frais par service et par pays") %></h2>
-<div class="px-rates doc"><% if (hasRates) { %><%- pricingHtml %><% } else { %><div class="px-empty"><span class="px-tag"><%= t("Tarifs à confirmer") %></span><p class="mut" style="margin:0"><%= t("La grille détaillée sera publiée prochainement. En attendant, nos tarifs sont communiqués sur devis.") %></p></div><% } %></div>
-
-<div class="px-grid" style="margin-top:16px">
-<div class="px-info"><h3><%= t("Selon la solution") %></h3><p><%= t("IN, OUT, Link et Virtual disposent chacune de leurs propres conditions.") %></p></div>
-<div class="px-info"><h3><%= t("Selon le pays") %></h3><p><%= t("Les frais peuvent varier d'un pays à l'autre parmi plus de 20 pays d'Afrique.") %></p></div>
-<div class="px-info"><h3><%= t("Selon le moyen de paiement") %></h3><p><%= t("Mobile Money, carte bancaire ou portefeuille électronique.") %></p></div>
+<div class="px-cta">
+  <h2><%= t("Une question sur ces tarifs ?") %></h2>
+  <p><%= t("Notre équipe est à votre disposition pour vous renseigner sur les dépôts, les retraits et les cartes Visa.") %></p>
+  <div class="hero-act"><a class="btn" href="#contact"><%= t("Contactez-nous") %></a></div>
 </div>
-
-<div class="px-k"><%= t("Questions fréquentes") %></div><h2><%= t("Vos questions sur nos tarifs") %></h2>
-<div class="px-faq">
-<details><summary><%= t("Comment sont calculés les frais ?") %></summary><p><%= t("Ils dépendent de la solution utilisée, du pays et du moyen de paiement choisi par votre client. La grille en vigueur figure sur cette page.") %></p></details>
-<details><summary><%= t("Les frais sont-ils les mêmes pour les quatre solutions ?") %></summary><p><%= t("Non. BizConnectPay-IN, BizConnectPay-OUT, BizConnectPay Link et BizConnectPay Virtual ont chacune leur propre tarification.") %></p></details>
-<details><summary><%= t("Puis-je obtenir un tarif adapté à mon activité ?") %></summary><p><%= t("Oui. Contactez notre équipe pour une proposition sur devis.") %></p></details>
-<details><summary><%= t("Ai-je besoin d'une intégration technique ?") %></summary><p><%= t("Non pour BizConnectPay Link : un lien de paiement suffit. Une intégration à votre site reste possible avec notre équipe.") %></p></details>
-</div>
-
-<div class="px-cta"><h2><%= t("Prêt à vous lancer ?") %></h2><p><%= t("Choisissez votre solution ou échangez avec notre équipe pour connaître les frais applicables à votre activité.") %></p><div class="hero-act"><a class="btn" href="<%= startHref %>"><%= s.signup_url ? t('Commencer maintenant') : t('Contactez-nous') %></a><% if (waHref) { %><a class="btn o" href="<%= waHref %>" target="_blank" rel="noopener"><%= t("Demander un devis") %></a><% } else if (s.support_email) { %><a class="btn o" href="mailto:<%= s.support_email %>"><%= t("Demander un devis") %></a><% } %></div></div>
 </main></section>
